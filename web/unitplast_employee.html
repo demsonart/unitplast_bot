@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNITPLAST Employee Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary: #1f2937;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f3f4f6;
+            --text: #111827;
+            --text-secondary: #6b7280;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+            background: var(--light);
+            color: var(--text);
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .header-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            font-size: 12px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px;
+            border-radius: 6px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--light);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab {
+            padding: 12px 16px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* SCREEN */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* ORDERS GRID */
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .order-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .order-card.critical {
+            border-left-color: var(--danger);
+            background: rgba(239, 68, 68, 0.02);
+        }
+
+        .order-card.high {
+            border-left-color: var(--warning);
+            background: rgba(245, 158, 11, 0.02);
+        }
+
+        .order-card.medium {
+            border-left-color: var(--warning);
+            background: rgba(251, 191, 36, 0.02);
+        }
+
+        .order-card.low {
+            border-left-color: var(--primary);
+            background: rgba(59, 130, 246, 0.02);
+        }
+
+        .order-priority {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .order-priority.critical {
+            background: var(--danger);
+            color: white;
+        }
+
+        .order-priority.high {
+            background: var(--warning);
+            color: white;
+        }
+
+        .order-priority.medium {
+            background: #eab308;
+            color: white;
+        }
+
+        .order-priority.low {
+            background: var(--primary);
+            color: white;
+        }
+
+        .order-company {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .order-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .order-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .order-score {
+            margin-bottom: 12px;
+        }
+
+        .score-label {
+            font-size: 12px;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .score-bar {
+            height: 4px;
+            background: var(--light);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .order-stars {
+            font-size: 14px;
+            color: var(--warning);
+            margin: 8px 0;
+        }
+
+        .order-contact {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .order-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--light);
+            background: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--light);
+            border-color: var(--primary);
+        }
+
+        .action-btn.primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .action-btn.primary:hover {
+            background: var(--primary-dark);
+        }
+
+        /* EMAIL LIST */
+        .email-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .email-item {
+            border-bottom: 1px solid var(--light);
+            padding: 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .email-item:last-child {
+            border-bottom: none;
+        }
+
+        .email-item:hover {
+            background: var(--light);
+        }
+
+        .email-from {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .email-subject {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .email-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .email-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            background: var(--warning);
+            color: white;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .header-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .orders-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                gap: 8px;
+            }
+
+            .tab {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-title">👨‍💼 Employee Dashboard</div>
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-value" id="stat-total">0</span>
+                <span class="stat-label">Total Orders</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="stat-critical">0</span>
+                <span class="stat-label">🔴 Critical</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="stat-high">0</span>
+                <span class="stat-label">🟠 High</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="stat-response">—</span>
+                <span class="stat-label">Avg Response</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('orders')">📬 Live Orders</button>
+            <button class="tab" onclick="showTab('emails')">📧 Email Center</button>
+            <button class="tab" onclick="showTab('documents')">📄 Documents</button>
+            <button class="tab" onclick="showTab('analytics')">📊 Analytics</button>
+        </div>
+
+        <!-- ORDERS SCREEN -->
+        <div id="orders" class="screen active">
+            <div class="orders-grid" id="ordersContainer">
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <p>No orders yet</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- EMAIL CENTER SCREEN -->
+        <div id="emails" class="screen">
+            <div class="email-list" id="emailList">
+                <div class="empty-state">
+                    <div class="empty-icon">📬</div>
+                    <p>No new emails</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DOCUMENTS SCREEN -->
+        <div id="documents" class="screen">
+            <h2 style="margin-bottom: 20px;">📄 Documents</h2>
+            <div style="background: white; padding: 40px; border-radius: 12px; text-align: center;">
+                <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+                <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Generate KP</p>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 24px;">Select order from Live Orders to generate Commercial Proposal</p>
+                <button onclick="showTab('orders')" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Go to Orders</button>
+            </div>
+        </div>
+
+        <!-- ANALYTICS SCREEN -->
+        <div id="analytics" class="screen">
+            <h2 style="margin-bottom: 20px;">📊 Analytics</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px;">
+                <div style="background: white; padding: 20px; border-radius: 12px;">
+                    <div style="font-size: 28px; font-weight: 700; color: var(--primary); margin-bottom: 8px;" id="metric-orders">0</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Orders This Week</div>
+                </div>
+                <div style="background: white; padding: 20px; border-radius: 12px;">
+                    <div style="font-size: 28px; font-weight: 700; color: var(--success); margin-bottom: 8px;" id="metric-conversion">0%</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Conversion Rate</div>
+                </div>
+                <div style="background: white; padding: 20px; border-radius: 12px;">
+                    <div style="font-size: 28px; font-weight: 700; color: var(--warning); margin-bottom: 8px;" id="metric-avgtime">0 min</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Avg Response Time</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock order data
+        const mockOrders = [
+            {
+                id: 1,
+                company: "Казаков Ростислав",
+                material: "ABS",
+                quantity: 2000,
+                size: "110x120 мм",
+                score: 90,
+                priority: "critical",
+                stars: "★★★★★",
+                phone: "+79811583790",
+                email: "kazakov@example.com",
+                timestamp: new Date(Date.now() - 5 * 60000)
+            },
+            {
+                id: 2,
+                company: "ООО Тестовая",
+                material: "PP",
+                quantity: 100,
+                size: "500 мм",
+                score: 65,
+                priority: "medium",
+                stars: "★★★☆☆",
+                phone: "+7 999 123-45-67",
+                email: "test@example.com",
+                timestamp: new Date(Date.now() - 15 * 60000)
+            },
+            {
+                id: 3,
+                company: "Солдатенкова Л.",
+                material: "Заглушки",
+                quantity: 492,
+                size: "13 мм",
+                score: 45,
+                priority: "low",
+                stars: "★★☆☆☆",
+                phone: "+7-925-188-78-00",
+                email: "soldatenkova@example.com",
+                timestamp: new Date(Date.now() - 25 * 60000)
+            }
+        ];
+
+        // Tab switching
+        function showTab(tabId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (tabId === 'orders') renderOrders();
+            if (tabId === 'emails') renderEmails();
+            if (tabId === 'analytics') renderAnalytics();
+        }
+
+        // Render orders
+        function renderOrders() {
+            const container = document.getElementById('ordersContainer');
+
+            if (mockOrders.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>No orders</p></div>';
+                return;
+            }
+
+            container.innerHTML = mockOrders.map(order => `
+                <div class="order-card ${order.priority}">
+                    <div class="order-priority ${order.priority}">${order.priority.toUpperCase()}</div>
+                    <div class="order-company">${order.company}</div>
+
+                    <div class="order-meta">
+                        <div class="order-meta-item">🧱 ${order.material}</div>
+                        <div class="order-meta-item">📦 ${order.quantity} шт</div>
+                    </div>
+
+                    <div class="order-score">
+                        <div class="score-label">
+                            <span>Score</span>
+                            <span>${order.score}/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: ${order.score}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="order-stars">${order.stars}</div>
+
+                    <div class="order-contact">
+                        📞 ${order.phone}<br>
+                        📧 ${order.email}
+                    </div>
+
+                    <div class="order-actions">
+                        <button class="action-btn primary">📤 Generate KP</button>
+                        <button class="action-btn">📞 Contact</button>
+                    </div>
+                </div>
+            `).join('');
+
+            updateStats();
+        }
+
+        // Render emails
+        function renderEmails() {
+            const container = document.getElementById('emailList');
+            const emails = [
+                { from: "Казаков Р.", subject: "Нужны пластиковые крышки 110х120 мм", new: true },
+                { from: "ООО Тестовая", subject: "Запрос на КП для полипропилена", new: true },
+                { from: "Солдатенкова Л.", subject: "Заказ заглушек 13 мм", new: false }
+            ];
+
+            container.innerHTML = emails.map(email => `
+                <div class="email-item">
+                    <div class="email-from">${email.from}${email.new ? '<span class="email-badge">NEW</span>' : ''}</div>
+                    <div class="email-subject">${email.subject}</div>
+                    <div class="email-time">Just now</div>
+                </div>
+            `).join('');
+        }
+
+        // Render analytics
+        function renderAnalytics() {
+            document.getElementById('metric-orders').textContent = mockOrders.length;
+            document.getElementById('metric-conversion').textContent = '35%';
+            document.getElementById('metric-avgtime').textContent = '15 min';
+        }
+
+        // Update stats
+        function updateStats() {
+            const critical = mockOrders.filter(o => o.priority === 'critical').length;
+            const high = mockOrders.filter(o => o.priority === 'high').length;
+
+            document.getElementById('stat-total').textContent = mockOrders.length;
+            document.getElementById('stat-critical').textContent = critical;
+            document.getElementById('stat-high').textContent = high;
+            document.getElementById('stat-response').textContent = '<5min';
+        }
+
+        // Initialize
+        renderOrders();
+    </script>
+</body>
+</html>

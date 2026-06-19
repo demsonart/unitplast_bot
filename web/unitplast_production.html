@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>UNITPLAST - Производство</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --text: #111827;
+            --text-secondary: #6b7280;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--light);
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+            padding-top: max(20px, env(safe-area-inset-top));
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        /* CONTENT */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            padding-bottom: 20px;
+        }
+
+        /* WORKFLOW SECTION */
+        .workflow-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .workflow-header {
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, #60a5fa 100%);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .workflow-header:active {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        }
+
+        .workflow-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .workflow-icon {
+            font-size: 24px;
+        }
+
+        .workflow-arrow {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .workflow-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .workflow-content {
+            display: none;
+            padding: 16px;
+        }
+
+        .workflow-content.open {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* STEPS */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .step {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            min-width: 32px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            display: flex;
+            gap: 8px;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+
+        .timeline-item {
+            background: var(--light);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .timeline-item.active {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* SPECS */
+        .specs {
+            background: var(--light);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .spec-row:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            color: var(--text-secondary);
+        }
+
+        .spec-value {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* BUTTONS */
+        .button {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .button-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .button-primary:active {
+            background: var(--primary-dark);
+            transform: scale(0.98);
+        }
+
+        .button-secondary {
+            background: var(--light);
+            color: var(--primary);
+            border: 2px solid var(--light);
+        }
+
+        .button-secondary:active {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* GRID */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-title">🏭 Производство</div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+            <!-- INJECTION MOLDING -->
+            <div class="workflow-item">
+                <div class="workflow-header" onclick="toggleWorkflow(event)">
+                    <div>
+                        <div class="workflow-title">🏭 Литье под давлением</div>
+                    </div>
+                    <div class="workflow-arrow">▼</div>
+                </div>
+                <div class="workflow-content">
+                    <div class="specs">
+                        <div class="spec-row">
+                            <span class="spec-label">Минимум</span>
+                            <span class="spec-value">1000 шт</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Сроки</span>
+                            <span class="spec-value">14-21 день</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Допуски</span>
+                            <span class="spec-value">±0.1-0.2 мм</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Цена</span>
+                            <span class="spec-value">Стандартная</span>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 13px; color: var(--text); margin-bottom: 12px; line-height: 1.6;">
+                        Оптимально для сложных форм и массового производства. Позволяет создавать детали с тонкими стенками и высокой точностью.
+                    </p>
+
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">Создание пресс-формы</div>
+                                <div class="step-desc">Проектирование и изготовление пресс-формы (5-7 дней)</div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">Пробный образец</div>
+                                <div class="step-desc">Отливка и проверка первого образца (2-3 дня)</div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">Серийное производство</div>
+                                <div class="step-desc">Отливка заказанного количества (7-14 дней)</div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <div class="step-title">Контроль качества</div>
+                                <div class="step-desc">100% проверка первой партии, затем 5% выборочная (1 день)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2" style="margin-top: 16px;">
+                        <button class="button button-primary">📝 Начать заявку</button>
+                        <button class="button button-secondary">💬 Вопросы?</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THERMOFORMING -->
+            <div class="workflow-item">
+                <div class="workflow-header" onclick="toggleWorkflow(event)">
+                    <div>
+                        <div class="workflow-title">🔥 Термоформовка</div>
+                    </div>
+                    <div class="workflow-arrow">▼</div>
+                </div>
+                <div class="workflow-content">
+                    <div class="specs">
+                        <div class="spec-row">
+                            <span class="spec-label">Минимум</span>
+                            <span class="spec-value">500 шт</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Сроки</span>
+                            <span class="spec-value">7-14 дней</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Допуски</span>
+                            <span class="spec-value">±0.3 мм</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Цена</span>
+                            <span class="spec-value">-20% дешевле литья</span>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 13px; color: var(--text); margin-bottom: 12px; line-height: 1.6;">
+                        Быстрое производство без дорогостоящих пресс-форм. Подходит для полупрозрачных и непрозрачных деталей.
+                    </p>
+
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">Подготовка пресса</div>
+                                <div class="step-desc">Установка штампа и настройка параметров (1 день)</div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">Производство</div>
+                                <div class="step-desc">Формовка пластика через тепло и вакуум (5-10 дней)</div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">Обрезка</div>
+                                <div class="step-desc">Удаление излишков пластика (1 день)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2" style="margin-top: 16px;">
+                        <button class="button button-primary">📝 Начать заявку</button>
+                        <button class="button button-secondary">💬 Вопросы?</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXTRUSION -->
+            <div class="workflow-item">
+                <div class="workflow-header" onclick="toggleWorkflow(event)">
+                    <div>
+                        <div class="workflow-title">↔️ Экструзия</div>
+                    </div>
+                    <div class="workflow-arrow">▼</div>
+                </div>
+                <div class="workflow-content">
+                    <div class="specs">
+                        <div class="spec-row">
+                            <span class="spec-label">Минимум</span>
+                            <span class="spec-value">100 метров</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Сроки</span>
+                            <span class="spec-value">10-15 дней</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Допуски</span>
+                            <span class="spec-value">±1 мм</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Цена</span>
+                            <span class="spec-value">-40% за метр</span>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 13px; color: var(--text); margin-bottom: 12px; line-height: 1.6;">
+                        Идеально для профилей, труб и длинномерных деталей. Самый экономичный метод при большом метраже.
+                    </p>
+
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">Подготовка матрицы</div>
+                                <div class="step-desc">Установка головки для нужного профиля (1 день)</div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">Экструдирование</div>
+                                <div class="step-desc">Выдавливание пластика через матрицу (5-14 дней)</div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">Охлаждение и резка</div>
+                                <div class="step-desc">Резка на нужные размеры и упаковка</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2" style="margin-top: 16px;">
+                        <button class="button button-primary">📝 Начать заявку</button>
+                        <button class="button button-secondary">💬 Вопросы?</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOW MOLDING -->
+            <div class="workflow-item">
+                <div class="workflow-header" onclick="toggleWorkflow(event)">
+                    <div>
+                        <div class="workflow-title">💨 Выдувное формование</div>
+                    </div>
+                    <div class="workflow-arrow">▼</div>
+                </div>
+                <div class="workflow-content">
+                    <div class="specs">
+                        <div class="spec-row">
+                            <span class="spec-label">Минимум</span>
+                            <span class="spec-value">2000 шт</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Сроки</span>
+                            <span class="spec-value">21-28 дней</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Допуски</span>
+                            <span class="spec-value">±0.5 мм</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Цена</span>
+                            <span class="spec-value">Средняя</span>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 13px; color: var(--text); margin-bottom: 12px; line-height: 1.6;">
+                        Специалист для полых изделий: бутылки, канистры, контейнеры. Создает полые формы одного этапом.
+                    </p>
+
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">Создание пресс-формы</div>
+                                <div class="step-desc">Проектирование и изготовление матрицы для полых форм (5-7 дней)</div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">Выдув материала</div>
+                                <div class="step-desc">Нагрев и выдув через воздух для создания полой формы (10-20 дней)</div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">Отделка</div>
+                                <div class="step-desc">Удаление наплывов и упаковка (2 дня)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2" style="margin-top: 16px;">
+                        <button class="button button-primary">📝 Начать заявку</button>
+                        <button class="button button-secondary">💬 Вопросы?</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleWorkflow(event) {
+            const header = event.currentTarget;
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('.workflow-arrow');
+
+            // Close all others
+            document.querySelectorAll('.workflow-content.open').forEach(c => {
+                if (c !== content) {
+                    c.classList.remove('open');
+                    c.previousElementSibling.querySelector('.workflow-arrow').classList.remove('open');
+                }
+            });
+
+            // Toggle current
+            content.classList.toggle('open');
+            arrow.classList.toggle('open');
+        }
+
+        // Open first by default
+        document.querySelectorAll('.workflow-content')[0].classList.add('open');
+        document.querySelectorAll('.workflow-arrow')[0].classList.add('open');
+    </script>
+</body>
+</html>
