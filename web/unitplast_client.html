@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>UNITPLAST - Пластмасса для производства</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary: #1f2937;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f3f4f6;
+            --text: #111827;
+            --text-secondary: #6b7280;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+            background: var(--light);
+            color: var(--text);
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+            padding-top: max(20px, env(safe-area-inset-top));
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+        }
+
+        .header-logo {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-greeting {
+            font-size: 13px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        /* CONTENT */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            padding-bottom: 100px;
+        }
+
+        /* HOME SCREEN */
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary);
+            padding: 0 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* PRIMARY ACTIONS */
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .action-button {
+            background: white;
+            border: none;
+            border-radius: 12px;
+            padding: 24px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-button:active {
+            transform: scale(0.98);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.02);
+        }
+
+        .action-icon {
+            font-size: 32px;
+            line-height: 1;
+        }
+
+        .action-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* INFO CARDS */
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-card:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .info-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+
+        .info-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .info-icon {
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        /* CATALOG */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .material-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+        }
+
+        .material-card:active {
+            transform: scale(0.98);
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .material-image {
+            background: linear-gradient(135deg, var(--primary), #60a5fa);
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+
+        .material-info {
+            padding: 12px;
+        }
+
+        .material-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .material-price {
+            font-size: 12px;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* FORM */
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.02);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-button:active {
+            background: var(--primary-dark);
+            transform: scale(0.98);
+        }
+
+        /* SCREENS */
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* BACK BUTTON */
+        .back-button {
+            display: inline-block;
+            padding: 8px 0;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 18px;
+            cursor: pointer;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        /* SUCCESS STATE */
+        .success-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .success-text {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .success-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .success-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .success-button:active {
+            background: var(--primary-dark);
+            transform: scale(0.98);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 12px;
+                padding-bottom: 80px;
+            }
+
+            .header {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-logo">🏭 UNITPLAST</div>
+            <div class="header-greeting" id="greeting">Здравствуйте, добро пожаловать</div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+            <!-- HOME SCREEN -->
+            <div id="home" class="screen active">
+                <!-- Primary Actions -->
+                <div class="section">
+                    <div class="action-grid">
+                        <button class="action-button" onclick="showScreen('order')">
+                            <div class="action-icon">📝</div>
+                            <div class="action-label">Новая заявка</div>
+                        </button>
+                        <button class="action-button" onclick="showScreen('kp')">
+                            <div class="action-icon">💰</div>
+                            <div class="action-label">Получить КП</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="section">
+                    <div class="section-title">Популярное</div>
+                    <div class="info-card" onclick="showScreen('catalog')">
+                        <div class="info-title">
+                            <span class="info-icon">📦</span>
+                            Каталог пластмасс
+                        </div>
+                        <div class="info-desc">9 материалов с полными характеристиками</div>
+                    </div>
+                    <div class="info-card" onclick="showScreen('ai')">
+                        <div class="info-title">
+                            <span class="info-icon">🤖</span>
+                            Спросить у AI
+                        </div>
+                        <div class="info-desc">Выбор материала, цены, сроки, альтернативы</div>
+                    </div>
+                    <div class="info-card" onclick="showScreen('history')">
+                        <div class="info-title">
+                            <span class="info-icon">📋</span>
+                            Мои заказы
+                        </div>
+                        <div class="info-desc">История заявок и коммерческих предложений</div>
+                    </div>
+                </div>
+
+                <!-- Info -->
+                <div class="section">
+                    <div class="section-title">О сервисе</div>
+                    <div class="info-card">
+                        <div class="info-title">⚡ Быстрые сроки</div>
+                        <div class="info-desc">От идеи к готовой детали за 7-21 день</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-title">✅ Качество гарантировано</div>
+                        <div class="info-desc">ISO сертификация, контроль каждой партии</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-title">💬 Поддержка 24/7</div>
+                        <div class="info-desc">Ответим на вопросы в течение часа</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATALOG SCREEN -->
+            <div id="catalog" class="screen">
+                <button class="back-button" onclick="showScreen('home')">← Назад</button>
+                <div class="section">
+                    <div class="section-title">Материалы UNITPLAST</div>
+                    <div class="catalog-grid">
+                        <div class="material-card" onclick="selectMaterial('ABS')">
+                            <div class="material-image">🧴</div>
+                            <div class="material-info">
+                                <div class="material-name">ABS</div>
+                                <div class="material-price">350-500 ₽/кг</div>
+                            </div>
+                        </div>
+                        <div class="material-card" onclick="selectMaterial('PP')">
+                            <div class="material-image">🧴</div>
+                            <div class="material-info">
+                                <div class="material-name">PP</div>
+                                <div class="material-price">200-350 ₽/кг</div>
+                            </div>
+                        </div>
+                        <div class="material-card" onclick="selectMaterial('PET')">
+                            <div class="material-image">🧴</div>
+                            <div class="material-info">
+                                <div class="material-name">PET</div>
+                                <div class="material-price">300-450 ₽/кг</div>
+                            </div>
+                        </div>
+                        <div class="material-card" onclick="selectMaterial('PVC')">
+                            <div class="material-image">🧴</div>
+                            <div class="material-info">
+                                <div class="material-name">PVC</div>
+                                <div class="material-price">250-400 ₽/кг</div>
+                            </div>
+                        </div>
+                        <div class="material-card" onclick="selectMaterial('PS')">
+                            <div class="material-image">🧴</div>
+                            <div class="material-info">
+                                <div class="material-name">PS</div>
+                                <div class="material-price">200-350 ₽/кг</div>
+                            </div>
+                        </div>
+                        <div class="material-card" onclick="selectMaterial('PC')">
+                            <div class="material-image">🧴</div>
+                            <div class="material-info">
+                                <div class="material-name">PC</div>
+                                <div class="material-price">800-1200 ₽/кг</div>
+                            </div>
+                        </div>
+                        <div class="material-card" onclick="selectMaterial('PA')">
+                            <div class="material-image">🧴</div>
+                            <div class="material-info">
+                                <div class="material-name">PA</div>
+                                <div class="material-price">500-700 ₽/кг</div>
+                            </div>
+                        </div>
+                        <div class="material-card" onclick="selectMaterial('POM')">
+                            <div class="material-image">🧴</div>
+                            <div class="material-info">
+                                <div class="material-name">POM</div>
+                                <div class="material-price">600-800 ₽/кг</div>
+                            </div>
+                        </div>
+                        <div class="material-card" onclick="selectMaterial('PE')">
+                            <div class="material-image">🧴</div>
+                            <div class="material-info">
+                                <div class="material-name">PE</div>
+                                <div class="material-price">150-300 ₽/кг</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW ORDER SCREEN -->
+            <div id="order" class="screen">
+                <button class="back-button" onclick="showScreen('home')">← Назад</button>
+                <div class="section">
+                    <div class="section-title">Новая заявка</div>
+                    <div class="form-container">
+                        <form onsubmit="submitOrder(event)">
+                            <div class="form-group">
+                                <label class="form-label">Материал</label>
+                                <select required>
+                                    <option value="">Выберите материал</option>
+                                    <option value="ABS">ABS (прочный, ударостойкий)</option>
+                                    <option value="PP">PP (легкий, дешевый)</option>
+                                    <option value="PET">PET (прозрачный, пищевой)</option>
+                                    <option value="PVC">PVC (стойкий к кислотам)</option>
+                                    <option value="PS">PS (хрупкий, прозрачный)</option>
+                                    <option value="PC">PC (очень прочный, дорогой)</option>
+                                    <option value="PA">PA (упругий, износостойкий)</option>
+                                    <option value="POM">POM (жесткий, размерно стабильный)</option>
+                                    <option value="PE">PE (мягкий, гибкий)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Количество (шт)</label>
+                                <input type="number" placeholder="1000" min="1" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Размеры / Спецификация</label>
+                                <input type="text" placeholder="100 x 50 x 25 мм" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Ваша компания</label>
+                                <input type="text" placeholder="ООО Пример" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Телефон</label>
+                                <input type="tel" placeholder="+7 (999) 999-99-99" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" placeholder="info@example.com" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Дополнительные требования</label>
+                                <textarea placeholder="Например: срочное производство, экспресс доставка, качество премиум"></textarea>
+                            </div>
+
+                            <button type="submit" class="submit-button">📤 Отправить заявку</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GET KP SCREEN -->
+            <div id="kp" class="screen">
+                <button class="back-button" onclick="showScreen('home')">← Назад</button>
+                <div class="section">
+                    <div class="section-title">Коммерческое предложение</div>
+                    <div class="form-container">
+                        <div style="text-align: center; padding: 20px 0;">
+                            <div style="font-size: 48px; margin-bottom: 16px;">💰</div>
+                            <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Быстрый расчет стоимости</p>
+                            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 24px;">Укажите параметры, и мы рассчитаем цену за 2 минуты</p>
+                        </div>
+                        <form onsubmit="calculateKP(event)">
+                            <div class="form-group">
+                                <label class="form-label">Материал</label>
+                                <select required>
+                                    <option value="">Выберите материал</option>
+                                    <option value="ABS">ABS</option>
+                                    <option value="PP">PP</option>
+                                    <option value="PET">PET</option>
+                                    <option value="PVC">PVC</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Количество (шт)</label>
+                                <input type="number" placeholder="5000" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Вес изделия (г)</label>
+                                <input type="number" placeholder="50" step="0.1" min="0.1" required>
+                            </div>
+                            <button type="submit" class="submit-button">💰 Рассчитать цену</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI CONSULTANT SCREEN -->
+            <div id="ai" class="screen">
+                <button class="back-button" onclick="showScreen('home')">← Назад</button>
+                <div class="section">
+                    <div class="section-title">AI Консультант</div>
+                    <div class="form-container">
+                        <div style="margin-bottom: 16px;">
+                            <input type="text" id="aiQuestion" placeholder="Спросите о материалах, сроках, цене..."
+                                   style="margin-bottom: 8px;">
+                            <button onclick="askAI()" class="submit-button">🤖 Спросить</button>
+                        </div>
+                        <div id="aiResponse" style="display: none;">
+                            <div style="background: var(--light); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                                <p id="aiAnswer" style="font-size: 13px; line-height: 1.6;"></p>
+                            </div>
+                        </div>
+                        <div style="padding-top: 12px; border-top: 1px solid var(--light);">
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">Примеры вопросов:</p>
+                            <button onclick="askQuestion('Какой пластик выбрать для улицы?')" style="display: block; width: 100%; text-align: left; padding: 8px; margin-bottom: 8px; background: var(--light); border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">• Какой пластик выбрать для улицы?</button>
+                            <button onclick="askQuestion('Чем PP отличается от PE?')" style="display: block; width: 100%; text-align: left; padding: 8px; margin-bottom: 8px; background: var(--light); border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">• Чем PP отличается от PE?</button>
+                            <button onclick="askQuestion('Какой минимум заказа?')" style="display: block; width: 100%; text-align: left; padding: 8px; background: var(--light); border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">• Какой минимум заказа?</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ORDER HISTORY SCREEN -->
+            <div id="history" class="screen">
+                <button class="back-button" onclick="showScreen('home')">← Назад</button>
+                <div class="section">
+                    <div class="section-title">Мои заказы</div>
+                    <div class="empty-state" id="historyState">
+                        <div class="empty-icon">📭</div>
+                        <p style="font-size: 14px; font-weight: 600;">Пока заказов нет</p>
+                        <p style="font-size: 12px; margin-top: 8px;">Создайте первую заявку, и она появится здесь</p>
+                    </div>
+                    <div id="historyList"></div>
+                </div>
+            </div>
+
+            <!-- SUCCESS SCREEN -->
+            <div id="success" class="screen">
+                <div class="success-screen">
+                    <div class="success-icon">✅</div>
+                    <div class="success-text">Заявка принята!</div>
+                    <div class="success-desc">Менеджер свяжется с вами в течение часа</div>
+                    <button onclick="showScreen('home')" class="success-button">← Вернуться на главную</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+        // Initialize
+        function init() {
+            const hour = new Date().getHours();
+            const greeting = document.getElementById('greeting');
+            if (hour < 12) greeting.textContent = 'Доброе утро, добро пожаловать';
+            else if (hour < 18) greeting.textContent = 'Добрый день, добро пожаловать';
+            else greeting.textContent = 'Добрый вечер, добро пожаловать';
+        }
+
+        // Screen navigation
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Select material and go to order
+        function selectMaterial(material) {
+            showScreen('order');
+            setTimeout(() => {
+                document.querySelector('#order select').value = material;
+            }, 100);
+        }
+
+        // Submit order
+        function submitOrder(event) {
+            event.preventDefault();
+            const form = event.target;
+            const order = {
+                id: Date.now(),
+                material: form.querySelector('select').value,
+                quantity: form.querySelector('input[type="number"]').value,
+                size: form.querySelectorAll('input')[1].value,
+                company: form.querySelectorAll('input')[2].value,
+                phone: form.querySelectorAll('input')[3].value,
+                email: form.querySelectorAll('input')[4].value,
+                notes: form.querySelector('textarea').value,
+                date: new Date().toLocaleDateString('ru-RU'),
+                time: new Date().toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'})
+            };
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            form.reset();
+            showScreen('success');
+        }
+
+        // Calculate KP
+        function calculateKP(event) {
+            event.preventDefault();
+            const form = event.target;
+            const material = form.querySelector('select').value;
+            const quantity = parseInt(form.querySelector('input[type="number"]').value);
+            const weight = parseFloat(form.querySelectorAll('input')[1].value);
+
+            const prices = {
+                'ABS': 425,
+                'PP': 275,
+                'PET': 375,
+                'PVC': 325
+            };
+
+            const basePrice = prices[material] || 350;
+            const totalWeight = (weight / 1000) * quantity;
+            const totalCost = totalWeight * basePrice;
+            const volumeDiscount = quantity >= 5000 ? 0.1 : quantity >= 1000 ? 0.05 : 0;
+            const finalCost = totalCost * (1 - volumeDiscount);
+
+            alert(`💰 Примерная стоимость:\n\nМатериал: ${material}\nКоличество: ${quantity} шт\nОбщий вес: ${totalWeight.toFixed(1)} кг\n\nСтоимость: ${finalCost.toFixed(0)} ₽\n${volumeDiscount > 0 ? `(со скидкой ${(volumeDiscount*100).toFixed(0)}%)` : ''}\n\nДля точного расчета создайте заявку`);
+        }
+
+        // AI Consultant
+        function askQuestion(question) {
+            document.getElementById('aiQuestion').value = question;
+            askAI();
+        }
+
+        function askAI() {
+            const question = document.getElementById('aiQuestion').value;
+            if (!question) return;
+
+            const responses = {
+                'пластик': 'Для наружного использования рекомендуем ударостойкий PC или UV-стабилизированный PVC. Они выдерживают низкие температуры и УФ излучение. Срок гарантии - 3 года.',
+                'pp': 'PP (полипропилен) легче ABS на 20%, стоит на 30% дешевле, но менее ударостойкий. Идеален для контейнеров и трубопроводов.',
+                'pe': 'PE (полиэтилен) - самый мягкий из полимеров, но очень гибкий и дешевый. Подходит для упаковки, пленок, гибких деталей.',
+                'минимум': 'Стандартный минимум заказа - 1000 шт. Для сложных форм - 500 шт. Для стандартных изделий - от 100 шт с доплатой 30%.',
+                'срок': 'Стандартные сроки: 7-14 дней. Экспресс (5-7 дней) - доплата 30%. Срочный (3 дня) - доплата 50%.',
+                'цена': 'Цена зависит от материала, сложности и количества. ABS: 350-500 ₽/кг, PP: 200-350 ₽/кг. Точный расчет после уточнения параметров.',
+            };
+
+            let answer = 'Для точного ответа создайте заявку или позвоните нам. Наши технологи ответят на все вопросы.';
+            const lowerQuestion = question.toLowerCase();
+
+            for (let key in responses) {
+                if (lowerQuestion.includes(key)) {
+                    answer = responses[key];
+                    break;
+                }
+            }
+
+            document.getElementById('aiAnswer').textContent = answer;
+            document.getElementById('aiResponse').style.display = 'block';
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>

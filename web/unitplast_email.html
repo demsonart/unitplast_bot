@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>UNITPLAST - Email Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --text: #111827;
+            --text-secondary: #6b7280;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--light);
+        }
+
+        .app {
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+            color: white;
+            padding: 16px;
+            padding-top: max(16px, env(safe-area-inset-top));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .badge {
+            background: var(--danger);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        /* FILTERS */
+        .filters {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--light);
+            background: white;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            border: 2px solid var(--light);
+            background: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* CONTENT */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* EMAIL ITEM */
+        .email-item {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid var(--text-secondary);
+            display: flex;
+            gap: 12px;
+        }
+
+        .email-item:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .email-item.unread {
+            background: #f0f4ff;
+            border-left-color: var(--primary);
+        }
+
+        .email-item.critical {
+            border-left-color: var(--danger);
+            background: rgba(239, 68, 68, 0.02);
+        }
+
+        .email-item.high {
+            border-left-color: var(--warning);
+            background: rgba(245, 158, 11, 0.02);
+        }
+
+        .email-avatar {
+            min-width: 40px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #60a5fa);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .email-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .email-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4px;
+            gap: 8px;
+        }
+
+        .email-from {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .email-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+
+        .email-subject {
+            font-size: 13px;
+            color: var(--text);
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .email-preview {
+            font-size: 12px;
+            color: var(--text-secondary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-bottom: 6px;
+        }
+
+        .email-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 6px;
+            background: var(--light);
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .tag.material {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tag.quantity {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .tag.urgent {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            animation: fadeIn 0.2s;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            border-radius: 20px 20px 0 0;
+            padding: 20px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-from {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .modal-subject {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .modal-body {
+            background: var(--light);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .modal-extraction {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border: 2px solid var(--light);
+        }
+
+        .extraction-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .extraction-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 13px;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .extraction-item:last-child {
+            border-bottom: none;
+        }
+
+        .extraction-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .extraction-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn.primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .action-btn.secondary {
+            background: var(--light);
+            color: var(--text);
+        }
+
+        @media (max-width: 480px) {
+            .email-header {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-title">📬 Email Center</div>
+            <div class="badge" id="unreadCount">3</div>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterEmails('all')">All (5)</button>
+            <button class="filter-btn" onclick="filterEmails('unread')">📬 Unread (3)</button>
+            <button class="filter-btn" onclick="filterEmails('critical')">🔴 Critical (1)</button>
+            <button class="filter-btn" onclick="filterEmails('has-material')">🧴 Material (4)</button>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content" id="emailList">
+            <!-- Generated by JS -->
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div></div>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-from" id="modalFrom"></div>
+            <div class="modal-subject" id="modalSubject"></div>
+            <div class="modal-body" id="modalBody"></div>
+
+            <div class="modal-extraction" id="modalExtraction"></div>
+
+            <div class="modal-actions">
+                <button class="action-btn primary" onclick="createOrder()">📝 Create Order</button>
+                <button class="action-btn secondary" onclick="markAsProcessed()">✓ Mark Processed</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const emails = [
+            {
+                id: 1,
+                from: 'Казаков Ростислав',
+                email: 'kazakov.rostik@gmail.com',
+                subject: 'Нужны пластиковые крышки 110х120мм',
+                body: 'Здравствуйте!\n\nНам нужны пластиковые крышки размером 110х120 мм из ABS.\nКоличество: 2000 штук.\nСроки: СРОЧНО, в течение 2 недель.\n\nЦена за штуку примерно сколько? Возможен ли заказ на 2000 штук?\n\nСпасибо,\nРостислав\n+79811583790',
+                extraction: {
+                    material: 'ABS',
+                    quantity: '2000 шт',
+                    size: '110х120 мм',
+                    phone: '+79811583790',
+                    urgent: true
+                },
+                priority: 'critical',
+                unread: true,
+                hasMaterial: true,
+                time: '5 мин назад'
+            },
+            {
+                id: 2,
+                from: 'ООО Тестовая Компания',
+                email: 'test@example.com',
+                subject: 'Запрос на коммерческое предложение',
+                body: 'Здравствуйте!\n\nМы заинтересованы в получении КП на полипропилен PP для контейнеров.\nОбъем: 5000 единиц\nРазмеры: 500x300x200мм\n\nВозможны ли скидки при таком объеме?\n\nС уважением,\nМаркетинговый отдел',
+                extraction: {
+                    material: 'PP',
+                    quantity: '5000 шт',
+                    size: '500x300x200 мм',
+                    phone: null,
+                    urgent: false
+                },
+                priority: 'high',
+                unread: true,
+                hasMaterial: true,
+                time: '15 мин назад'
+            },
+            {
+                id: 3,
+                from: 'Солдатенкова Лариса',
+                email: 'soldatenkova@albes.ru',
+                subject: 'Заказ заглушек 13мм на 492 штуки',
+                body: 'Добрый день!\n\nПодтверждаю заказ:\nНаименование: Заглушка пластиковая\nМатериал: PP черный\nДиаметр: 13 мм\nКоличество: 492 шт\n\nДата доставки: 15 июня\n\nЖду КП\nЛариса\n+7-925-188-78-00',
+                extraction: {
+                    material: 'PP черный',
+                    quantity: '492 шт',
+                    size: 'Диаметр 13 мм',
+                    phone: '+7-925-188-78-00',
+                    urgent: false
+                },
+                priority: 'medium',
+                unread: true,
+                hasMaterial: true,
+                time: '25 мин назад'
+            },
+            {
+                id: 4,
+                from: 'Вопрос о доставке',
+                email: 'auto@example.com',
+                subject: 'Уточнение по сроку доставки заказа №123',
+                body: 'Здравствуйте!\n\nЭто касается заказа №123 от 1 июня.\nМы планируем забрать товар 20 июня.\nИспользуется транспорт размером 2x2x2 метра.\n\nЭто возможно?',
+                extraction: {
+                    material: null,
+                    quantity: null,
+                    size: null,
+                    phone: null,
+                    urgent: false
+                },
+                priority: 'low',
+                unread: false,
+                hasMaterial: false,
+                time: '2 часа назад'
+            },
+            {
+                id: 5,
+                from: 'Поиск поставщика',
+                email: 'b2b@example.com',
+                subject: 'Потенциальное сотрудничество - поставки PE пленки',
+                body: 'Здравствуйте!\n\nМы производим упаковку и ищем надежного поставщика полиэтилена (PE).\nНаши потребности:\n- PE пленка толщина 50-100 микрон\n- Объем: 10 тонн в месяц\n- Качество: пищевой стандарт\n\nВы заинтересованы в долгосрочном партнерстве?',
+                extraction: {
+                    material: 'PE пленка',
+                    quantity: '10 тонн/месяц',
+                    size: '50-100 микрон',
+                    phone: null,
+                    urgent: false
+                },
+                priority: 'low',
+                unread: false,
+                hasMaterial: true,
+                time: '3 часа назад'
+            }
+        ];
+
+        let currentFilter = 'all';
+        let selectedEmail = null;
+
+        function renderEmails() {
+            const filtered = emails.filter(e => {
+                if (currentFilter === 'unread') return e.unread;
+                if (currentFilter === 'critical') return e.priority === 'critical';
+                if (currentFilter === 'has-material') return e.hasMaterial;
+                return true;
+            });
+
+            const list = document.getElementById('emailList');
+            list.innerHTML = filtered.map(email => `
+                <div class="email-item ${email.unread ? 'unread' : ''} ${email.priority}" onclick="openEmail(${email.id})">
+                    <div class="email-avatar">${email.from[0]}</div>
+                    <div class="email-main">
+                        <div class="email-header">
+                            <div class="email-from">${email.from}</div>
+                            <div class="email-time">${email.time}</div>
+                        </div>
+                        <div class="email-subject">${email.subject}</div>
+                        <div class="email-preview">${email.body.substring(0, 60)}...</div>
+                        <div class="email-tags">
+                            ${email.unread ? '<span class="tag">Unread</span>' : ''}
+                            ${email.extraction.material ? `<span class="tag material">${email.extraction.material}</span>` : ''}
+                            ${email.extraction.quantity ? `<span class="tag quantity">${email.extraction.quantity}</span>` : ''}
+                            ${email.extraction.urgent ? '<span class="tag urgent">⚡ Urgent</span>' : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('unreadCount').textContent = emails.filter(e => e.unread).length;
+        }
+
+        function openEmail(id) {
+            selectedEmail = emails.find(e => e.id === id);
+            if (!selectedEmail) return;
+
+            document.getElementById('modalFrom').textContent = selectedEmail.from;
+            document.getElementById('modalSubject').textContent = selectedEmail.subject;
+            document.getElementById('modalBody').textContent = selectedEmail.body;
+
+            const extraction = selectedEmail.extraction;
+            let extractionHtml = '<div class="extraction-title">🤖 AI Extraction</div>';
+
+            if (extraction.material) {
+                extractionHtml += `<div class="extraction-item"><span class="extraction-label">Material</span><span class="extraction-value">${extraction.material}</span></div>`;
+            }
+            if (extraction.quantity) {
+                extractionHtml += `<div class="extraction-item"><span class="extraction-label">Quantity</span><span class="extraction-value">${extraction.quantity}</span></div>`;
+            }
+            if (extraction.size) {
+                extractionHtml += `<div class="extraction-item"><span class="extraction-label">Size</span><span class="extraction-value">${extraction.size}</span></div>`;
+            }
+            if (extraction.phone) {
+                extractionHtml += `<div class="extraction-item"><span class="extraction-label">Phone</span><span class="extraction-value">${extraction.phone}</span></div>`;
+            }
+
+            if (!extraction.material && !extraction.quantity) {
+                extractionHtml = '<div class="extraction-title">No material/quantity detected</div>';
+            }
+
+            document.getElementById('modalExtraction').innerHTML = extractionHtml;
+            document.getElementById('modal').classList.add('active');
+
+            selectedEmail.unread = false;
+            renderEmails();
+        }
+
+        function closeModal(event) {
+            if (event && event.target.id !== 'modal') return;
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function filterEmails(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderEmails();
+        }
+
+        function createOrder() {
+            alert(`✅ Creating order from ${selectedEmail.from}'s email\nMaterial: ${selectedEmail.extraction.material}\nQuantity: ${selectedEmail.extraction.quantity}`);
+            closeModal();
+        }
+
+        function markAsProcessed() {
+            alert(`✓ Email marked as processed`);
+            closeModal();
+        }
+
+        renderEmails();
+    </script>
+</body>
+</html>

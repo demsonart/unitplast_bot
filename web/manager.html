@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard - UNITPLAST</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1f2937;
+            --secondary: #374151;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --light: #f3f4f6;
+            --text: #111827;
+            --critical: #dc2626;
+            --high: #f59e0b;
+            --medium: #eab308;
+            --low: #3b82f6;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--light);
+            color: var(--text);
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .header-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            font-size: 13px;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.1);
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.7);
+            margin-top: 4px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--light);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 16px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--light);
+        }
+
+        .order-card:hover {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .order-card.critical {
+            border-left-color: var(--critical);
+            background: rgba(220, 38, 38, 0.02);
+        }
+
+        .order-card.high {
+            border-left-color: var(--warning);
+            background: rgba(245, 158, 11, 0.02);
+        }
+
+        .order-card.medium {
+            border-left-color: var(--medium);
+            background: rgba(234, 179, 8, 0.02);
+        }
+
+        .order-card.low {
+            border-left-color: var(--low);
+            background: rgba(59, 130, 246, 0.02);
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .priority-badge.critical {
+            background: var(--critical);
+        }
+
+        .priority-badge.high {
+            background: var(--warning);
+        }
+
+        .priority-badge.medium {
+            background: var(--medium);
+        }
+
+        .priority-badge.low {
+            background: var(--low);
+        }
+
+        .company-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .order-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stars {
+            font-size: 14px;
+            margin: 8px 0;
+            color: var(--warning);
+        }
+
+        .score-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--light);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--light);
+            background: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: var(--light);
+        }
+
+        .action-btn.primary {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .action-btn.primary:hover {
+            background: #2563eb;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state svg {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .header-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .orders-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👨‍💼 Manager Dashboard</h1>
+        <div class="header-stats">
+            <div class="stat-item">
+                <div class="stat-value" id="total-orders">0</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="critical-count">0</div>
+                <div class="stat-label">🔴 Critical</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="high-count">0</div>
+                <div class="stat-label">🟠 High</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="response-time">—</div>
+                <div class="stat-label">Avg Response</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterOrders('all')">All Orders</button>
+            <button class="filter-btn" onclick="filterOrders('critical')">🔴 Critical</button>
+            <button class="filter-btn" onclick="filterOrders('high')">🟠 High</button>
+            <button class="filter-btn" onclick="filterOrders('unassigned')">👤 Unassigned</button>
+        </div>
+
+        <div class="orders-grid" id="orders-container">
+            <div class="empty-state">
+                <div style="font-size: 48px; margin-bottom: 16px;">📭</div>
+                <p>No orders to display. Check back soon!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock data - in production this would come from API
+        const mockOrders = [
+            {
+                id: 1,
+                company: "Ростислав Казаков",
+                material: "ПЛАСТИК",
+                quantity: 2000,
+                size: "110x120мм",
+                score: 90,
+                priority: "critical",
+                stars: "★★★★★",
+                phone: "+79811583790",
+                email: "kazakov.rostik@gmail.com",
+                assigned: false,
+                timestamp: new Date(Date.now() - 5 * 60000)
+            },
+            {
+                id: 2,
+                company: "Тестовая",
+                material: "ПЛАСТИК",
+                quantity: 100,
+                size: "500мм",
+                score: 65,
+                priority: "medium",
+                stars: "★★★☆☆",
+                phone: "+7 999 123-45-67",
+                email: "test@example.com",
+                assigned: true,
+                timestamp: new Date(Date.now() - 15 * 60000)
+            },
+            {
+                id: 3,
+                company: "Солдатенкова Лариса",
+                material: "Заглушки",
+                quantity: 492,
+                size: "13мм",
+                score: 45,
+                priority: "low",
+                stars: "★★☆☆☆",
+                phone: "+7-925-188-78-00",
+                email: "soldatenkova@albes.ru",
+                assigned: false,
+                timestamp: new Date(Date.now() - 25 * 60000)
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        function renderOrders() {
+            const container = document.getElementById('orders-container');
+            const filtered = currentFilter === 'all' ? mockOrders :
+                           currentFilter === 'critical' ? mockOrders.filter(o => o.priority === 'critical') :
+                           currentFilter === 'high' ? mockOrders.filter(o => o.priority === 'high') :
+                           mockOrders.filter(o => !o.assigned);
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div style="font-size: 48px; margin-bottom: 16px;">📭</div><p>No orders to display</p></div>';
+                return;
+            }
+
+            container.innerHTML = filtered.map(order => `
+                <div class="order-card ${order.priority}">
+                    <div class="priority-badge ${order.priority}">${order.priority.toUpperCase()}</div>
+                    <div class="company-name">${order.company}</div>
+
+                    <div class="order-meta">
+                        <div class="meta-item">🧱 ${order.material}</div>
+                        <div class="meta-item">📦 ${order.quantity} шт</div>
+                    </div>
+
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: ${order.score}%"></div>
+                    </div>
+                    <div style="font-size: 12px; color: #6b7280;">Score: ${order.score}/100</div>
+
+                    <div class="stars">${order.stars}</div>
+
+                    <div class="order-meta">
+                        <div class="meta-item">📞 ${order.phone}</div>
+                        <div class="meta-item">📧 ${order.email.substring(0, 20)}...</div>
+                    </div>
+
+                    <div style="font-size: 12px; color: #9ca3af; margin-top: 8px;">
+                        ${order.assigned ? '✅ Assigned' : '⏳ Waiting assignment'}
+                    </div>
+
+                    <div class="actions">
+                        <button class="action-btn primary">Create KP</button>
+                        <button class="action-btn">Contact</button>
+                    </div>
+                </div>
+            `).join('');
+
+            updateStats();
+        }
+
+        function updateStats() {
+            const critical = mockOrders.filter(o => o.priority === 'critical').length;
+            const high = mockOrders.filter(o => o.priority === 'high').length;
+
+            document.getElementById('total-orders').textContent = mockOrders.length;
+            document.getElementById('critical-count').textContent = critical;
+            document.getElementById('high-count').textContent = high;
+            document.getElementById('response-time').textContent = '<5min';
+        }
+
+        function filterOrders(type) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderOrders();
+        }
+
+        // Initial render
+        renderOrders();
+    </script>
+</body>
+</html>
