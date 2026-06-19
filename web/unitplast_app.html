@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0066cc">
+    <title>UNITPLAST</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-height: 100dvh;
+        }
+
+        /* HEADER */
+        .app-header {
+            background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+            color: white;
+            padding: 24px 20px;
+            padding-top: max(24px, env(safe-area-inset-top));
+            text-align: center;
+        }
+
+        .app-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .app-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* MAIN CONTENT */
+        .app-main {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: #ffffff;
+        }
+
+        .screen {
+            display: none;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* HOME SCREEN */
+        .home-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .home-card {
+            background: #f5f5f5;
+            border: 1px solid #e5e5e5;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            font-size: 0;
+        }
+
+        .home-card:active {
+            background: #efefef;
+            transform: scale(0.98);
+        }
+
+        .home-card-icon {
+            font-size: 36px;
+            line-height: 1;
+        }
+
+        .home-card-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        /* SECTION HEADER */
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            margin: 20px 0 12px 0;
+            letter-spacing: 0.5px;
+        }
+
+        /* LIST */
+        .list-item {
+            background: #ffffff;
+            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .list-item:active {
+            background: #f9f9f9;
+        }
+
+        .list-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #4d94ff, #0066cc);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .list-content {
+            flex: 1;
+        }
+
+        .list-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .list-subtitle {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .list-time {
+            font-size: 11px;
+            color: #ccc;
+        }
+
+        .list-badge {
+            background: #dc2626;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* GRID */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .stat-card {
+            background: #f5f5f5;
+            border: 1px solid #e5e5e5;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0066cc;
+        }
+
+        /* CHAT */
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+            max-width: 85%;
+            word-wrap: break-word;
+        }
+
+        .message-user {
+            align-self: flex-end;
+            background: #0066cc;
+            color: white;
+            border-radius: 16px 16px 4px 16px;
+        }
+
+        .message-bot {
+            align-self: flex-start;
+            background: #f0f0f0;
+            color: #1a1a1a;
+            border-radius: 16px 16px 16px 4px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #ffffff;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 1px solid #e5e5e5;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #1a1a1a;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+
+        .chat-send {
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .chat-send:active {
+            background: #0052a3;
+        }
+
+        /* BOTTOM NAV */
+        .app-nav {
+            display: flex;
+            gap: 0;
+            background: #ffffff;
+            border-top: 1px solid #f0f0f0;
+            position: relative;
+            padding-bottom: max(0, env(safe-area-inset-bottom));
+        }
+
+        .nav-button {
+            flex: 1;
+            padding: 12px 8px;
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-family: inherit;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .nav-button.active {
+            color: #0066cc;
+        }
+
+        .nav-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #0066cc;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        /* UTILITIES */
+        .scrollable {
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pb-safe {
+            padding-bottom: max(20px, calc(20px + env(safe-area-inset-bottom)));
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="app-header">
+            <h1>🏭 UNITPLAST</h1>
+            <p>Production OS</p>
+        </div>
+
+        <div class="app-main">
+            <!-- HOME -->
+            <div class="screen active" id="screen-home">
+                <div class="home-grid">
+                    <div class="home-card" onclick="switchScreen('email')">
+                        <div class="home-card-icon">📬</div>
+                        <div class="home-card-text">Email</div>
+                    </div>
+                    <div class="home-card" onclick="switchScreen('catalog')">
+                        <div class="home-card-icon">📦</div>
+                        <div class="home-card-text">Каталог</div>
+                    </div>
+                    <div class="home-card" onclick="switchScreen('dashboard')">
+                        <div class="home-card-icon">📊</div>
+                        <div class="home-card-text">Dashboard</div>
+                    </div>
+                    <div class="home-card" onclick="switchScreen('ai')">
+                        <div class="home-card-icon">🤖</div>
+                        <div class="home-card-text">AI</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="screen" id="screen-email">
+                <div class="section-title">📬 Email Center</div>
+                <div class="list-item">
+                    <div class="list-avatar">КР</div>
+                    <div class="list-content">
+                        <div class="list-title">Казаков Р.</div>
+                        <div class="list-subtitle">Крышки ABS 110х120мм 2000шт</div>
+                        <div class="list-time">5 минут назад</div>
+                    </div>
+                    <div class="list-badge">1</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-avatar">ТЕ</div>
+                    <div class="list-content">
+                        <div class="list-title">ООО Тест</div>
+                        <div class="list-subtitle">КП на PP контейнеры 5000шт</div>
+                        <div class="list-time">15 минут назад</div>
+                    </div>
+                    <div class="list-badge">1</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-avatar">МС</div>
+                    <div class="list-content">
+                        <div class="list-title">Мусоросбор</div>
+                        <div class="list-subtitle">PET бутылки 10000шт</div>
+                        <div class="list-time">1 час назад</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATALOG -->
+            <div class="screen" id="screen-catalog">
+                <div class="section-title">📦 Материалы</div>
+                <div class="card-grid">
+                    <div class="stat-card">
+                        <div style="font-size: 24px; margin-bottom: 8px;">🧴</div>
+                        <div class="stat-label">ABS</div>
+                        <div style="font-size: 13px; color: #666;">350-500 ₽/кг</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="font-size: 24px; margin-bottom: 8px;">🧴</div>
+                        <div class="stat-label">PP</div>
+                        <div style="font-size: 13px; color: #666;">200-350 ₽/кг</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="font-size: 24px; margin-bottom: 8px;">🧴</div>
+                        <div class="stat-label">PET</div>
+                        <div style="font-size: 13px; color: #666;">300-450 ₽/кг</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="font-size: 24px; margin-bottom: 8px;">🧴</div>
+                        <div class="stat-label">PVC</div>
+                        <div style="font-size: 13px; color: #666;">250-400 ₽/кг</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DASHBOARD -->
+            <div class="screen" id="screen-dashboard">
+                <div class="section-title">📊 Статистика</div>
+                <div class="card-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Всего заказов</div>
+                        <div class="stat-value">23</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Критичные</div>
+                        <div class="stat-value" style="color: #dc2626;">3</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Среднее время</div>
+                        <div class="stat-value">12м</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Конверсия</div>
+                        <div class="stat-value" style="color: #17a854;">35%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI -->
+            <div class="screen flex-col" id="screen-ai">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message message-bot">Привет! 👋 Как я могу помочь?</div>
+                </div>
+                <div class="chat-input-area">
+                    <input class="chat-input" id="chat-input" type="text" placeholder="Напишите вопрос...">
+                    <button class="chat-send" onclick="sendMessage()">↗</button>
+                </div>
+            </div>
+        </div>
+
+        <nav class="app-nav">
+            <button class="nav-button active" onclick="switchNav('home')">
+                <span>🏠</span>
+                <span class="nav-label">Главная</span>
+            </button>
+            <button class="nav-button" onclick="switchNav('email')">
+                <span>📬</span>
+                <span class="nav-label">Email</span>
+            </button>
+            <button class="nav-button" onclick="switchNav('catalog')">
+                <span>📦</span>
+                <span class="nav-label">Каталог</span>
+            </button>
+            <button class="nav-button" onclick="switchNav('dashboard')">
+                <span>📊</span>
+                <span class="nav-label">Stats</span>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        // Telegram integration
+        if (window.Telegram?.WebApp) {
+            Telegram.WebApp.ready();
+            Telegram.WebApp.expand();
+        }
+
+        function switchScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+
+            // Show selected screen
+            const screen = document.getElementById(`screen-${screenId}`);
+            if (screen) {
+                screen.classList.add('active');
+            }
+        }
+
+        function switchNav(screenId) {
+            // Update nav buttons
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.closest('.nav-button').classList.add('active');
+
+            // Show screen
+            switchScreen(screenId);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            const messagesDiv = document.getElementById('chat-messages');
+
+            // User message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message message-user';
+            userMsg.textContent = text;
+            messagesDiv.appendChild(userMsg);
+
+            input.value = '';
+
+            // Bot response
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = 'message message-bot';
+                botMsg.textContent = 'Спасибо за вопрос! Наши специалисты ответят на него.';
+                messagesDiv.appendChild(botMsg);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 300);
+        }
+
+        // Enter key
+        document.getElementById('chat-input')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>

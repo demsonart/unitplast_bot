@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>UNITPLAST Каталог - Пластмассы</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --text: #111827;
+            --text-secondary: #6b7280;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--light);
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 16px;
+            padding-top: max(16px, env(safe-area-inset-top));
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        /* SEARCH */
+        .search-box {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--text);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary-dark);
+        }
+
+        .search-btn {
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .search-btn:active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* AI SUGGESTIONS */
+        .ai-suggestions {
+            display: none;
+            padding: 0 8px 8px;
+        }
+
+        .ai-suggestions.active {
+            display: block;
+        }
+
+        .suggestion {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: white;
+            font-size: 12px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .suggestion:active {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* CONTENT */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            padding-bottom: 80px;
+        }
+
+        /* MATERIAL GRID */
+        .material-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .material-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            border: 2px solid transparent;
+        }
+
+        .material-card:active {
+            transform: scale(0.95);
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+            border-color: var(--primary);
+        }
+
+        .material-image {
+            background: linear-gradient(135deg, var(--primary) 0%, #60a5fa 100%);
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .material-image::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.2), transparent);
+            pointer-events: none;
+        }
+
+        .material-info {
+            padding: 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .material-name {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+
+        .material-price {
+            font-size: 13px;
+            color: var(--success);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .material-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 8px;
+            flex-grow: 1;
+        }
+
+        .material-btn {
+            padding: 8px 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .material-btn:active {
+            background: var(--primary-dark);
+            transform: scale(0.98);
+        }
+
+        /* DETAILED VIEW */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            animation: fadeIn 0.2s;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            border-radius: 20px 20px 0 0;
+            padding: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-section {
+            margin-bottom: 20px;
+        }
+
+        .modal-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .spec {
+            background: var(--light);
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .spec-label {
+            color: var(--text-secondary);
+            font-size: 11px;
+            margin-bottom: 2px;
+        }
+
+        .spec-value {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .modal-button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-button:active {
+            background: var(--primary-dark);
+            transform: scale(0.98);
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        /* SEARCH HIGHLIGHT */
+        .highlight {
+            background: #fef3c7;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-title">📦 Каталог пластмасс</div>
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput"
+                       placeholder="Ударостойкий для улицы, пищевой PET..."
+                       onkeyup="handleSearch()" autocomplete="off">
+                <button class="search-btn" onclick="handleSearch()">🔍</button>
+            </div>
+            <div class="ai-suggestions" id="aiSuggestions"></div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="material-grid" id="materialsGrid">
+                <!-- Generated by JS -->
+            </div>
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon">🔍</div>
+                <p>Материал не найден</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle"></div>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div id="modalBody"></div>
+            <button class="modal-button" onclick="selectMaterial()">
+                📝 Создать заявку с этим материалом
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const materials = [
+            {
+                id: 'abs',
+                name: 'ABS',
+                price: '350-500 ₽/кг',
+                emoji: '🧴',
+                desc: 'Прочный, ударостойкий',
+                full: 'Акрилонитрил-бутадиен-стирол',
+                properties: [
+                    'Высокая ударостойкость',
+                    'Хорошая обрабатываемость',
+                    'Температура: -40°C до +80°C',
+                    'Окрашиваемость отличная'
+                ],
+                uses: ['Электроинструменты', 'Корпусы приборов', 'Детали автомобилей', 'Игрушки'],
+                minVolume: '1000 шт',
+                leadTime: '14-21 день',
+                keywords: ['прочный', 'ударостойкий', 'электро', 'корпус', 'инструмент']
+            },
+            {
+                id: 'pp',
+                name: 'PP',
+                price: '200-350 ₽/кг',
+                emoji: '🧴',
+                desc: 'Легкий, дешевый',
+                full: 'Полипропилен',
+                properties: [
+                    'Низкая плотность (0.9 г/см³)',
+                    'Химическая стойкость',
+                    'Температура: -20°C до +120°C',
+                    'Хорошая свариваемость'
+                ],
+                uses: ['Контейнеры', 'Трубы', 'Упаковка', 'Пищевые контейнеры'],
+                minVolume: '500 шт',
+                leadTime: '10-14 дней',
+                keywords: ['легкий', 'дешевый', 'контейнер', 'трубы', 'упаковка', 'пищевой']
+            },
+            {
+                id: 'pet',
+                name: 'PET',
+                price: '300-450 ₽/кг',
+                emoji: '🧴',
+                desc: 'Прозрачный, пищевой',
+                full: 'Полиэтилентерефталат',
+                properties: [
+                    'Высокая прозрачность',
+                    'Пищевая безопасность',
+                    'Хорошая прочность',
+                    'Температура: -40°C до +70°C'
+                ],
+                uses: ['Бутылки', 'Контейнеры для напитков', 'Упаковка', 'Пищевые контейнеры'],
+                minVolume: '500 шт',
+                leadTime: '7-14 дней',
+                keywords: ['прозрачный', 'пищевой', 'бутылка', 'контейнер', 'напиток', 'пищевая']
+            },
+            {
+                id: 'pvc',
+                name: 'PVC',
+                price: '250-400 ₽/кг',
+                emoji: '🧴',
+                desc: 'Стойкий к кислотам',
+                full: 'Поливинилхлорид',
+                properties: [
+                    'Химическая стойкость',
+                    'Огнестойкость',
+                    'Жесткость и прочность',
+                    'Температура: -20°C до +70°C'
+                ],
+                uses: ['Трубы', 'Кабельные каналы', 'Строительные изделия', 'Химические контейнеры'],
+                minVolume: '500 шт',
+                leadTime: '10-14 дней',
+                keywords: ['стойкий', 'кислота', 'труба', 'канал', 'огнестойкий', 'строительство']
+            },
+            {
+                id: 'ps',
+                name: 'PS',
+                price: '200-350 ₽/кг',
+                emoji: '🧴',
+                desc: 'Прозрачный, хрупкий',
+                full: 'Полистирол',
+                properties: [
+                    'Полная прозрачность',
+                    'Жесткость',
+                    'Хрупкость',
+                    'Температура: -20°C до +60°C'
+                ],
+                uses: ['Витрины', 'Прозрачные крышки', 'Светильники', 'Упаковка'],
+                minVolume: '1000 шт',
+                leadTime: '14-21 день',
+                keywords: ['прозрачный', 'хрупкий', 'витрина', 'светильник', 'крышка']
+            },
+            {
+                id: 'pc',
+                name: 'PC',
+                price: '800-1200 ₽/кг',
+                emoji: '🧴',
+                desc: 'Ударостойкий, как стекло',
+                full: 'Поликарбонат',
+                properties: [
+                    'Ударостойкость экстремальная',
+                    'Прозрачность как стекло',
+                    'Легче стекла в 2.5 раза',
+                    'Температура: -40°C до +120°C'
+                ],
+                uses: ['Ударостойкие окна', 'Мотоциклетные щитки', 'Автомобильные стекла', 'Защитные экраны'],
+                minVolume: '500 шт',
+                leadTime: '21-28 дней',
+                keywords: ['ударостойкий', 'стекло', 'защита', 'окно', 'щиток', 'премиум', 'дорогой', 'улица']
+            },
+            {
+                id: 'pa',
+                name: 'PA',
+                price: '500-700 ₽/кг',
+                emoji: '🧴',
+                desc: 'Упругий, износостойкий',
+                full: 'Полиамид (Найлон)',
+                properties: [
+                    'Упругость и гибкость',
+                    'Высокая износостойкость',
+                    'Отличная прочность',
+                    'Температура: -40°C до +120°C'
+                ],
+                uses: ['Подшипники', 'Направляющие', 'Трущиеся детали', 'Детали автомобилей'],
+                minVolume: '500 шт',
+                leadTime: '14-21 день',
+                keywords: ['упругий', 'трение', 'подшипник', 'износ', 'гибкий', 'гибкость']
+            },
+            {
+                id: 'pom',
+                name: 'POM',
+                price: '600-800 ₽/кг',
+                emoji: '🧴',
+                desc: 'Жесткий, размерно стабильный',
+                full: 'Ацеталь (Делрин)',
+                properties: [
+                    'Высокая жесткость',
+                    'Размерная стабильность',
+                    'Низкое трение',
+                    'Температура: -40°C до +90°C'
+                ],
+                uses: ['Механические детали', 'Эталоны размеров', 'Подвижные узлы', 'Технические изделия'],
+                minVolume: '100 шт',
+                leadTime: '10-14 дней',
+                keywords: ['жесткий', 'размер', 'механика', 'деталь', 'трение', 'точность']
+            },
+            {
+                id: 'pe',
+                name: 'PE',
+                price: '150-300 ₽/кг',
+                emoji: '🧴',
+                desc: 'Мягкий, гибкий, дешевый',
+                full: 'Полиэтилен',
+                properties: [
+                    'Мягкость и гибкость',
+                    'Водостойкость',
+                    'Дешевизна',
+                    'Температура: -20°C до +60°C'
+                ],
+                uses: ['Пленки', 'Пакеты', 'Гибкие трубы', 'Упаковка'],
+                minVolume: '100 м',
+                leadTime: '5-7 дней',
+                keywords: ['мягкий', 'гибкий', 'дешевый', 'пленка', 'упаковка', 'пакет', 'самый дешевый']
+            }
+        ];
+
+        let selectedMaterial = null;
+        let searchQuery = '';
+
+        function renderMaterials(items) {
+            const grid = document.getElementById('materialsGrid');
+            const empty = document.getElementById('emptyState');
+
+            if (items.length === 0) {
+                grid.style.display = 'none';
+                empty.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            empty.style.display = 'none';
+
+            grid.innerHTML = items.map(m => `
+                <div class="material-card" onclick="openModal('${m.id}')">
+                    <div class="material-image">${m.emoji}</div>
+                    <div class="material-info">
+                        <div class="material-name">${m.name}</div>
+                        <div class="material-price">${m.price}</div>
+                        <div class="material-desc">${m.desc}</div>
+                        <button class="material-btn" onclick="event.stopPropagation(); openModal('${m.id}')">
+                            📋 Подробнее
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function handleSearch() {
+            searchQuery = document.getElementById('searchInput').value.toLowerCase();
+
+            if (!searchQuery) {
+                renderMaterials(materials);
+                showAISuggestions();
+                return;
+            }
+
+            const filtered = materials.filter(m => {
+                const matches = m.keywords.some(k => k.includes(searchQuery)) ||
+                                m.name.toLowerCase().includes(searchQuery) ||
+                                m.full.toLowerCase().includes(searchQuery) ||
+                                m.uses.some(u => u.toLowerCase().includes(searchQuery));
+                return matches;
+            });
+
+            renderMaterials(filtered);
+        }
+
+        function showAISuggestions() {
+            const suggestions = [
+                '🏔️ Для улицы?',
+                '🍽️ Пищевой?',
+                '💪 Ударостойкий?',
+                '💰 Дешевый?',
+                '🔬 Высокотемпературный?'
+            ];
+
+            const suggestionsDiv = document.getElementById('aiSuggestions');
+            suggestionsDiv.innerHTML = suggestions.map(s =>
+                `<button class="suggestion" onclick="document.getElementById('searchInput').value = '${s.slice(2)}'; handleSearch();">${s}</button>`
+            ).join('');
+            suggestionsDiv.classList.add('active');
+        }
+
+        function openModal(id) {
+            const material = materials.find(m => m.id === id);
+            if (!material) return;
+
+            selectedMaterial = material;
+
+            document.getElementById('modalTitle').textContent = `${material.emoji} ${material.name}`;
+
+            const body = `
+                <div class="modal-section">
+                    <div class="modal-section-title">О материале</div>
+                    <div class="modal-text">${material.full}</div>
+                    <div class="specs">
+                        <div class="spec">
+                            <div class="spec-label">Цена</div>
+                            <div class="spec-value">${material.price}</div>
+                        </div>
+                        <div class="spec">
+                            <div class="spec-label">Минимум</div>
+                            <div class="spec-value">${material.minVolume}</div>
+                        </div>
+                        <div class="spec">
+                            <div class="spec-label">Сроки</div>
+                            <div class="spec-value">${material.leadTime}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">Свойства</div>
+                    ${material.properties.map(p => `<div class="modal-text">✓ ${p}</div>`).join('')}
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">Применение</div>
+                    <div class="modal-text">${material.uses.join(', ')}</div>
+                </div>
+            `;
+
+            document.getElementById('modalBody').innerHTML = body;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal(event) {
+            if (event && event.target.id !== 'modal') return;
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function selectMaterial() {
+            if (!selectedMaterial) return;
+            // In real app, would navigate to order creation with this material selected
+            alert(`✅ Материал ${selectedMaterial.name} выбран!\n\nВ реальном приложении откроется форма заявки с этим материалом.`);
+            closeModal();
+        }
+
+        // Initialize
+        renderMaterials(materials);
+        showAISuggestions();
+    </script>
+</body>
+</html>

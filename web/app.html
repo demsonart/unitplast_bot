@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>UNITPLAST - Пластиковые изделия</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        :root {
+            --primary: #1f2937;
+            --secondary: #374151;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f3f4f6;
+            --text: #111827;
+            --text-secondary: #6b7280;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+            background: var(--light);
+            color: var(--text);
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #374151 100%);
+            color: white;
+            padding: 24px 20px;
+            padding-top: max(24px, env(safe-area-inset-top));
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-logo {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-greeting {
+            font-size: 14px;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        /* CONTENT */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* QUICK ACTIONS */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .quick-button {
+            background: white;
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+        }
+
+        .quick-button:active {
+            transform: scale(0.98);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-color: var(--accent);
+        }
+
+        .quick-button-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .quick-button-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* SECTIONS */
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary);
+            padding: 0 4px;
+        }
+
+        /* GLASS CARDS */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:active {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .glass-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .glass-card-title-icon {
+            font-size: 20px;
+        }
+
+        .glass-card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* PRODUCTION MODULES */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+        }
+
+        .module-card:active {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+            border-color: var(--accent);
+        }
+
+        .module-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .module-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* NAVIGATION */
+        .nav-tabs {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--light);
+            display: flex;
+            justify-content: space-around;
+            padding-bottom: env(safe-area-inset-bottom);
+            z-index: 200;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 24px;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+        }
+
+        .nav-tab.active {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        /* SCREENS */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* CATALOG */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .product-image {
+            background: linear-gradient(135deg, var(--accent), #60a5fa);
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+        }
+
+        .product-info {
+            padding: 12px;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .product-price {
+            font-size: 13px;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 480px) {
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-logo">🏭 UNITPLAST</div>
+            <div class="header-greeting">Здравствуйте, найдите то, что нужно</div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+            <!-- HOME SCREEN -->
+            <div id="home" class="screen active">
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="quick-button" onclick="openScreen('order')">
+                        <div class="quick-button-icon">📝</div>
+                        <div class="quick-button-text">Новая заявка</div>
+                    </button>
+                    <button class="quick-button" onclick="openScreen('kp')">
+                        <div class="quick-button-icon">💰</div>
+                        <div class="quick-button-text">Получить КП</div>
+                    </button>
+                </div>
+
+                <!-- Production Modules -->
+                <div class="section">
+                    <div class="section-title">📦 Направления</div>
+                    <div class="module-grid">
+                        <div class="module-card" onclick="openModule('plastics')">
+                            <div class="module-icon">🏭</div>
+                            <div class="module-name">Литье пластмасс</div>
+                        </div>
+                        <div class="module-card" onclick="openModule('furniture')">
+                            <div class="module-icon">🪑</div>
+                            <div class="module-name">Мебель</div>
+                        </div>
+                        <div class="module-card" onclick="openModule('metal')">
+                            <div class="module-icon">⚙️</div>
+                            <div class="module-name">Металл</div>
+                        </div>
+                        <div class="module-card" onclick="openModule('packaging')">
+                            <div class="module-icon">📦</div>
+                            <div class="module-name">Упаковка</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Info -->
+                <div class="section">
+                    <div class="section-title">💡 Основное</div>
+                    <div class="glass-card" onclick="openScreen('catalog')">
+                        <div class="glass-card-title">
+                            <span class="glass-card-title-icon">📦</span>
+                            Каталог продукции
+                        </div>
+                        <div class="glass-card-desc">7 материалов, 100+ изделий</div>
+                    </div>
+                    <div class="glass-card" onclick="openScreen('ai')">
+                        <div class="glass-card-title">
+                            <span class="glass-card-title-icon">🤖</span>
+                            AI Консультант
+                        </div>
+                        <div class="glass-card-desc">Спросите о материалах и производстве</div>
+                    </div>
+                    <div class="glass-card" onclick="openScreen('orders')">
+                        <div class="glass-card-title">
+                            <span class="glass-card-title-icon">📋</span>
+                            Мои заказы
+                        </div>
+                        <div class="glass-card-desc">История и статусы</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATALOG SCREEN -->
+            <div id="catalog" class="screen">
+                <div style="margin-bottom: 20px;">
+                    <button onclick="openScreen('home')" style="background: none; border: none; font-size: 20px; cursor: pointer;">⬅️</button>
+                </div>
+                <h2 style="margin-bottom: 20px;">📦 Каталог</h2>
+                <div class="catalog-grid">
+                    <div class="product-card">
+                        <div class="product-image">🧴</div>
+                        <div class="product-info">
+                            <div class="product-name">ABS</div>
+                            <div class="product-price">500 ₽/шт</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🧴</div>
+                        <div class="product-info">
+                            <div class="product-name">PP</div>
+                            <div class="product-price">400 ₽/шт</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🧴</div>
+                        <div class="product-info">
+                            <div class="product-name">PET</div>
+                            <div class="product-price">600 ₽/шт</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🧴</div>
+                        <div class="product-info">
+                            <div class="product-name">PVC</div>
+                            <div class="product-price">450 ₽/шт</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🧴</div>
+                        <div class="product-info">
+                            <div class="product-name">PS</div>
+                            <div class="product-price">350 ₽/шт</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🧴</div>
+                        <div class="product-info">
+                            <div class="product-name">PC</div>
+                            <div class="product-price">800 ₽/шт</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI CONSULTANT SCREEN -->
+            <div id="ai" class="screen">
+                <div style="margin-bottom: 20px;">
+                    <button onclick="openScreen('home')" style="background: none; border: none; font-size: 20px; cursor: pointer;">⬅️</button>
+                </div>
+                <h2 style="margin-bottom: 20px;">🤖 AI Консультант</h2>
+                <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                    <input type="text" placeholder="Спросите о материалах, производстве, аналогах..."
+                           style="width: 100%; padding: 12px; border: 2px solid var(--light); border-radius: 8px; font-size: 14px;">
+                    <p style="margin-top: 16px; font-size: 13px; color: var(--text-secondary);">
+                        Вы можете спросить:
+                    </p>
+                    <div style="margin-top: 12px;">
+                        <div style="padding: 8px; background: var(--light); border-radius: 6px; margin-bottom: 8px; font-size: 13px;">
+                            • Какой пластик выбрать для улицы?
+                        </div>
+                        <div style="padding: 8px; background: var(--light); border-radius: 6px; margin-bottom: 8px; font-size: 13px;">
+                            • Чем PP отличается от PE?
+                        </div>
+                        <div style="padding: 8px; background: var(--light); border-radius: 6px; font-size: 13px;">
+                            • Какая минимальная партия?
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW ORDER SCREEN -->
+            <div id="order" class="screen">
+                <div style="margin-bottom: 20px;">
+                    <button onclick="openScreen('home')" style="background: none; border: none; font-size: 20px; cursor: pointer;">⬅️</button>
+                </div>
+                <h2 style="margin-bottom: 20px;">📝 Новая заявка</h2>
+                <form onsubmit="submitOrder(event)" style="background: white; padding: 20px; border-radius: 12px;">
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Материал</label>
+                        <select style="width: 100%; padding: 12px; border: 2px solid var(--light); border-radius: 8px;">
+                            <option>ABS</option>
+                            <option>PP</option>
+                            <option>PET</option>
+                            <option>PVC</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Количество</label>
+                        <input type="number" placeholder="100" style="width: 100%; padding: 12px; border: 2px solid var(--light); border-radius: 8px;">
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Размеры</label>
+                        <input type="text" placeholder="100x50x25 мм" style="width: 100%; padding: 12px; border: 2px solid var(--light); border-radius: 8px;">
+                    </div>
+                    <button type="submit" style="width: 100%; padding: 14px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        Отправить заявку
+                    </button>
+                </form>
+            </div>
+
+            <!-- GET KP SCREEN -->
+            <div id="kp" class="screen">
+                <div style="margin-bottom: 20px;">
+                    <button onclick="openScreen('home')" style="background: none; border: none; font-size: 20px; cursor: pointer;">⬅️</button>
+                </div>
+                <h2 style="margin-bottom: 20px;">💰 Получить КП</h2>
+                <div style="background: var(--light); padding: 40px 20px; border-radius: 12px; text-align: center;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+                    <p style="font-size: 14px; margin-bottom: 20px;">
+                        Заполните детали вашего заказа, и мы подготовим коммерческое предложение
+                    </p>
+                    <button onclick="openScreen('order')" style="padding: 12px 24px; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        Создать заявку
+                    </button>
+                </div>
+            </div>
+
+            <!-- ORDERS SCREEN -->
+            <div id="orders" class="screen">
+                <div style="margin-bottom: 20px;">
+                    <button onclick="openScreen('home')" style="background: none; border: none; font-size: 20px; cursor: pointer;">⬅️</button>
+                </div>
+                <h2 style="margin-bottom: 20px;">📋 Мои заказы</h2>
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <p>Пока заказов нет</p>
+                    <p style="font-size: 13px; margin-top: 8px;">Создайте вашу первую заявку</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- NAVIGATION -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="openScreen('home')">🏠</button>
+            <button class="nav-tab" onclick="openScreen('catalog')">📦</button>
+            <button class="nav-tab" onclick="openScreen('ai')">🤖</button>
+            <button class="nav-tab" onclick="openScreen('orders')">📋</button>
+            <button class="nav-tab" onclick="openScreen('help')">❓</button>
+        </div>
+    </div>
+
+    <script>
+        function openScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            // Show selected screen
+            document.getElementById(screenId).classList.add('active');
+            // Update nav
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            event.target.closest('.nav-tab')?.classList.add('active');
+        }
+
+        function openModule(module) {
+            openScreen('catalog');
+        }
+
+        function submitOrder(event) {
+            event.preventDefault();
+            alert('✅ Заявка отправлена!');
+            openScreen('home');
+        }
+    </script>
+</body>
+</html>
