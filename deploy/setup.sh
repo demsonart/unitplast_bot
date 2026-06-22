@@ -10,7 +10,7 @@ set -e
 DOMAIN="unitgroup.tech"
 APP_DIR="/var/www/unitplast_bot"
 APP_USER="unitplast"
-PYTHON_VERSION="python3.11"
+PYTHON_VERSION="python3"
 
 echo "╔════════════════════════════════════════════════════════════════╗"
 echo "║  UNITPLAST BOT - VPS Setup                                   ║"
@@ -33,9 +33,9 @@ echo ""
 echo "📦 Step 2: Install Dependencies"
 apt-get install -y \
     git \
-    python3.11 \
-    python3.11-venv \
-    python3.11-dev \
+    python3 \
+    python3-venv \
+    python3-dev \
     build-essential \
     nginx \
     certbot \
