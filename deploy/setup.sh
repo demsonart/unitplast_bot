@@ -8,7 +8,7 @@
 set -e
 
 DOMAIN="unitgroup.tech"
-APP_DIR="/opt/unitplast_bot"
+APP_DIR="/var/www/unitplast_bot"
 APP_USER="unitplast"
 PYTHON_VERSION="python3.13"
 
@@ -63,7 +63,8 @@ if [ -d "$APP_DIR" ]; then
     sudo -u $APP_USER git pull origin main 2>/dev/null || true
 else
     echo "   Cloning repository..."
-    cd /opt
+    mkdir -p /var/www
+    cd /var/www
     git clone https://github.com/demsonart/unitplast_bot.git unitplast_bot
     cd $APP_DIR
 fi
@@ -88,8 +89,8 @@ fi
 
 echo ""
 echo "📁 Step 6: Create Log and Data Directories"
-mkdir -p /app/data /var/log/unitplast
-chown -R $APP_USER:$APP_USER /app/data /var/log/unitplast
+mkdir -p /var/www/unitplast_bot/data /var/log/unitplast
+chown -R $APP_USER:$APP_USER /var/www/unitplast_bot/data /var/log/unitplast
 echo "   ✅ Directories created"
 
 echo ""
