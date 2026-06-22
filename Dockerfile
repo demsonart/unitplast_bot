@@ -11,4 +11,5 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["python", "app.py"]
+# Start unified Flask + Telegram Bot server
+CMD ["python", "run.py"]

@@ -42,6 +42,9 @@ COMPANY_LEGAL_NAME = os.getenv("COMPANY_LEGAL_NAME", "ИП Демин И. А.")
 PROCESS_ONLY_UNSEEN = os.getenv("PROCESS_ONLY_UNSEEN", "false").lower() in ("true", "1", "yes")
 EMAIL_CHECK_INTERVAL = int(os.getenv("EMAIL_CHECK_INTERVAL", "300"))
 
+# Server
+PORT = int(os.getenv("PORT", 5000))
+
 # Validation
 def validate_config():
     required = [
