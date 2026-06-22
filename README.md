@@ -2,7 +2,25 @@
 
 **Production-ready CRM system for plastic manufacturing company**
 
-**Status:** 🟢 PRODUCTION READY
+**Status:** 🟢 PRODUCTION READY (MVP Recovery - June 2026)
+
+---
+
+## 🚀 Quick Start
+
+**New to this project?** Start here:
+
+1. **Local Setup:** See [SETUP.md](SETUP.md)
+   ```bash
+   cp .env.example .env
+   python -m venv venv && source venv/bin/activate
+   pip install -r requirements.txt
+   python run.py
+   ```
+
+2. **Deploy to Railway:** See [DEPLOYMENT.md](DEPLOYMENT.md)
+
+3. **Architecture Details:** Continue reading below
 
 ---
 
@@ -258,6 +276,44 @@ Optional: AI-powered parsing ($0.001-0.01 per request, disabled by default)
 
 ---
 
+## 📁 Project Structure (Updated)
+
+```
+unitplast_bot/
+├── app/
+│   ├── app.py                    ← Flask server (landing + mini app)
+│   ├── main.py                   ← Telegram bot + email polling
+│   ├── telegram_final_bot.py      ← Production Telegram bot
+│   ├── config.py                 ← Configuration (env variables)
+│   ├── database.py               ← SQLite operations
+│   ├── email_reader.py           ← Yandex IMAP client
+│   ├── ai_parser.py              ← Order detection
+│   ├── image_export.py           ← PNG generation
+│   ├── legacy/                   ← Old bot versions (archived)
+│   └── ... other modules
+│
+├── web/
+│   ├── index.html                ← Landing page
+│   ├── unitplast_app.html        ← Telegram Mini App
+│   └── legacy/                   ← Old web apps (archived)
+│
+├── run.py                        ← Main entry point (Flask + Bot)
+├── app.py                        ← Alternative Flask-only entry point
+├── Dockerfile                    ← Docker configuration
+├── railway.json                  ← Railway deployment config
+├── requirements.txt              ← Python dependencies
+├── .env.example                  ← Configuration template
+├── .gitignore                    ← Git ignore rules
+├── SETUP.md                      ← Local setup guide
+└── DEPLOYMENT.md                 ← Railway deployment guide
+```
+
+## 🔄 Entry Points
+
+- **`python run.py`** — Recommended: Flask + Telegram Bot + Email polling
+- **`python app.py`** — Flask-only mode (for web testing)
+- **`python app/main.py`** — Telegram bot only (with email polling)
+
 ## 🤝 Support
 
 📧 id@unitplast.ru
@@ -265,6 +321,6 @@ Optional: AI-powered parsing ($0.001-0.01 per request, disabled by default)
 
 ---
 
-**Version:** 2.0
-**Date:** June 17, 2026
-**Status:** 🟢 PRODUCTION READY
+**Version:** 2.0 (MVP Recovery)
+**Last Updated:** June 22, 2026
+**Status:** 🟢 MVP READY FOR DEPLOYMENT

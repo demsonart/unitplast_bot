@@ -1,0 +1,25 @@
+[Unit]
+Description=UNITPLAST Bot - Flask + Telegram Bot Service
+After=network.target
+
+[Service]
+Type=notify
+User=unitplast
+WorkingDirectory=/opt/unitplast_bot
+Environment="PATH=/opt/unitplast_bot/venv/bin"
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=/opt/unitplast_bot/venv/bin/gunicorn \
+    --workers 4 \
+    --worker-class sync \
+    --bind 127.0.0.1:5000 \
+    --timeout 120 \
+    --access-logfile /var/log/unitplast/access.log \
+    --error-logfile /var/log/unitplast/error.log \
+    app.app:create_app()
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
