@@ -5,10 +5,10 @@ After=network.target
 [Service]
 Type=notify
 User=unitplast
-WorkingDirectory=/opt/unitplast_bot
-Environment="PATH=/opt/unitplast_bot/venv/bin"
+WorkingDirectory=/var/www/unitplast_bot
+Environment="PATH=/var/www/unitplast_bot/venv/bin"
 Environment="PYTHONUNBUFFERED=1"
-ExecStart=/opt/unitplast_bot/venv/bin/gunicorn \
+ExecStart=/var/www/unitplast_bot/venv/bin/gunicorn \
     --workers 4 \
     --worker-class sync \
     --bind 127.0.0.1:5000 \

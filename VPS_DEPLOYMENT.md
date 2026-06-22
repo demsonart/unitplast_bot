@@ -62,16 +62,16 @@ sudo -u unitplast mkdir -p /home/unitplast/.ssh
 cd /opt
 git clone https://github.com/demsonart/unitplast_bot.git unitplast_bot
 cd unitplast_bot
-sudo chown -R unitplast:unitplast /opt/unitplast_bot
+sudo chown -R unitplast:unitplast /var/www/unitplast_bot
 ```
 
 ### 1.5 Create Python Virtual Environment
 
 ```bash
-sudo -u unitplast python3.13 -m venv /opt/unitplast_bot/venv
-sudo -u unitplast /opt/unitplast_bot/venv/bin/pip install --upgrade pip
-sudo -u unitplast /opt/unitplast_bot/venv/bin/pip install -r requirements.txt
-sudo -u unitplast /opt/unitplast_bot/venv/bin/pip install gunicorn
+sudo -u unitplast python3.13 -m venv /var/www/unitplast_bot/venv
+sudo -u unitplast /var/www/unitplast_bot/venv/bin/pip install --upgrade pip
+sudo -u unitplast /var/www/unitplast_bot/venv/bin/pip install -r requirements.txt
+sudo -u unitplast /var/www/unitplast_bot/venv/bin/pip install gunicorn
 ```
 
 ### 1.6 Create Data and Log Directories
@@ -88,10 +88,10 @@ sudo chown -R unitplast:unitplast /app/data /var/log/unitplast
 ### 2.1 Create Production .env File
 
 ```bash
-sudo -u unitplast cp .env.production.example /opt/unitplast_bot/.env.production
+sudo -u unitplast cp .env.production.example /var/www/unitplast_bot/.env.production
 
 # Edit with your production values:
-sudo -u unitplast nano /opt/unitplast_bot/.env.production
+sudo -u unitplast nano /var/www/unitplast_bot/.env.production
 ```
 
 **REQUIRED VALUES TO SET:**
@@ -106,7 +106,7 @@ COMPANY_SITE=unitgroup.tech
 ### 2.2 Setup systemd Service
 
 ```bash
-sudo cp /opt/unitplast_bot/deploy/unitplast.service /etc/systemd/system/
+sudo cp /var/www/unitplast_bot/deploy/unitplast.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable unitplast
 ```
@@ -115,7 +115,7 @@ sudo systemctl enable unitplast
 
 ```bash
 # Test without starting permanently
-sudo -u unitplast /opt/unitplast_bot/venv/bin/gunicorn \
+sudo -u unitplast /var/www/unitplast_bot/venv/bin/gunicorn \
     --workers 2 \
     --bind 127.0.0.1:5000 \
     app.app:create_app()
@@ -129,7 +129,7 @@ sudo -u unitplast /opt/unitplast_bot/venv/bin/gunicorn \
 ### 3.1 Copy Nginx Configuration
 
 ```bash
-sudo cp /opt/unitplast_bot/deploy/unitgroup.tech.conf /etc/nginx/sites-available/
+sudo cp /var/www/unitplast_bot/deploy/unitgroup.tech.conf /etc/nginx/sites-available/
 sudo ln -s /etc/nginx/sites-available/unitgroup.tech.conf /etc/nginx/sites-enabled/
 ```
 
@@ -254,7 +254,7 @@ sudo systemctl list-timers | grep cert
 ### 7.1 Pull Latest Code
 
 ```bash
-cd /opt/unitplast_bot
+cd /var/www/unitplast_bot
 sudo -u unitplast git fetch origin
 sudo -u unitplast git pull origin main
 ```
@@ -262,7 +262,7 @@ sudo -u unitplast git pull origin main
 ### 7.2 Update Dependencies
 
 ```bash
-sudo -u unitplast /opt/unitplast_bot/venv/bin/pip install -r requirements.txt
+sudo -u unitplast /var/www/unitplast_bot/venv/bin/pip install -r requirements.txt
 ```
 
 ### 7.3 Restart Application
@@ -283,8 +283,8 @@ sudo systemctl status unitplast
 sudo journalctl -u unitplast -n 50
 
 # Check gunicorn directly
-cd /opt/unitplast_bot
-/opt/unitplast_bot/venv/bin/gunicorn --workers 1 --bind 127.0.0.1:5000 app.app:create_app()
+cd /var/www/unitplast_bot
+/var/www/unitplast_bot/venv/bin/gunicorn --workers 1 --bind 127.0.0.1:5000 app.app:create_app()
 ```
 
 ### Nginx 502 Bad Gateway
