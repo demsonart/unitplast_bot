@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNITPLAST — Мини приложение</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-0: #04060c;
+            --bg-1: #070b14;
+            --bg-2: #0b1019;
+            --panel: #0e1422;
+            --text-0: #f3f5f9;
+            --text-1: #aab2c5;
+            --blue: #2e6bf2;
+            --blue-dark: #2060d0;
+            --gold: #ffa500;
+            --silver: #c0c0c0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background: var(--bg-0);
+            color: var(--text-0);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .app-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--bg-0);
+        }
+
+        /* HEADER */
+        .app-header {
+            background: linear-gradient(135deg, rgba(46, 107, 242, 0.15), rgba(139, 109, 242, 0.08));
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(46, 107, 242, 0.1);
+            gap: 12px;
+        }
+
+        .app-header button {
+            background: none;
+            border: none;
+            color: var(--text-0);
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .app-header h2 {
+            flex: 1;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* CONTENT */
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+
+        /* SECTIONS */
+        .section {
+            padding: 20px 16px;
+            border-bottom: 1px solid rgba(46, 107, 242, 0.05);
+        }
+
+        .section h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        /* HERO STAT CARD */
+        .stat-card {
+            background: linear-gradient(135deg, rgba(46, 107, 242, 0.1), rgba(139, 109, 242, 0.05));
+            border: 1px solid rgba(46, 107, 242, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .stat-card .amount {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f3f5f9, #aab2c5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .label {
+            color: var(--text-1);
+            font-size: 13px;
+        }
+
+        /* TIER SYSTEM */
+        .tier-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .tier-card {
+            background: rgba(46, 107, 242, 0.08);
+            border: 2px solid rgba(46, 107, 242, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tier-card.active {
+            border-color: var(--blue);
+            background: rgba(46, 107, 242, 0.15);
+        }
+
+        .tier-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--blue);
+        }
+
+        .tier-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .tier-name {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .tier-desc {
+            font-size: 11px;
+            color: var(--text-1);
+        }
+
+        /* PRODUCT GRID */
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .product-card {
+            background: rgba(46, 107, 242, 0.08);
+            border: 1px solid rgba(46, 107, 242, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            border-color: var(--blue);
+            background: rgba(46, 107, 242, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .product-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .product-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .product-desc {
+            font-size: 11px;
+            color: var(--text-1);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--blue);
+        }
+
+        /* TARIFF OPTIONS */
+        .tariff-option {
+            background: rgba(46, 107, 242, 0.08);
+            border: 1px solid rgba(46, 107, 242, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tariff-option:hover {
+            border-color: var(--blue);
+            background: rgba(46, 107, 242, 0.12);
+        }
+
+        .tariff-option.selected {
+            background: rgba(46, 107, 242, 0.15);
+            border-color: var(--blue);
+        }
+
+        .tariff-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .tariff-info p {
+            font-size: 11px;
+            color: var(--text-1);
+        }
+
+        .tariff-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--blue);
+        }
+
+        .radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--blue);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .radio.checked::after {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: var(--blue);
+            border-radius: 50%;
+            margin: 4px;
+        }
+
+        /* ACTION ITEMS */
+        .action-item {
+            background: rgba(46, 107, 242, 0.08);
+            border: 1px solid rgba(46, 107, 242, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-item:hover {
+            border-color: var(--blue);
+            background: rgba(46, 107, 242, 0.12);
+            transform: translateX(2px);
+        }
+
+        .action-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .action-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .action-info p {
+            font-size: 12px;
+            color: var(--text-1);
+            line-height: 1.4;
+        }
+
+        .action-arrow {
+            font-size: 20px;
+            color: var(--text-1);
+        }
+
+        /* BUTTONS */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: var(--blue-dark);
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background: rgba(46, 107, 242, 0.1);
+            color: var(--blue);
+            border: 2px solid var(--blue);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(46, 107, 242, 0.15);
+        }
+
+        /* FOOTER NAV */
+        .app-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--bg-1);
+            border-top: 1px solid rgba(46, 107, 242, 0.1);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            height: 60px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            cursor: pointer;
+            color: var(--text-1);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--blue);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        /* UTILITIES */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-16 {
+            margin-top: 16px;
+        }
+
+        .mb-16 {
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .app-wrapper {
+                max-width: 100%;
+                height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- HEADER -->
+        <div class="app-header">
+            <button onclick="window.history.back()">←</button>
+            <h2 id="page-title">Уровни партнера</h2>
+            <button onclick="alert('Меню')">⚙️</button>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="app-content">
+            <!-- PAGE: PARTNER LEVELS -->
+            <div id="page-levels" class="page">
+                <div class="section">
+                    <div class="stat-card">
+                        <div class="amount">16 350 ₽</div>
+                        <div class="label">Ваш текущий баланс бонусов</div>
+                    </div>
+
+                    <h3>Уровни партнера</h3>
+                    <div class="tier-container">
+                        <div class="tier-card active">
+                            <div class="tier-icon">🥈</div>
+                            <div class="tier-name">Silver</div>
+                            <div class="tier-desc">0-500 ₽</div>
+                        </div>
+                        <div class="tier-card">
+                            <div class="tier-icon">🥉</div>
+                            <div class="tier-name">Bronze</div>
+                            <div class="tier-desc">500-5000 ₽</div>
+                        </div>
+                        <div class="tier-card">
+                            <div class="tier-icon">🏆</div>
+                            <div class="tier-name">Gold</div>
+                            <div class="tier-desc">5000+ ₽</div>
+                        </div>
+                    </div>
+
+                    <h3>Преимущества на уровне Silver</h3>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <div class="product-icon">⚡</div>
+                            <div class="product-name">+15% AП бонусов</div>
+                            <div class="product-desc">Повышенная ставка</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">🎁</div>
+                            <div class="product-name">Приоритетная поддержка</div>
+                            <div class="product-desc">Быстрый ответ</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">📊</div>
+                            <div class="product-name">Статистика по продажам</div>
+                            <div class="product-desc">Личная аналитика</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">💎</div>
+                            <div class="product-name">Эксклюзивные предложения</div>
+                            <div class="product-desc">Специальные условия</div>
+                        </div>
+                    </div>
+
+                    <button class="btn mt-16" onclick="showPage('bonus-market')">Перейти в маркет</button>
+                </div>
+            </div>
+
+            <!-- PAGE: BONUS MARKET -->
+            <div id="page-bonus-market" class="page" style="display: none;">
+                <div class="section">
+                    <div class="stat-card">
+                        <div class="amount">16 350 ₽</div>
+                        <div class="label">Ваш баланс бонусов</div>
+                    </div>
+
+                    <h3>Каталог товаров</h3>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <div class="product-icon">🤖</div>
+                            <div class="product-name">AI Копирайтер</div>
+                            <div class="product-desc">Месячная подписка</div>
+                            <div class="product-price">500 ₽</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">📱</div>
+                            <div class="product-name">Пакет лидов</div>
+                            <div class="product-desc">50 качественных контактов</div>
+                            <div class="product-price">1 500 ₽</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">📚</div>
+                            <div class="product-name">Курс "Продажи"</div>
+                            <div class="product-desc">Полное руководство</div>
+                            <div class="product-price">990 ₽</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">📈</div>
+                            <div class="product-name">Консультация эксперта</div>
+                            <div class="product-desc">60 минут</div>
+                            <div class="product-price">2 500 ₽</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">🏢</div>
+                            <div class="product-name">Наемный 1C консультант</div>
+                            <div class="product-desc">Помощь по 1С</div>
+                            <div class="product-price">3 000 ₽</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">🏗️</div>
+                            <div class="product-name">Разработка интеграции</div>
+                            <div class="product-desc">Кастомная разработка</div>
+                            <div class="product-price">5 000 ₽</div>
+                        </div>
+                    </div>
+
+                    <button class="btn mt-16" onclick="showPage('levels')">← Назад</button>
+                </div>
+            </div>
+
+            <!-- PAGE: TARIFF SELECTION -->
+            <div id="page-tariff" class="page" style="display: none;">
+                <div class="section">
+                    <div class="stat-card">
+                        <div class="amount">16 350 ₽</div>
+                        <div class="label">Доступные бонусы</div>
+                    </div>
+
+                    <h3>Выберите тариф</h3>
+                    <div class="tariff-option">
+                        <div class="tariff-info">
+                            <h4>Start</h4>
+                            <p>Базовые возможности</p>
+                        </div>
+                        <div class="tariff-price">2 890 ₽</div>
+                    </div>
+                    <div class="tariff-option">
+                        <div class="tariff-info">
+                            <h4>Pro</h4>
+                            <p>Расширенная аналитика</p>
+                        </div>
+                        <div class="tariff-price">9 900 ₽</div>
+                    </div>
+                    <div class="tariff-option">
+                        <div class="tariff-info">
+                            <h4>Factory</h4>
+                            <p>Полный функционал</p>
+                        </div>
+                        <div class="tariff-price">49 000 ₽</div>
+                    </div>
+
+                    <h3 class="mt-16">Способ оплаты</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                        <div class="product-card text-center">
+                            <div style="font-size: 24px; margin-bottom: 8px;">💳</div>
+                            <div style="font-size: 12px;">Бонусами</div>
+                            <div style="font-size: 10px; color: var(--text-1);">100%</div>
+                        </div>
+                        <div class="product-card text-center">
+                            <div style="font-size: 24px; margin-bottom: 8px;">💰</div>
+                            <div style="font-size: 12px;">Частично</div>
+                            <div style="font-size: 10px; color: var(--text-1);">50%+</div>
+                        </div>
+                        <div class="product-card text-center">
+                            <div style="font-size: 24px; margin-bottom: 8px;">💵</div>
+                            <div style="font-size: 12px;">Наличные</div>
+                            <div style="font-size: 10px; color: var(--text-1);">100%</div>
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="alert('Тариф оплачен!')">Оплатить Pro</button>
+                    <button class="btn btn-secondary mt-16" onclick="showPage('levels')">← Назад</button>
+                </div>
+            </div>
+
+            <!-- PAGE: ACTIONS & MOTIVATION -->
+            <div id="page-actions" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Акции и мотивация</h3>
+
+                    <div class="action-item">
+                        <div class="action-icon">🤖</div>
+                        <div class="action-info">
+                            <h4>Оплатите тариф бонусами</h4>
+                            <p>Получите дополнительный месяц платформы</p>
+                        </div>
+                        <div class="action-arrow">›</div>
+                    </div>
+
+                    <div class="action-item">
+                        <div class="action-icon">🎁</div>
+                        <div class="action-info">
+                            <h4>Подарите подписку</h4>
+                            <p>Отправьте бонусы другому партнеру</p>
+                        </div>
+                        <div class="action-arrow">›</div>
+                    </div>
+
+                    <div class="action-item">
+                        <div class="action-icon">🔄</div>
+                        <div class="action-info">
+                            <h4>Подключите автовывод</h4>
+                            <p>Автоматически выводите бонусы на счет</p>
+                        </div>
+                        <div class="action-arrow">›</div>
+                    </div>
+
+                    <div class="action-item">
+                        <div class="action-icon">📢</div>
+                        <div class="action-info">
+                            <h4>Пригласите 2 партнеров</h4>
+                            <p>Получите 500 бонусов за каждого</p>
+                        </div>
+                        <div class="action-arrow">›</div>
+                    </div>
+
+                    <button class="btn mt-16" onclick="showPage('levels')">← Назад</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER NAV -->
+        <div class="app-footer">
+            <a class="nav-item active" onclick="showPage('levels')">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Профиль</div>
+            </a>
+            <a class="nav-item" onclick="showPage('bonus-market')">
+                <div class="nav-icon">🛍️</div>
+                <div class="nav-label">Маркет</div>
+            </a>
+            <a class="nav-item" onclick="showPage('tariff')">
+                <div class="nav-icon">💎</div>
+                <div class="nav-label">Тарифы</div>
+            </a>
+            <a class="nav-item" onclick="showPage('actions')">
+                <div class="nav-icon">🎯</div>
+                <div class="nav-label">Акции</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.style.display = 'none';
+            });
+
+            // Show selected page
+            const page = document.getElementById('page-' + pageId);
+            if (page) {
+                page.style.display = 'block';
+            }
+
+            // Update header title
+            const titles = {
+                'levels': 'Уровни партнера',
+                'bonus-market': 'Бонусный маркет',
+                'tariff': 'Выбор тарифа',
+                'actions': 'Акции и мотивация'
+            };
+            document.getElementById('page-title').textContent = titles[pageId] || 'UNITPLAST';
+
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-item').classList.add('active');
+
+            // Scroll to top
+            document.querySelector('.app-content').scrollTop = 0;
+        }
+
+        // Mobile detection
+        if (!/mobile|android|iphone/i.test(navigator.userAgent.toLowerCase())) {
+            console.log('💡 Совет: откройте на мобильном для лучшего опыта');
+        }
+    </script>
+</body>
+</html>

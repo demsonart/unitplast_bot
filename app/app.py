@@ -22,7 +22,7 @@ def create_app():
     # Paths
     LANDING_PATH = WEB_DIR / "landing.html"  # New landing page with 9 sections
     INDEX_PATH = WEB_DIR / "index.html"  # Old landing (fallback)
-    MINIAPP_PATH = WEB_DIR / "unitplast_app.html"
+    MINIAPP_PATH = WEB_DIR / "miniapp.html"  # Mini app with loyalty system
 
     # ═══════════════════════════════════════════════════════════════════════════════
     # ROUTES
