@@ -579,11 +579,20 @@
                 <div class="section">
                     <h3>Акции и мотивация</h3>
 
-                    <div class="action-item">
+                    <div class="action-item" onclick="showPage('integration-guide')">
                         <div class="action-icon">🤖</div>
                         <div class="action-info">
-                            <h4>Оплатите тариф бонусами</h4>
-                            <p>Получите дополнительный месяц платформы</p>
+                            <h4>Интеграция с 1С</h4>
+                            <p>Пошаговая инструкция</p>
+                        </div>
+                        <div class="action-arrow">›</div>
+                    </div>
+
+                    <div class="action-item" onclick="showPage('calculator')">
+                        <div class="action-icon">📐</div>
+                        <div class="action-info">
+                            <h4>Калькулятор расчетов</h4>
+                            <p>Параметры и стоимость</p>
                         </div>
                         <div class="action-arrow">›</div>
                     </div>
@@ -606,16 +615,132 @@
                         <div class="action-arrow">›</div>
                     </div>
 
-                    <div class="action-item">
-                        <div class="action-icon">📢</div>
-                        <div class="action-info">
-                            <h4>Пригласите 2 партнеров</h4>
-                            <p>Получите 500 бонусов за каждого</p>
-                        </div>
-                        <div class="action-arrow">›</div>
+                    <button class="btn mt-16" onclick="showPage('levels')">← Назад</button>
+                </div>
+            </div>
+
+            <!-- PAGE: INTEGRATION GUIDE -->
+            <div id="page-integration-guide" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Интеграция с 1С</h3>
+
+                    <!-- Step Indicator -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 24px; justify-content: center;">
+                        <div style="width: 24px; height: 24px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; font-weight: 700;">1</div>
+                        <div style="width: 24px; height: 24px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; font-weight: 700;">2</div>
+                        <div style="width: 24px; height: 24px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; font-weight: 700;">3</div>
+                        <div style="width: 24px; height: 24px; background: rgba(46, 107, 242, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-1); font-weight: 700;">4</div>
                     </div>
 
-                    <button class="btn mt-16" onclick="showPage('levels')">← Назад</button>
+                    <div class="product-card" style="margin-bottom: 16px;">
+                        <div style="background: var(--blue); color: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; font-weight: 700;">Шаг 3 — Синхронизация с 1С</div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <input type="checkbox" checked style="width: 20px; height: 20px; cursor: pointer;">
+                                <span>Подключение модуля</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <input type="checkbox" checked style="width: 20px; height: 20px; cursor: pointer;">
+                                <span>Выберите данные для синхронизации</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <input type="checkbox" style="width: 20px; height: 20px; cursor: pointer;">
+                                <span>Проверка синхронизации</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 style="margin-bottom: 12px; font-weight: 600;">Команды и доступы</h4>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <div class="product-icon">👤</div>
+                            <div class="product-name">Администратор</div>
+                            <div class="product-desc">Полный доступ</div>
+                            <div style="font-size: 12px; color: var(--blue); margin-top: 8px;">Готово</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">👨‍💼</div>
+                            <div class="product-name">Менеджер</div>
+                            <div class="product-desc">Чтение/запись</div>
+                            <div style="font-size: 12px; color: var(--blue); margin-top: 8px;">Готово</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">👷</div>
+                            <div class="product-name">Бухгалтер</div>
+                            <div class="product-desc">Только чтение</div>
+                            <div style="font-size: 12px; color: var(--text-1); margin-top: 8px;">Ожидается</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">📊</div>
+                            <div class="product-name">Аналитик</div>
+                            <div class="product-desc">Отчеты</div>
+                            <div style="font-size: 12px; color: var(--text-1); margin-top: 8px;">Отключено</div>
+                        </div>
+                    </div>
+
+                    <button class="btn mt-16" onclick="showPage('actions')">← Назад</button>
+                </div>
+            </div>
+
+            <!-- PAGE: CALCULATOR -->
+            <div id="page-calculator" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Калькулятор расчетов</h3>
+
+                    <div class="product-card" style="margin-bottom: 16px;">
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Высота, мм</label>
+                            <input type="number" value="800" style="width: 100%; padding: 8px; background: rgba(46, 107, 242, 0.1); border: 1px solid var(--blue); border-radius: 6px; color: var(--text-0);">
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Ширина, мм</label>
+                            <input type="number" value="1200" style="width: 100%; padding: 8px; background: rgba(46, 107, 242, 0.1); border: 1px solid var(--blue); border-radius: 6px; color: var(--text-0);">
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Глубина, мм</label>
+                            <input type="number" value="600" style="width: 100%; padding: 8px; background: rgba(46, 107, 242, 0.1); border: 1px solid var(--blue); border-radius: 6px; color: var(--text-0);">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Материал</label>
+                            <select style="width: 100%; padding: 8px; background: rgba(46, 107, 242, 0.1); border: 1px solid var(--blue); border-radius: 6px; color: var(--text-0);">
+                                <option>ABS пластик</option>
+                                <option>PP пластик</option>
+                                <option>PVC пластик</option>
+                                <option>Алюминий</option>
+                                <option>Сталь</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="amount">2 450 ₽</div>
+                        <div class="label">Примерная стоимость за единицу</div>
+                    </div>
+
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <div class="product-icon">📦</div>
+                            <div class="product-name">Объем</div>
+                            <div class="product-desc">0.576 м³</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">⚖️</div>
+                            <div class="product-name">Вес</div>
+                            <div class="product-desc">2.3 кг</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">📅</div>
+                            <div class="product-name">Срок</div>
+                            <div class="product-desc">5-7 дней</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-icon">🏭</div>
+                            <div class="product-name">Завод</div>
+                            <div class="product-desc">UNITPLAST</div>
+                        </div>
+                    </div>
+
+                    <button class="btn mt-16" onclick="showPage('actions')">← Назад</button>
                 </div>
             </div>
         </div>
@@ -659,15 +784,19 @@
                 'levels': 'Уровни партнера',
                 'bonus-market': 'Бонусный маркет',
                 'tariff': 'Выбор тарифа',
-                'actions': 'Акции и мотивация'
+                'actions': 'Акции и мотивация',
+                'integration-guide': 'Интеграция с 1С',
+                'calculator': 'Калькулятор расчетов'
             };
             document.getElementById('page-title').textContent = titles[pageId] || 'UNITPLAST';
 
-            // Update nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.target.closest('.nav-item').classList.add('active');
+            // Update nav items only if clicked from nav bar
+            if (event && event.target.closest('.nav-item')) {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                event.target.closest('.nav-item').classList.add('active');
+            }
 
             // Scroll to top
             document.querySelector('.app-content').scrollTop = 0;
