@@ -475,47 +475,132 @@
                         <div class="label">Ваш баланс бонусов</div>
                     </div>
 
+                    <!-- SEARCH & FILTERS -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <input type="text" placeholder="Поиск товаров..." style="flex: 1; padding: 8px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid var(--blue); border-radius: 6px; color: var(--text-0); font-size: 13px;">
+                        <button style="padding: 8px 12px; background: var(--blue); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">🔍</button>
+                    </div>
+
+                    <!-- CATEGORIES -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 8px;">
+                        <button class="category-btn active" onclick="filterCategory('all')">Все</button>
+                        <button class="category-btn" onclick="filterCategory('ai')">🤖 AI</button>
+                        <button class="category-btn" onclick="filterCategory('leads')">📱 Лиды</button>
+                        <button class="category-btn" onclick="filterCategory('courses')">📚 Курсы</button>
+                        <button class="category-btn" onclick="filterCategory('services')">📈 Услуги</button>
+                        <button class="category-btn" onclick="filterCategory('dev')">🏗️ Разработка</button>
+                    </div>
+
+                    <style>
+                        .category-btn {
+                            padding: 6px 12px;
+                            background: rgba(46, 107, 242, 0.08);
+                            border: 1px solid rgba(46, 107, 242, 0.2);
+                            color: var(--text-1);
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-size: 12px;
+                            font-weight: 600;
+                            white-space: nowrap;
+                            transition: all 0.3s ease;
+                        }
+                        .category-btn.active {
+                            background: var(--blue);
+                            color: white;
+                            border-color: var(--blue);
+                        }
+                        .category-btn:hover {
+                            border-color: var(--blue);
+                        }
+                    </style>
+
                     <h3>Каталог товаров</h3>
                     <div class="product-grid">
-                        <div class="product-card">
+                        <div class="product-card" onclick="showProductDetail('ai-copywriter')">
                             <div class="product-icon">🤖</div>
                             <div class="product-name">AI Копирайтер</div>
                             <div class="product-desc">Месячная подписка</div>
                             <div class="product-price">500 ₽</div>
+                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px;">⭐⭐⭐⭐⭐ (24)</div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card" onclick="showProductDetail('leads-pack')">
                             <div class="product-icon">📱</div>
                             <div class="product-name">Пакет лидов</div>
                             <div class="product-desc">50 качественных контактов</div>
                             <div class="product-price">1 500 ₽</div>
+                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px;">⭐⭐⭐⭐ (18)</div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card" onclick="showProductDetail('sales-course')">
                             <div class="product-icon">📚</div>
                             <div class="product-name">Курс "Продажи"</div>
                             <div class="product-desc">Полное руководство</div>
                             <div class="product-price">990 ₽</div>
+                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px;">⭐⭐⭐⭐⭐ (42)</div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card" onclick="showProductDetail('expert-consult')">
                             <div class="product-icon">📈</div>
                             <div class="product-name">Консультация эксперта</div>
                             <div class="product-desc">60 минут</div>
                             <div class="product-price">2 500 ₽</div>
+                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px;">⭐⭐⭐⭐⭐ (35)</div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card" onclick="showProductDetail('1c-consultant')">
                             <div class="product-icon">🏢</div>
-                            <div class="product-name">Наемный 1C консультант</div>
+                            <div class="product-name">1C консультант</div>
                             <div class="product-desc">Помощь по 1С</div>
                             <div class="product-price">3 000 ₽</div>
+                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px;">⭐⭐⭐⭐ (12)</div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card" onclick="showProductDetail('integration-dev')">
                             <div class="product-icon">🏗️</div>
                             <div class="product-name">Разработка интеграции</div>
                             <div class="product-desc">Кастомная разработка</div>
                             <div class="product-price">5 000 ₽</div>
+                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px;">⭐⭐⭐⭐⭐ (8)</div>
                         </div>
                     </div>
 
-                    <button class="btn mt-16" onclick="showPage('levels')">← Назад</button>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn" style="flex: 1;" onclick="showPage('market-cart')">🛒 Корзина (0)</button>
+                        <button class="btn" style="flex: 1;" onclick="showPage('levels')">← Назад</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: PRODUCT DETAIL -->
+            <div id="page-product-detail" class="page" style="display: none;">
+                <div class="section">
+                    <div id="product-detail-content" style=""></div>
+                    <button class="btn mt-16" onclick="showPage('bonus-market')">← Вернуться в каталог</button>
+                </div>
+            </div>
+
+            <!-- PAGE: MARKET CART -->
+            <div id="page-market-cart" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Корзина товаров</h3>
+
+                    <div id="cart-items" style="margin-bottom: 16px;">
+                        <div class="product-card" style="display: flex; align-items: center; gap: 12px; justify-content: space-between;">
+                            <div style="flex: 1;">
+                                <div class="product-name">AI Копирайтер</div>
+                                <div class="product-desc">500 ₽</div>
+                            </div>
+                            <button style="background: #ff6b6b; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px;">✕</button>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="label">Итого к оплате:</div>
+                        <div class="amount">500 ₽</div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn" style="flex: 1;">💳 Оплатить бонусами</button>
+                        <button class="btn btn-secondary" style="flex: 1;">Продолжить покупки</button>
+                    </div>
+
+                    <button class="btn mt-16" onclick="showPage('bonus-market')">← Назад в каталог</button>
                 </div>
             </div>
 
@@ -767,6 +852,107 @@
     </div>
 
     <script>
+        const products = {
+            'ai-copywriter': {
+                name: 'AI Копирайтер',
+                icon: '🤖',
+                price: 500,
+                rating: '⭐⭐⭐⭐⭐ (24 отзыва)',
+                desc: 'Месячная подписка',
+                details: 'Автоматическое написание текстов для вашего бизнеса. Включает SEO оптимизацию, множество стилей и языков.'
+            },
+            'leads-pack': {
+                name: 'Пакет лидов',
+                icon: '📱',
+                price: 1500,
+                rating: '⭐⭐⭐⭐ (18 отзывов)',
+                desc: '50 качественных контактов',
+                details: 'Готовые контакты потенциальных клиентов. База проверенных компаний с телефонами и email.'
+            },
+            'sales-course': {
+                name: 'Курс "Продажи"',
+                icon: '📚',
+                price: 990,
+                rating: '⭐⭐⭐⭐⭐ (42 отзыва)',
+                desc: 'Полное руководство',
+                details: '12 часов видео обучения от экспертов. Включает тактики переговоров, закрытие сделок и управление возражениями.'
+            },
+            'expert-consult': {
+                name: 'Консультация эксперта',
+                icon: '📈',
+                price: 2500,
+                rating: '⭐⭐⭐⭐⭐ (35 отзывов)',
+                desc: '60 минут',
+                details: 'Персональная консультация с опытным специалистом. Решение любых вопросов по вашему бизнесу.'
+            },
+            '1c-consultant': {
+                name: '1C консультант',
+                icon: '🏢',
+                price: 3000,
+                rating: '⭐⭐⭐⭐ (12 отзывов)',
+                desc: 'Помощь по 1С',
+                details: 'Специалист по 1С помогает с настройкой, интеграцией и решением проблем. Включает техподдержку 1 месяц.'
+            },
+            'integration-dev': {
+                name: 'Разработка интеграции',
+                icon: '🏗️',
+                price: 5000,
+                rating: '⭐⭐⭐⭐⭐ (8 отзывов)',
+                desc: 'Кастомная разработка',
+                details: 'Разработка кастомной интеграции с вашей системой. Включает подключение API и тестирование.'
+            }
+        };
+
+        function showProductDetail(productId) {
+            const product = products[productId];
+            if (!product) return;
+
+            const html = `
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <div style="font-size: 48px; margin-bottom: 12px;">${product.icon}</div>
+                    <h3 style="margin-bottom: 8px;">${product.name}</h3>
+                    <div style="color: var(--text-1); font-size: 13px; margin-bottom: 8px;">${product.desc}</div>
+                    <div style="font-size: 12px; color: var(--blue); margin-bottom: 12px;">${product.rating}</div>
+                </div>
+
+                <div class="product-card" style="margin-bottom: 16px;">
+                    <p style="color: var(--text-1); line-height: 1.6; margin-bottom: 12px;">${product.details}</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                        <div style="background: rgba(46, 107, 242, 0.1); padding: 8px; border-radius: 6px; text-align: center;">
+                            <div style="font-size: 11px; color: var(--text-1);">Цена</div>
+                            <div style="font-size: 16px; font-weight: 700; color: var(--blue);">${product.price} ₽</div>
+                        </div>
+                        <div style="background: rgba(46, 107, 242, 0.1); padding: 8px; border-radius: 6px; text-align: center;">
+                            <div style="font-size: 11px; color: var(--text-1);">Ваш баланс</div>
+                            <div style="font-size: 16px; font-weight: 700; color: var(--blue);">16 350 ₽</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="addToCart('${productId}')">🛒 Добавить в корзину</button>
+            `;
+
+            document.getElementById('product-detail-content').innerHTML = html;
+            showPage('product-detail');
+        }
+
+        function addToCart(productId) {
+            const product = products[productId];
+            alert(`✅ "${product.name}" добавлен в корзину`);
+            showPage('market-cart');
+        }
+
+        function filterCategory(category) {
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Here you would filter products
+            alert(`Фильтр: ${category}`);
+        }
+
         function showPage(pageId) {
             // Hide all pages
             document.querySelectorAll('.page').forEach(page => {
@@ -786,7 +972,9 @@
                 'tariff': 'Выбор тарифа',
                 'actions': 'Акции и мотивация',
                 'integration-guide': 'Интеграция с 1С',
-                'calculator': 'Калькулятор расчетов'
+                'calculator': 'Калькулятор расчетов',
+                'product-detail': 'Детали товара',
+                'market-cart': 'Корзина'
             };
             document.getElementById('page-title').textContent = titles[pageId] || 'UNITPLAST';
 
