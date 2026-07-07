@@ -12,12 +12,16 @@ from datetime import datetime
 
 def create_app():
     """Create and configure Flask application"""
-    app = Flask(__name__)
+    WEB_DIR = Path(__file__).parent.parent / "web"
+
+    app = Flask(__name__,
+                static_folder=str(WEB_DIR / "assets"),
+                static_url_path="/assets")
     CORS(app)
 
     # Paths
-    WEB_DIR = Path(__file__).parent.parent / "web"
-    LANDING_PATH = WEB_DIR / "index.html"
+    LANDING_PATH = WEB_DIR / "landing.html"  # New landing page with 9 sections
+    INDEX_PATH = WEB_DIR / "index.html"  # Old landing (fallback)
     MINIAPP_PATH = WEB_DIR / "unitplast_app.html"
 
     # ═══════════════════════════════════════════════════════════════════════════════
@@ -108,6 +112,36 @@ def create_app():
                 "conversion_rate": 0.35
             }
         })
+
+    @app.route('/robots.txt')
+    def robots():
+        """SEO robots.txt"""
+        try:
+            robots_path = WEB_DIR / "robots.txt"
+            with open(robots_path, 'r', encoding='utf-8') as f:
+                return f.read(), 200, {'Content-Type': 'text/plain; charset=utf-8'}
+        except FileNotFoundError:
+            return "User-agent: *\nAllow: /", 200, {'Content-Type': 'text/plain; charset=utf-8'}
+
+    @app.route('/sitemap.xml')
+    def sitemap():
+        """SEO sitemap.xml"""
+        try:
+            sitemap_path = WEB_DIR / "sitemap.xml"
+            with open(sitemap_path, 'r', encoding='utf-8') as f:
+                return f.read(), 200, {'Content-Type': 'application/xml; charset=utf-8'}
+        except FileNotFoundError:
+            return '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>', 200, {'Content-Type': 'application/xml; charset=utf-8'}
+
+    @app.route('/og-image.svg')
+    def og_image():
+        """Open Graph preview image"""
+        try:
+            og_path = WEB_DIR / "og-image.svg"
+            with open(og_path, 'r', encoding='utf-8') as f:
+                return f.read(), 200, {'Content-Type': 'image/svg+xml; charset=utf-8'}
+        except FileNotFoundError:
+            return '', 404
 
     # ═══════════════════════════════════════════════════════════════════════════════
     # ERROR HANDLERS
