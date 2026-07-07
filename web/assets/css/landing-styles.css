@@ -1,0 +1,381 @@
+/* UNITPLAST Landing Styles - Compiled from Tailwind + Design Tokens */
+
+:root {
+    --up-bg-0: #04060c;
+    --up-bg-1: #070b14;
+    --up-text-0: #f3f5f9;
+    --up-text-1: #aab2c5;
+    --up-accent: #2e6bf2;
+    --gradient-up-text: linear-gradient(135deg, #f3f5f9 0%, #aab2c5 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--up-bg-0);
+    color: var(--up-text-0);
+    font-family: 'Inter', 'Manrope', system-ui, sans-serif;
+    line-height: 1.6;
+}
+
+/* ════════════════════════════════════════════════════════════════ */
+/* HERO SECTION */
+/* ════════════════════════════════════════════════════════════════ */
+
+.hero {
+    background: linear-gradient(135deg, rgba(46, 107, 242, 0.08), rgba(139, 109, 242, 0.04));
+    padding: 120px 40px;
+}
+
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.hero-left h1 {
+    font-size: 56px;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    background: var(--gradient-up-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+}
+
+.hero-left p {
+    font-size: 18px;
+    color: var(--up-text-1);
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--up-accent);
+    color: white;
+    box-shadow: 0 10px 30px -10px rgba(46, 107, 242, 0.4);
+}
+
+.btn-primary:hover {
+    background: #2060d0;
+    transform: scale(1.03);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--up-text-0);
+    border: 2px solid var(--up-accent);
+}
+
+.btn-secondary:hover {
+    background: rgba(46, 107, 242, 0.1);
+}
+
+.hero-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-image {
+    width: 100%;
+    max-width: 500px;
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 80px 20px;
+    }
+
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .hero-left h1 {
+        font-size: 36px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+    }
+}
+
+/* ════════════════════════════════════════════════════════════════ */
+/* FEATURES SECTION */
+/* ════════════════════════════════════════════════════════════════ */
+
+.features {
+    padding: 120px 40px;
+}
+
+.features h2 {
+    font-size: 48px;
+    margin-bottom: 60px;
+    text-align: center;
+    font-weight: 800;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background: rgba(46, 107, 242, 0.05);
+    border: 1px solid rgba(46, 107, 242, 0.1);
+    border-radius: 12px;
+    padding: 32px;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    border-color: var(--up-accent);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(46, 107, 242, 0.1);
+}
+
+.feature-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+}
+
+.feature-card h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.feature-card p {
+    color: var(--up-text-1);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ════════════════════════════════════════════════════════════════ */
+/* SECTIONS - BASIC LAYOUT */
+/* ════════════════════════════════════════════════════════════════ */
+
+.commercial-offers,
+.mini-app,
+.management,
+.three-brands,
+.contacts,
+.cta-block {
+    padding: 120px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.commercial-offers h2,
+.mini-app h2,
+.management h2,
+.three-brands h2,
+.contacts h2,
+.cta-block h2 {
+    font-size: 48px;
+    margin-bottom: 24px;
+    font-weight: 800;
+}
+
+.commercial-offers p,
+.mini-app p,
+.management p,
+.three-brands p,
+.contacts p,
+.cta-block p {
+    font-size: 18px;
+    color: var(--up-text-1);
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+/* THREE BRANDS GRID */
+.brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    margin-bottom: 48px;
+}
+
+.brand-card {
+    background: rgba(46, 107, 242, 0.05);
+    border: 1px solid rgba(46, 107, 242, 0.1);
+    border-radius: 12px;
+    padding: 32px;
+}
+
+.brand-card h3 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.brand-card p {
+    color: var(--up-text-1);
+}
+
+/* CONTACTS CARDS */
+.contact-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+}
+
+.contact-card {
+    background: rgba(46, 107, 242, 0.05);
+    border: 1px solid rgba(46, 107, 242, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.contact-card h4 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.contact-card p {
+    font-size: 14px;
+    color: var(--up-text-1);
+    margin-bottom: 8px;
+}
+
+/* CTA BLOCK */
+.cta-block {
+    text-align: center;
+}
+
+.cta-block h2 {
+    font-size: 56px;
+}
+
+.btn-primary-large {
+    display: inline-block;
+    padding: 16px 48px;
+    font-size: 18px;
+    font-weight: 600;
+    background: var(--up-accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px -10px rgba(46, 107, 242, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-primary-large:hover {
+    background: #2060d0;
+    transform: scale(1.05);
+}
+
+/* ════════════════════════════════════════════════════════════════ */
+/* FOOTER */
+/* ════════════════════════════════════════════════════════════════ */
+
+footer {
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(46, 107, 242, 0.1);
+    padding: 32px 40px;
+    text-align: center;
+    color: var(--up-text-1);
+}
+
+footer p {
+    margin-bottom: 16px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: var(--up-accent);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #2060d0;
+}
+
+/* ════════════════════════════════════════════════════════════════ */
+/* RESPONSIVE */
+/* ════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .commercial-offers,
+    .mini-app,
+    .management,
+    .three-brands,
+    .contacts,
+    .cta-block {
+        padding: 80px 20px;
+    }
+
+    .commercial-offers h2,
+    .mini-app h2,
+    .management h2,
+    .three-brands h2,
+    .contacts h2,
+    .cta-block h2 {
+        font-size: 32px;
+    }
+
+    .commercial-offers p,
+    .mini-app p,
+    .management p,
+    .three-brands p,
+    .contacts p,
+    .cta-block p {
+        font-size: 16px;
+    }
+
+    .cta-block h2 {
+        font-size: 36px;
+    }
+}
