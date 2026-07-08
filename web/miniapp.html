@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNITPLAST — Мини приложение</title>
+    <title>UNITPLAST — Калькулятор расчетов</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,43 +12,18 @@
             --bg-0: #04060c;
             --bg-1: #070b14;
             --bg-2: #0b1019;
-            --panel: #0e1422;
             --text-0: #f3f5f9;
             --text-1: #aab2c5;
             --blue: #2e6bf2;
             --blue-dark: #2060d0;
-            --gold: #ffa500;
-            --silver: #c0c0c0;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; }
+        body { background: var(--bg-0); color: var(--text-0); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-        }
+        .app-wrapper { display: flex; flex-direction: column; min-height: 100vh; max-width: 500px; margin: 0 auto; background: var(--bg-0); }
 
-        body {
-            background: var(--bg-0);
-            color: var(--text-0);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
-
-        .app-wrapper {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            max-width: 500px;
-            margin: 0 auto;
-            background: var(--bg-0);
-        }
-
-        /* HEADER */
         .app-header {
             background: linear-gradient(135deg, rgba(46, 107, 242, 0.15), rgba(139, 109, 242, 0.08));
             padding: 12px 16px;
@@ -59,41 +34,14 @@
             gap: 12px;
         }
 
-        .app-header button {
-            background: none;
-            border: none;
-            color: var(--text-0);
-            cursor: pointer;
-            font-size: 20px;
-        }
+        .app-header button { background: none; border: none; color: var(--text-0); cursor: pointer; font-size: 20px; }
+        .app-header h2 { flex: 1; text-align: center; font-size: 16px; font-weight: 600; }
 
-        .app-header h2 {
-            flex: 1;
-            text-align: center;
-            font-size: 16px;
-            font-weight: 600;
-        }
+        .app-content { flex: 1; overflow-y: auto; padding-bottom: 80px; }
 
-        /* CONTENT */
-        .app-content {
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 80px;
-        }
+        .section { padding: 20px 16px; border-bottom: 1px solid rgba(46, 107, 242, 0.05); }
+        .section h3 { font-size: 18px; margin-bottom: 16px; font-weight: 700; }
 
-        /* SECTIONS */
-        .section {
-            padding: 20px 16px;
-            border-bottom: 1px solid rgba(46, 107, 242, 0.05);
-        }
-
-        .section h3 {
-            font-size: 18px;
-            margin-bottom: 16px;
-            font-weight: 700;
-        }
-
-        /* HERO STAT CARD */
         .stat-card {
             background: linear-gradient(135deg, rgba(46, 107, 242, 0.1), rgba(139, 109, 242, 0.05));
             border: 1px solid rgba(46, 107, 242, 0.2);
@@ -113,20 +61,16 @@
             margin-bottom: 8px;
         }
 
-        .stat-card .label {
-            color: var(--text-1);
-            font-size: 13px;
-        }
+        .stat-card .label { color: var(--text-1); font-size: 13px; }
 
-        /* TIER SYSTEM */
-        .tier-container {
+        .type-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 12px;
             margin-bottom: 16px;
         }
 
-        .tier-card {
+        .type-card {
             background: rgba(46, 107, 242, 0.08);
             border: 2px solid rgba(46, 107, 242, 0.15);
             border-radius: 12px;
@@ -136,34 +80,48 @@
             transition: all 0.3s ease;
         }
 
-        .tier-card.active {
+        .type-card.active {
             border-color: var(--blue);
             background: rgba(46, 107, 242, 0.15);
         }
 
-        .tier-card:hover {
+        .type-card:hover {
             transform: translateY(-2px);
             border-color: var(--blue);
         }
 
-        .tier-icon {
-            font-size: 32px;
+        .type-icon { font-size: 32px; margin-bottom: 8px; }
+        .type-name { font-size: 13px; font-weight: 700; }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
             margin-bottom: 8px;
+            color: var(--text-0);
         }
 
-        .tier-name {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 4px;
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(46, 107, 242, 0.1);
+            border: 1px solid rgba(46, 107, 242, 0.3);
+            border-radius: 6px;
+            color: var(--text-0);
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
         }
 
-        .tier-desc {
-            font-size: 11px;
+        .input-group input::placeholder {
             color: var(--text-1);
         }
 
-        /* PRODUCT GRID */
-        .product-grid {
+        .input-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
@@ -174,6 +132,7 @@
             border: 1px solid rgba(46, 107, 242, 0.15);
             border-radius: 12px;
             padding: 16px;
+            margin-bottom: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -184,161 +143,28 @@
             transform: translateY(-2px);
         }
 
-        .product-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
+        .product-icon { font-size: 32px; margin-bottom: 8px; }
+        .product-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+        .product-desc { font-size: 11px; color: var(--text-1); margin-bottom: 8px; line-height: 1.4; }
+        .product-price { font-size: 14px; font-weight: 700; color: var(--blue); }
 
-        .product-name {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .product-desc {
-            font-size: 11px;
-            color: var(--text-1);
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-
-        .product-price {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--blue);
-        }
-
-        /* TARIFF OPTIONS */
-        .tariff-option {
-            background: rgba(46, 107, 242, 0.08);
-            border: 1px solid rgba(46, 107, 242, 0.15);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .tariff-option:hover {
-            border-color: var(--blue);
-            background: rgba(46, 107, 242, 0.12);
-        }
-
-        .tariff-option.selected {
-            background: rgba(46, 107, 242, 0.15);
-            border-color: var(--blue);
-        }
-
-        .tariff-info h4 {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .tariff-info p {
-            font-size: 11px;
-            color: var(--text-1);
-        }
-
-        .tariff-price {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--blue);
-        }
-
-        .radio {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--blue);
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .radio.checked::after {
-            content: '';
-            display: block;
-            width: 8px;
-            height: 8px;
-            background: var(--blue);
-            border-radius: 50%;
-            margin: 4px;
-        }
-
-        /* ACTION ITEMS */
-        .action-item {
-            background: rgba(46, 107, 242, 0.08);
-            border: 1px solid rgba(46, 107, 242, 0.15);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .action-item:hover {
-            border-color: var(--blue);
-            background: rgba(46, 107, 242, 0.12);
-            transform: translateX(2px);
-        }
-
-        .action-icon {
-            font-size: 32px;
-            flex-shrink: 0;
-        }
-
-        .action-info h4 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .action-info p {
-            font-size: 12px;
-            color: var(--text-1);
-            line-height: 1.4;
-        }
-
-        .action-arrow {
-            font-size: 20px;
-            color: var(--text-1);
-        }
-
-        /* BUTTONS */
         .btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px 16px;
             background: var(--blue);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .btn:hover {
-            background: var(--blue-dark);
-            transform: scale(1.02);
-        }
+        .btn:hover { background: var(--blue-dark); transform: scale(1.02); }
+        .btn-secondary { background: rgba(46, 107, 242, 0.1); color: var(--blue); border: 2px solid var(--blue); }
+        .btn-secondary:hover { background: rgba(46, 107, 242, 0.15); }
 
-        .btn-secondary {
-            background: rgba(46, 107, 242, 0.1);
-            color: var(--blue);
-            border: 2px solid var(--blue);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(46, 107, 242, 0.15);
-        }
-
-        /* FOOTER NAV */
         .app-footer {
             position: fixed;
             bottom: 0;
@@ -366,38 +192,49 @@
             text-decoration: none;
         }
 
-        .nav-item:hover,
-        .nav-item.active {
-            color: var(--blue);
+        .nav-item:hover, .nav-item.active { color: var(--blue); }
+        .nav-icon { font-size: 20px; }
+        .nav-label { font-size: 10px; font-weight: 500; }
+
+        .mt-16 { margin-top: 16px; }
+        .mb-16 { margin-bottom: 16px; }
+        .text-center { text-align: center; }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(46, 107, 242, 0.05);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 13px;
         }
 
-        .nav-icon {
-            font-size: 20px;
+        .result-label { color: var(--text-1); }
+        .result-value { font-weight: 700; color: var(--blue); }
+
+        .history-item {
+            background: rgba(46, 107, 242, 0.08);
+            border: 1px solid rgba(46, 107, 242, 0.15);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
         }
 
-        .nav-label {
-            font-size: 10px;
-            font-weight: 500;
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
         }
 
-        /* UTILITIES */
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-16 {
-            margin-top: 16px;
-        }
-
-        .mb-16 {
-            margin-bottom: 16px;
-        }
+        .history-name { font-weight: 600; font-size: 13px; }
+        .history-date { font-size: 11px; color: var(--text-1); }
+        .history-price { font-weight: 700; color: var(--blue); }
 
         @media (max-width: 600px) {
-            .app-wrapper {
-                max-width: 100%;
-                height: 100vh;
-            }
+            .app-wrapper { max-width: 100%; height: 100vh; }
         }
     </style>
 </head>
@@ -406,579 +243,322 @@
         <!-- HEADER -->
         <div class="app-header">
             <button onclick="window.history.back()">←</button>
-            <h2 id="page-title">Уровни партнера</h2>
+            <h2 id="page-title">Расчет стоимости</h2>
             <button onclick="alert('Меню')">⚙️</button>
         </div>
 
         <!-- CONTENT -->
         <div class="app-content">
-            <!-- PAGE: PARTNER LEVELS -->
-            <div id="page-levels" class="page">
-                <div class="section">
-                    <div class="stat-card">
-                        <div class="amount">16 350 ₽</div>
-                        <div class="label">Ваш текущий баланс бонусов</div>
-                    </div>
-
-                    <h3>Уровни партнера</h3>
-                    <div class="tier-container">
-                        <div class="tier-card active">
-                            <div class="tier-icon">🥈</div>
-                            <div class="tier-name">Silver</div>
-                            <div class="tier-desc">0-500 ₽</div>
-                        </div>
-                        <div class="tier-card">
-                            <div class="tier-icon">🥉</div>
-                            <div class="tier-name">Bronze</div>
-                            <div class="tier-desc">500-5000 ₽</div>
-                        </div>
-                        <div class="tier-card">
-                            <div class="tier-icon">🏆</div>
-                            <div class="tier-name">Gold</div>
-                            <div class="tier-desc">5000+ ₽</div>
-                        </div>
-                    </div>
-
-                    <h3>Преимущества на уровне Silver</h3>
-                    <div class="product-grid">
-                        <div class="product-card">
-                            <div class="product-icon">⚡</div>
-                            <div class="product-name">+15% AП бонусов</div>
-                            <div class="product-desc">Повышенная ставка</div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-icon">🎁</div>
-                            <div class="product-name">Приоритетная поддержка</div>
-                            <div class="product-desc">Быстрый ответ</div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-icon">📊</div>
-                            <div class="product-name">Статистика по продажам</div>
-                            <div class="product-desc">Личная аналитика</div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-icon">💎</div>
-                            <div class="product-name">Эксклюзивные предложения</div>
-                            <div class="product-desc">Специальные условия</div>
-                        </div>
-                    </div>
-
-                    <button class="btn mt-16" onclick="showPage('bonus-market')">Перейти в маркет</button>
-                </div>
-            </div>
-
-            <!-- PAGE: BONUS MARKET -->
-            <div id="page-bonus-market" class="page" style="display: none;">
-                <div class="section">
-                    <div class="stat-card">
-                        <div class="amount">16 350 ₽</div>
-                        <div class="label">Ваш баланс бонусов</div>
-                    </div>
-
-                    <!-- SEARCH & FILTERS -->
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <input type="text" placeholder="Поиск товаров..." style="flex: 1; padding: 8px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid var(--blue); border-radius: 6px; color: var(--text-0); font-size: 13px;">
-                        <button style="padding: 8px 12px; background: var(--blue); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">🔍</button>
-                    </div>
-
-                    <!-- CATEGORIES -->
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 8px;">
-                        <button class="category-btn active" onclick="filterCategory('all')">Все</button>
-                        <button class="category-btn" onclick="filterCategory('ai')">🤖 AI</button>
-                        <button class="category-btn" onclick="filterCategory('leads')">📱 Лиды</button>
-                        <button class="category-btn" onclick="filterCategory('courses')">📚 Курсы</button>
-                        <button class="category-btn" onclick="filterCategory('services')">📈 Услуги</button>
-                        <button class="category-btn" onclick="filterCategory('dev')">🏗️ Разработка</button>
-                    </div>
-
-                    <style>
-                        .category-btn {
-                            padding: 6px 12px;
-                            background: rgba(46, 107, 242, 0.08);
-                            border: 1px solid rgba(46, 107, 242, 0.2);
-                            color: var(--text-1);
-                            border-radius: 6px;
-                            cursor: pointer;
-                            font-size: 12px;
-                            font-weight: 600;
-                            white-space: nowrap;
-                            transition: all 0.3s ease;
-                        }
-                        .category-btn.active {
-                            background: var(--blue);
-                            color: white;
-                            border-color: var(--blue);
-                        }
-                        .category-btn:hover {
-                            border-color: var(--blue);
-                        }
-                    </style>
-
-                    <h3>Каталог товаров</h3>
-                    <div class="product-grid">
-                        <div class="product-card" onclick="showProductDetail('ai-copywriter')">
-                            <div class="product-icon">🤖</div>
-                            <div class="product-name">AI Копирайтер</div>
-                            <div class="product-desc">Месячная подписка</div>
-                            <div class="product-price">500 ₽</div>
-                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px;">⭐⭐⭐⭐⭐ (24)</div>
-                        </div>
-                        <div class="product-card" onclick="showProductDetail('leads-pack')">
-                            <div class="product-icon">📱</div>
-                            <div class="product-name">Пакет лидов</div>
-                            <div class="product-desc">50 качественных контактов</div>
-                            <div class="product-price">1 500 ₽</div>
-                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px;">⭐⭐⭐⭐ (18)</div>
-                        </div>
-                        <div class="product-card" onclick="showProductDetail('sales-course')">
-                            <div class="product-icon">📚</div>
-                            <div class="product-name">Курс "Продажи"</div>
-                            <div class="product-desc">Полное руководство</div>
-                            <div class="product-price">990 ₽</div>
-                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px;">⭐⭐⭐⭐⭐ (42)</div>
-                        </div>
-                        <div class="product-card" onclick="showProductDetail('expert-consult')">
-                            <div class="product-icon">📈</div>
-                            <div class="product-name">Консультация эксперта</div>
-                            <div class="product-desc">60 минут</div>
-                            <div class="product-price">2 500 ₽</div>
-                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px;">⭐⭐⭐⭐⭐ (35)</div>
-                        </div>
-                        <div class="product-card" onclick="showProductDetail('1c-consultant')">
-                            <div class="product-icon">🏢</div>
-                            <div class="product-name">1C консультант</div>
-                            <div class="product-desc">Помощь по 1С</div>
-                            <div class="product-price">3 000 ₽</div>
-                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px;">⭐⭐⭐⭐ (12)</div>
-                        </div>
-                        <div class="product-card" onclick="showProductDetail('integration-dev')">
-                            <div class="product-icon">🏗️</div>
-                            <div class="product-name">Разработка интеграции</div>
-                            <div class="product-desc">Кастомная разработка</div>
-                            <div class="product-price">5 000 ₽</div>
-                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px;">⭐⭐⭐⭐⭐ (8)</div>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; gap: 12px; margin-top: 16px;">
-                        <button class="btn" style="flex: 1;" onclick="showPage('market-cart')">🛒 Корзина (0)</button>
-                        <button class="btn" style="flex: 1;" onclick="showPage('levels')">← Назад</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAGE: PRODUCT DETAIL -->
-            <div id="page-product-detail" class="page" style="display: none;">
-                <div class="section">
-                    <div id="product-detail-content" style=""></div>
-                    <button class="btn mt-16" onclick="showPage('bonus-market')">← Вернуться в каталог</button>
-                </div>
-            </div>
-
-            <!-- PAGE: MARKET CART -->
-            <div id="page-market-cart" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Корзина товаров</h3>
-
-                    <div id="cart-items" style="margin-bottom: 16px;">
-                        <div class="product-card" style="display: flex; align-items: center; gap: 12px; justify-content: space-between;">
-                            <div style="flex: 1;">
-                                <div class="product-name">AI Копирайтер</div>
-                                <div class="product-desc">500 ₽</div>
-                            </div>
-                            <button style="background: #ff6b6b; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px;">✕</button>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="label">Итого к оплате:</div>
-                        <div class="amount">500 ₽</div>
-                    </div>
-
-                    <div style="display: flex; gap: 12px; margin-top: 16px;">
-                        <button class="btn" style="flex: 1;">💳 Оплатить бонусами</button>
-                        <button class="btn btn-secondary" style="flex: 1;">Продолжить покупки</button>
-                    </div>
-
-                    <button class="btn mt-16" onclick="showPage('bonus-market')">← Назад в каталог</button>
-                </div>
-            </div>
-
-            <!-- PAGE: TARIFF SELECTION -->
-            <div id="page-tariff" class="page" style="display: none;">
-                <div class="section">
-                    <div class="stat-card">
-                        <div class="amount">16 350 ₽</div>
-                        <div class="label">Доступные бонусы</div>
-                    </div>
-
-                    <h3>Выберите тариф</h3>
-                    <div class="tariff-option">
-                        <div class="tariff-info">
-                            <h4>Start</h4>
-                            <p>Базовые возможности</p>
-                        </div>
-                        <div class="tariff-price">2 890 ₽</div>
-                    </div>
-                    <div class="tariff-option">
-                        <div class="tariff-info">
-                            <h4>Pro</h4>
-                            <p>Расширенная аналитика</p>
-                        </div>
-                        <div class="tariff-price">9 900 ₽</div>
-                    </div>
-                    <div class="tariff-option">
-                        <div class="tariff-info">
-                            <h4>Factory</h4>
-                            <p>Полный функционал</p>
-                        </div>
-                        <div class="tariff-price">49 000 ₽</div>
-                    </div>
-
-                    <h3 class="mt-16">Способ оплаты</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                        <div class="product-card text-center">
-                            <div style="font-size: 24px; margin-bottom: 8px;">💳</div>
-                            <div style="font-size: 12px;">Бонусами</div>
-                            <div style="font-size: 10px; color: var(--text-1);">100%</div>
-                        </div>
-                        <div class="product-card text-center">
-                            <div style="font-size: 24px; margin-bottom: 8px;">💰</div>
-                            <div style="font-size: 12px;">Частично</div>
-                            <div style="font-size: 10px; color: var(--text-1);">50%+</div>
-                        </div>
-                        <div class="product-card text-center">
-                            <div style="font-size: 24px; margin-bottom: 8px;">💵</div>
-                            <div style="font-size: 12px;">Наличные</div>
-                            <div style="font-size: 10px; color: var(--text-1);">100%</div>
-                        </div>
-                    </div>
-
-                    <button class="btn" onclick="alert('Тариф оплачен!')">Оплатить Pro</button>
-                    <button class="btn btn-secondary mt-16" onclick="showPage('levels')">← Назад</button>
-                </div>
-            </div>
-
-            <!-- PAGE: ACTIONS & MOTIVATION -->
-            <div id="page-actions" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Акции и мотивация</h3>
-
-                    <div class="action-item" onclick="showPage('integration-guide')">
-                        <div class="action-icon">🤖</div>
-                        <div class="action-info">
-                            <h4>Интеграция с 1С</h4>
-                            <p>Пошаговая инструкция</p>
-                        </div>
-                        <div class="action-arrow">›</div>
-                    </div>
-
-                    <div class="action-item" onclick="showPage('calculator')">
-                        <div class="action-icon">📐</div>
-                        <div class="action-info">
-                            <h4>Калькулятор расчетов</h4>
-                            <p>Параметры и стоимость</p>
-                        </div>
-                        <div class="action-arrow">›</div>
-                    </div>
-
-                    <div class="action-item">
-                        <div class="action-icon">🎁</div>
-                        <div class="action-info">
-                            <h4>Подарите подписку</h4>
-                            <p>Отправьте бонусы другому партнеру</p>
-                        </div>
-                        <div class="action-arrow">›</div>
-                    </div>
-
-                    <div class="action-item">
-                        <div class="action-icon">🔄</div>
-                        <div class="action-info">
-                            <h4>Подключите автовывод</h4>
-                            <p>Автоматически выводите бонусы на счет</p>
-                        </div>
-                        <div class="action-arrow">›</div>
-                    </div>
-
-                    <button class="btn mt-16" onclick="showPage('levels')">← Назад</button>
-                </div>
-            </div>
-
-            <!-- PAGE: INTEGRATION GUIDE -->
-            <div id="page-integration-guide" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Интеграция с 1С</h3>
-
-                    <!-- Step Indicator -->
-                    <div style="display: flex; gap: 8px; margin-bottom: 24px; justify-content: center;">
-                        <div style="width: 24px; height: 24px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; font-weight: 700;">1</div>
-                        <div style="width: 24px; height: 24px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; font-weight: 700;">2</div>
-                        <div style="width: 24px; height: 24px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; font-weight: 700;">3</div>
-                        <div style="width: 24px; height: 24px; background: rgba(46, 107, 242, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-1); font-weight: 700;">4</div>
-                    </div>
-
-                    <div class="product-card" style="margin-bottom: 16px;">
-                        <div style="background: var(--blue); color: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; font-weight: 700;">Шаг 3 — Синхронизация с 1С</div>
-                        <div style="margin-bottom: 12px;">
-                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                <input type="checkbox" checked style="width: 20px; height: 20px; cursor: pointer;">
-                                <span>Подключение модуля</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                <input type="checkbox" checked style="width: 20px; height: 20px; cursor: pointer;">
-                                <span>Выберите данные для синхронизации</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                <input type="checkbox" style="width: 20px; height: 20px; cursor: pointer;">
-                                <span>Проверка синхронизации</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h4 style="margin-bottom: 12px; font-weight: 600;">Команды и доступы</h4>
-                    <div class="product-grid">
-                        <div class="product-card">
-                            <div class="product-icon">👤</div>
-                            <div class="product-name">Администратор</div>
-                            <div class="product-desc">Полный доступ</div>
-                            <div style="font-size: 12px; color: var(--blue); margin-top: 8px;">Готово</div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-icon">👨‍💼</div>
-                            <div class="product-name">Менеджер</div>
-                            <div class="product-desc">Чтение/запись</div>
-                            <div style="font-size: 12px; color: var(--blue); margin-top: 8px;">Готово</div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-icon">👷</div>
-                            <div class="product-name">Бухгалтер</div>
-                            <div class="product-desc">Только чтение</div>
-                            <div style="font-size: 12px; color: var(--text-1); margin-top: 8px;">Ожидается</div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-icon">📊</div>
-                            <div class="product-name">Аналитик</div>
-                            <div class="product-desc">Отчеты</div>
-                            <div style="font-size: 12px; color: var(--text-1); margin-top: 8px;">Отключено</div>
-                        </div>
-                    </div>
-
-                    <button class="btn mt-16" onclick="showPage('actions')">← Назад</button>
-                </div>
-            </div>
-
             <!-- PAGE: CALCULATOR -->
-            <div id="page-calculator" class="page" style="display: none;">
+            <div id="page-calculator" class="page">
                 <div class="section">
-                    <h3>Калькулятор расчетов</h3>
+                    <div class="stat-card">
+                        <div class="amount" id="total-price">0 ₽</div>
+                        <div class="label">Примерная стоимость</div>
+                    </div>
 
-                    <div class="product-card" style="margin-bottom: 16px;">
-                        <div style="margin-bottom: 12px;">
-                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Высота, мм</label>
-                            <input type="number" value="800" style="width: 100%; padding: 8px; background: rgba(46, 107, 242, 0.1); border: 1px solid var(--blue); border-radius: 6px; color: var(--text-0);">
+                    <h3>Выберите производство</h3>
+                    <div class="type-grid">
+                        <div class="type-card active" onclick="selectType('plastic')">
+                            <div class="type-icon">♻️</div>
+                            <div class="type-name">Пластик</div>
                         </div>
-                        <div style="margin-bottom: 12px;">
-                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Ширина, мм</label>
-                            <input type="number" value="1200" style="width: 100%; padding: 8px; background: rgba(46, 107, 242, 0.1); border: 1px solid var(--blue); border-radius: 6px; color: var(--text-0);">
+                        <div class="type-card" onclick="selectType('furniture')">
+                            <div class="type-icon">🪑</div>
+                            <div class="type-name">Мебель</div>
                         </div>
-                        <div style="margin-bottom: 12px;">
-                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Глубина, мм</label>
-                            <input type="number" value="600" style="width: 100%; padding: 8px; background: rgba(46, 107, 242, 0.1); border: 1px solid var(--blue); border-radius: 6px; color: var(--text-0);">
+                        <div class="type-card" onclick="selectType('metal')">
+                            <div class="type-icon">⚙️</div>
+                            <div class="type-name">Металл</div>
                         </div>
-                        <div>
-                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Материал</label>
-                            <select style="width: 100%; padding: 8px; background: rgba(46, 107, 242, 0.1); border: 1px solid var(--blue); border-radius: 6px; color: var(--text-0);">
-                                <option>ABS пластик</option>
-                                <option>PP пластик</option>
-                                <option>PVC пластик</option>
-                                <option>Алюминий</option>
-                                <option>Сталь</option>
+                    </div>
+
+                    <!-- PLASTIC INPUTS -->
+                    <div id="plastic-inputs" style="display: block;">
+                        <h3>Параметры изделия</h3>
+
+                        <div class="input-group">
+                            <label>Материал</label>
+                            <select onchange="calculatePrice()">
+                                <option>ABS пластик (350-500 ₽/кг)</option>
+                                <option>PP пластик (200-350 ₽/кг)</option>
+                                <option>PVC пластик (250-400 ₽/кг)</option>
+                                <option>PC пластик (800-1200 ₽/кг)</option>
                             </select>
                         </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Высота (мм)</label>
+                                <input type="number" value="800" onchange="calculatePrice()">
+                            </div>
+                            <div class="input-group">
+                                <label>Ширина (мм)</label>
+                                <input type="number" value="600" onchange="calculatePrice()">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Глубина (мм)</label>
+                            <input type="number" value="400" onchange="calculatePrice()">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Толщина стенки (мм)</label>
+                            <input type="number" value="2" onchange="calculatePrice()">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Количество (шт)</label>
+                            <input type="number" value="100" onchange="calculatePrice()">
+                        </div>
                     </div>
 
-                    <div class="stat-card">
-                        <div class="amount">2 450 ₽</div>
-                        <div class="label">Примерная стоимость за единицу</div>
+                    <!-- FURNITURE INPUTS -->
+                    <div id="furniture-inputs" style="display: none;">
+                        <h3>Параметры мебели</h3>
+
+                        <div class="input-group">
+                            <label>Тип мебели</label>
+                            <select onchange="calculatePrice()">
+                                <option>Шкаф (1500-3000 ₽)</option>
+                                <option>Стол (1000-2500 ₽)</option>
+                                <option>Стул (300-800 ₽)</option>
+                                <option>Полка (500-1500 ₽)</option>
+                                <option>Комод (2000-4000 ₽)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Высота (см)</label>
+                                <input type="number" value="180" onchange="calculatePrice()">
+                            </div>
+                            <div class="input-group">
+                                <label>Ширина (см)</label>
+                                <input type="number" value="80" onchange="calculatePrice()">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Материал</label>
+                            <select onchange="calculatePrice()">
+                                <option>ДСП (бюджет)</option>
+                                <option>МДФ (стандарт)</option>
+                                <option>Массив дерева (премиум)</option>
+                                <option>Пластик + дерево (комбо)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Количество (шт)</label>
+                            <input type="number" value="10" onchange="calculatePrice()">
+                        </div>
                     </div>
 
-                    <div class="product-grid">
-                        <div class="product-card">
-                            <div class="product-icon">📦</div>
-                            <div class="product-name">Объем</div>
-                            <div class="product-desc">0.576 м³</div>
+                    <!-- METAL INPUTS -->
+                    <div id="metal-inputs" style="display: none;">
+                        <h3>Параметры металлоконструкции</h3>
+
+                        <div class="input-group">
+                            <label>Тип конструкции</label>
+                            <select onchange="calculatePrice()">
+                                <option>Рама (1000-2000 ₽)</option>
+                                <option>Каркас (2000-4000 ₽)</option>
+                                <option>Стеллаж (1500-3000 ₽)</option>
+                                <option>Ограда (800-1500 ₽)</option>
+                                <option>Лестница (3000-6000 ₽)</option>
+                            </select>
                         </div>
-                        <div class="product-card">
-                            <div class="product-icon">⚖️</div>
-                            <div class="product-name">Вес</div>
-                            <div class="product-desc">2.3 кг</div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Высота (см)</label>
+                                <input type="number" value="200" onchange="calculatePrice()">
+                            </div>
+                            <div class="input-group">
+                                <label>Ширина (см)</label>
+                                <input type="number" value="100" onchange="calculatePrice()">
+                            </div>
                         </div>
-                        <div class="product-card">
-                            <div class="product-icon">📅</div>
-                            <div class="product-name">Срок</div>
-                            <div class="product-desc">5-7 дней</div>
+
+                        <div class="input-group">
+                            <label>Материал</label>
+                            <select onchange="calculatePrice()">
+                                <option>Черная сталь (400-600 ₽/кг)</option>
+                                <option>Нержавейка (800-1200 ₽/кг)</option>
+                                <option>Алюминий (600-900 ₽/кг)</option>
+                                <option>Оцинкованная сталь (500-700 ₽/кг)</option>
+                            </select>
                         </div>
-                        <div class="product-card">
-                            <div class="product-icon">🏭</div>
-                            <div class="product-name">Завод</div>
-                            <div class="product-desc">UNITPLAST</div>
+
+                        <div class="input-group">
+                            <label>Вес (кг)</label>
+                            <input type="number" value="50" onchange="calculatePrice()">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Количество (шт)</label>
+                            <input type="number" value="5" onchange="calculatePrice()">
                         </div>
                     </div>
 
-                    <button class="btn mt-16" onclick="showPage('actions')">← Назад</button>
+                    <!-- RESULTS -->
+                    <h3 style="margin-top: 24px;">Расчет</h3>
+                    <div id="results" style="margin-bottom: 16px;">
+                        <div class="result-row">
+                            <span class="result-label">Срок изготовления</span>
+                            <span class="result-value">5-7 дней</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">Доставка</span>
+                            <span class="result-value">300-500 ₽</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">Установка</span>
+                            <span class="result-value">Бесплатно</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn" onclick="saveCalculation()">💾 Сохранить расчет</button>
+                        <button class="btn btn-secondary" onclick="showPage('history')">📋 История</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: HISTORY -->
+            <div id="page-history" class="page" style="display: none;">
+                <div class="section">
+                    <h3>История расчетов</h3>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">♻️ Пластиковый контейнер</div>
+                                <div class="history-date">07.07.2026 15:32</div>
+                            </div>
+                            <div class="history-price">12 450 ₽</div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
+                            800x600x400 мм, ABS, 100 шт
+                        </div>
+                        <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px;" onclick="loadFromHistory()">Восстановить</button>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">🪑 Офисный стул</div>
+                                <div class="history-date">06.07.2026 10:15</div>
+                            </div>
+                            <div class="history-price">8 500 ₽</div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
+                            МДФ, черный, 10 шт
+                        </div>
+                        <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px;" onclick="loadFromHistory()">Восстановить</button>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">⚙️ Стальной каркас</div>
+                                <div class="history-date">05.07.2026 14:20</div>
+                            </div>
+                            <div class="history-price">25 000 ₽</div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
+                            Черная сталь, 50 кг, 5 шт
+                        </div>
+                        <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px;" onclick="loadFromHistory()">Восстановить</button>
+                    </div>
+
+                    <button class="btn mt-16" onclick="showPage('calculator')">← Назад</button>
                 </div>
             </div>
         </div>
 
         <!-- FOOTER NAV -->
         <div class="app-footer">
-            <a class="nav-item active" onclick="showPage('levels')">
+            <a class="nav-item active" onclick="showPage('calculator')">
+                <div class="nav-icon">🧮</div>
+                <div class="nav-label">Расчет</div>
+            </a>
+            <a class="nav-item" onclick="showPage('history')">
+                <div class="nav-icon">📋</div>
+                <div class="nav-label">История</div>
+            </a>
+            <a class="nav-item" onclick="alert('Справка: свяжитесь с отделом продаж')">
+                <div class="nav-icon">❓</div>
+                <div class="nav-label">Справка</div>
+            </a>
+            <a class="nav-item" onclick="alert('Профиль: Ваша компания')">
                 <div class="nav-icon">👤</div>
                 <div class="nav-label">Профиль</div>
-            </a>
-            <a class="nav-item" onclick="showPage('bonus-market')">
-                <div class="nav-icon">🛍️</div>
-                <div class="nav-label">Маркет</div>
-            </a>
-            <a class="nav-item" onclick="showPage('tariff')">
-                <div class="nav-icon">💎</div>
-                <div class="nav-label">Тарифы</div>
-            </a>
-            <a class="nav-item" onclick="showPage('actions')">
-                <div class="nav-icon">🎯</div>
-                <div class="nav-label">Акции</div>
             </a>
         </div>
     </div>
 
     <script>
-        const products = {
-            'ai-copywriter': {
-                name: 'AI Копирайтер',
-                icon: '🤖',
-                price: 500,
-                rating: '⭐⭐⭐⭐⭐ (24 отзыва)',
-                desc: 'Месячная подписка',
-                details: 'Автоматическое написание текстов для вашего бизнеса. Включает SEO оптимизацию, множество стилей и языков.'
-            },
-            'leads-pack': {
-                name: 'Пакет лидов',
-                icon: '📱',
-                price: 1500,
-                rating: '⭐⭐⭐⭐ (18 отзывов)',
-                desc: '50 качественных контактов',
-                details: 'Готовые контакты потенциальных клиентов. База проверенных компаний с телефонами и email.'
-            },
-            'sales-course': {
-                name: 'Курс "Продажи"',
-                icon: '📚',
-                price: 990,
-                rating: '⭐⭐⭐⭐⭐ (42 отзыва)',
-                desc: 'Полное руководство',
-                details: '12 часов видео обучения от экспертов. Включает тактики переговоров, закрытие сделок и управление возражениями.'
-            },
-            'expert-consult': {
-                name: 'Консультация эксперта',
-                icon: '📈',
-                price: 2500,
-                rating: '⭐⭐⭐⭐⭐ (35 отзывов)',
-                desc: '60 минут',
-                details: 'Персональная консультация с опытным специалистом. Решение любых вопросов по вашему бизнесу.'
-            },
-            '1c-consultant': {
-                name: '1C консультант',
-                icon: '🏢',
-                price: 3000,
-                rating: '⭐⭐⭐⭐ (12 отзывов)',
-                desc: 'Помощь по 1С',
-                details: 'Специалист по 1С помогает с настройкой, интеграцией и решением проблем. Включает техподдержку 1 месяц.'
-            },
-            'integration-dev': {
-                name: 'Разработка интеграции',
-                icon: '🏗️',
-                price: 5000,
-                rating: '⭐⭐⭐⭐⭐ (8 отзывов)',
-                desc: 'Кастомная разработка',
-                details: 'Разработка кастомной интеграции с вашей системой. Включает подключение API и тестирование.'
-            }
-        };
+        let currentType = 'plastic';
 
-        function showProductDetail(productId) {
-            const product = products[productId];
-            if (!product) return;
+        function selectType(type) {
+            currentType = type;
 
-            const html = `
-                <div style="text-align: center; margin-bottom: 16px;">
-                    <div style="font-size: 48px; margin-bottom: 12px;">${product.icon}</div>
-                    <h3 style="margin-bottom: 8px;">${product.name}</h3>
-                    <div style="color: var(--text-1); font-size: 13px; margin-bottom: 8px;">${product.desc}</div>
-                    <div style="font-size: 12px; color: var(--blue); margin-bottom: 12px;">${product.rating}</div>
-                </div>
-
-                <div class="product-card" style="margin-bottom: 16px;">
-                    <p style="color: var(--text-1); line-height: 1.6; margin-bottom: 12px;">${product.details}</p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
-                        <div style="background: rgba(46, 107, 242, 0.1); padding: 8px; border-radius: 6px; text-align: center;">
-                            <div style="font-size: 11px; color: var(--text-1);">Цена</div>
-                            <div style="font-size: 16px; font-weight: 700; color: var(--blue);">${product.price} ₽</div>
-                        </div>
-                        <div style="background: rgba(46, 107, 242, 0.1); padding: 8px; border-radius: 6px; text-align: center;">
-                            <div style="font-size: 11px; color: var(--text-1);">Ваш баланс</div>
-                            <div style="font-size: 16px; font-weight: 700; color: var(--blue);">16 350 ₽</div>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="btn" onclick="addToCart('${productId}')">🛒 Добавить в корзину</button>
-            `;
-
-            document.getElementById('product-detail-content').innerHTML = html;
-            showPage('product-detail');
-        }
-
-        function addToCart(productId) {
-            const product = products[productId];
-            alert(`✅ "${product.name}" добавлен в корзину`);
-            showPage('market-cart');
-        }
-
-        function filterCategory(category) {
-            // Update active button
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('active');
+            // Update active card
+            document.querySelectorAll('.type-card').forEach(card => {
+                card.classList.remove('active');
             });
-            event.target.classList.add('active');
+            event.target.closest('.type-card').classList.add('active');
 
-            // Here you would filter products
-            alert(`Фильтр: ${category}`);
+            // Show/hide inputs
+            document.getElementById('plastic-inputs').style.display = type === 'plastic' ? 'block' : 'none';
+            document.getElementById('furniture-inputs').style.display = type === 'furniture' ? 'block' : 'none';
+            document.getElementById('metal-inputs').style.display = type === 'metal' ? 'block' : 'none';
+
+            calculatePrice();
+        }
+
+        function calculatePrice() {
+            let price = 0;
+
+            if (currentType === 'plastic') {
+                price = Math.random() * 5000 + 5000; // 5000-10000 ₽
+            } else if (currentType === 'furniture') {
+                price = Math.random() * 15000 + 5000; // 5000-20000 ₽
+            } else if (currentType === 'metal') {
+                price = Math.random() * 30000 + 10000; // 10000-40000 ₽
+            }
+
+            document.getElementById('total-price').textContent = Math.round(price) + ' ₽';
+        }
+
+        function saveCalculation() {
+            alert('✅ Расчет сохранен! Можете найти его в истории.');
+        }
+
+        function loadFromHistory() {
+            alert('✅ Расчет восстановлен из истории');
+            showPage('calculator');
         }
 
         function showPage(pageId) {
-            // Hide all pages
             document.querySelectorAll('.page').forEach(page => {
                 page.style.display = 'none';
             });
 
-            // Show selected page
             const page = document.getElementById('page-' + pageId);
             if (page) {
                 page.style.display = 'block';
             }
 
-            // Update header title
             const titles = {
-                'levels': 'Уровни партнера',
-                'bonus-market': 'Бонусный маркет',
-                'tariff': 'Выбор тарифа',
-                'actions': 'Акции и мотивация',
-                'integration-guide': 'Интеграция с 1С',
-                'calculator': 'Калькулятор расчетов',
-                'product-detail': 'Детали товара',
-                'market-cart': 'Корзина'
+                'calculator': 'Расчет стоимости',
+                'history': 'История расчетов'
             };
             document.getElementById('page-title').textContent = titles[pageId] || 'UNITPLAST';
 
-            // Update nav items only if clicked from nav bar
             if (event && event.target.closest('.nav-item')) {
                 document.querySelectorAll('.nav-item').forEach(item => {
                     item.classList.remove('active');
@@ -986,13 +566,7 @@
                 event.target.closest('.nav-item').classList.add('active');
             }
 
-            // Scroll to top
             document.querySelector('.app-content').scrollTop = 0;
-        }
-
-        // Mobile detection
-        if (!/mobile|android|iphone/i.test(navigator.userAgent.toLowerCase())) {
-            console.log('💡 Совет: откройте на мобильном для лучшего опыта');
         }
     </script>
 </body>
