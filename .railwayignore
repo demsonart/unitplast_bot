@@ -1,0 +1,9 @@
+.git
+__pycache__
+*.pyc
+.env.local
+credentials.json
+.DS_Store
+node_modules
+venv
+env
