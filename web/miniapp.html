@@ -37,7 +37,7 @@
         .app-header button { background: none; border: none; color: var(--text-0); cursor: pointer; font-size: 20px; }
         .app-header h2 { flex: 1; text-align: center; font-size: 16px; font-weight: 600; }
 
-        .app-content { flex: 1; overflow-y: auto; padding-bottom: 80px; }
+        .app-content { flex: 1; overflow-y: auto; padding-bottom: 70px; }
 
         .section { padding: 20px 16px; border-bottom: 1px solid rgba(46, 107, 242, 0.05); }
         .section h3 { font-size: 18px; margin-bottom: 16px; font-weight: 700; }
@@ -175,7 +175,7 @@
             background: var(--bg-1);
             border-top: 1px solid rgba(46, 107, 242, 0.1);
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             height: 60px;
             z-index: 100;
         }
@@ -259,17 +259,26 @@
 
                     <h3>Выберите производство</h3>
                     <div class="type-grid">
-                        <div class="type-card active" onclick="selectType('plastic')">
-                            <div class="type-icon">♻️</div>
-                            <div class="type-name">Пластик</div>
+                        <div class="type-card active" onclick="selectType('plastic')" style="border-color: #2e6bf2;">
+                            <div class="type-icon" style="font-size: 48px;">
+                                <span style="display: inline-block; background: linear-gradient(135deg, #2e6bf2, #1e4fa8); color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800;">UP</span>
+                            </div>
+                            <div class="type-name">UNITPLAST</div>
+                            <div style="font-size: 11px; color: var(--text-1);">Пластик</div>
                         </div>
                         <div class="type-card" onclick="selectType('furniture')">
-                            <div class="type-icon">🪑</div>
-                            <div class="type-name">Мебель</div>
+                            <div class="type-icon" style="font-size: 48px;">
+                                <span style="display: inline-block; background: linear-gradient(135deg, #10b981, #059669); color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800;">UF</span>
+                            </div>
+                            <div class="type-name">UNIFURNITURE</div>
+                            <div style="font-size: 11px; color: var(--text-1);">Мебель</div>
                         </div>
                         <div class="type-card" onclick="selectType('metal')">
-                            <div class="type-icon">⚙️</div>
-                            <div class="type-name">Металл</div>
+                            <div class="type-icon" style="font-size: 48px;">
+                                <span style="display: inline-block; background: linear-gradient(135deg, #6b7280, #4b5563); color: white; width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800;">UM</span>
+                            </div>
+                            <div class="type-name">UNIMETALL</div>
+                            <div style="font-size: 11px; color: var(--text-1);">Металл</div>
                         </div>
                     </div>
 
@@ -482,19 +491,23 @@
         <!-- FOOTER NAV -->
         <div class="app-footer">
             <a class="nav-item active" onclick="showPage('calculator')">
-                <div class="nav-icon">🧮</div>
-                <div class="nav-label">Расчет</div>
+                <div class="nav-icon" style="font-size: 24px;">📊</div>
+                <div class="nav-label">Расчёты</div>
             </a>
             <a class="nav-item" onclick="showPage('history')">
-                <div class="nav-icon">📋</div>
+                <div class="nav-icon" style="font-size: 24px;">🕐</div>
                 <div class="nav-label">История</div>
             </a>
-            <a class="nav-item" onclick="alert('Справка: свяжитесь с отделом продаж')">
-                <div class="nav-icon">❓</div>
-                <div class="nav-label">Справка</div>
+            <a class="nav-item" onclick="alert('Файлы и документы')">
+                <div class="nav-icon" style="font-size: 24px;">📁</div>
+                <div class="nav-label">Файлы</div>
+            </a>
+            <a class="nav-item" onclick="alert('Аналитика и статистика')">
+                <div class="nav-icon" style="font-size: 24px;">📈</div>
+                <div class="nav-label">Аналитика</div>
             </a>
             <a class="nav-item" onclick="alert('Профиль: Ваша компания')">
-                <div class="nav-icon">👤</div>
+                <div class="nav-icon" style="font-size: 24px;">👤</div>
                 <div class="nav-label">Профиль</div>
             </a>
         </div>
