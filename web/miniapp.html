@@ -486,6 +486,244 @@
                     <button class="btn mt-16" onclick="showPage('calculator')">← Назад</button>
                 </div>
             </div>
+
+            <!-- PAGE: FILES -->
+            <div id="page-files" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Файлы и документы</h3>
+
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <button class="btn" style="flex: 1; font-size: 13px; padding: 8px;">📤 Загрузить файл</button>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px;">Недавние файлы</h3>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">📊 Расчет_2506.xlsx</div>
+                                <div class="history-date">Сегодня, 15:32</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
+                            Размер: 245 KB | EXCEL
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">📥 Скачать</button>
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">🔗 Поделиться</button>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">📐 КП_UNITPLAST_2506.pdf</div>
+                                <div class="history-date">Вчера, 10:15</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
+                            Размер: 1.2 MB | PDF
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">📥 Скачать</button>
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">🔗 Поделиться</button>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">🔧 3D_Model.step</div>
+                                <div class="history-date">2 дня назад, 14:20</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
+                            Размер: 3.8 MB | STEP
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">📥 Скачать</button>
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">🔗 Поделиться</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: ANALYTICS -->
+            <div id="page-analytics" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Аналитика и статистика</h3>
+
+                    <div class="stat-card">
+                        <div class="label">Расчеты за месяц</div>
+                        <div class="amount">24</div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">Ключевые показатели</h3>
+
+                    <div class="result-row">
+                        <span class="result-label">Активные заказы</span>
+                        <span class="result-value">7</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">В работе</span>
+                        <span class="result-value">3</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Готово к отправке</span>
+                        <span class="result-value">2</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Среднее время расчета</span>
+                        <span class="result-value">12 мин</span>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">По типам производства</h3>
+
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <div class="product-name">Пластик</div>
+                            <div style="font-size: 24px; font-weight: 700; color: var(--blue); margin: 12px 0;">8</div>
+                            <div class="product-desc">расчетов</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">Мебель</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #10b981; margin: 12px 0;">9</div>
+                            <div class="product-desc">расчетов</div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-name">Металл</div>
+                            <div style="font-size: 24px; font-weight: 700; color: #6b7280; margin: 12px 0;">7</div>
+                            <div class="product-desc">расчетов</div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px;">Итоговая сумма</h3>
+                    <div class="stat-card">
+                        <div class="label">Сумма всех расчетов</div>
+                        <div class="amount">2 030 000 ₽</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: PROFILE -->
+            <div id="page-profile" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Профиль компании</h3>
+
+                    <div class="product-card" style="text-align: center; margin-bottom: 16px;">
+                        <div style="font-size: 48px; margin-bottom: 12px;">👔</div>
+                        <div class="product-name">ООО "КОМПАНИЯ"</div>
+                        <div class="product-desc">Регистрация: 2020</div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px;">Основная информация</h3>
+
+                    <div class="result-row">
+                        <span class="result-label">ИНН</span>
+                        <span class="result-value">7701234567</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">КПП</span>
+                        <span class="result-value">770101001</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Телефон</span>
+                        <span class="result-value">+7 (495) 123-45-67</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Email</span>
+                        <span class="result-value">info@company.ru</span>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px;">Подписка</h3>
+
+                    <div class="product-card" style="margin-bottom: 16px;">
+                        <div class="product-name">Тариф Pro</div>
+                        <div style="font-size: 13px; color: var(--text-1); margin: 8px 0;">
+                            ✅ Все возможности платформы<br/>
+                            ✅ Приоритетная поддержка<br/>
+                            ✅ Интеграция 1С
+                        </div>
+                        <div style="font-size: 12px; color: var(--blue); margin-top: 8px;">
+                            🔄 Продление: 30 дней
+                        </div>
+                    </div>
+
+                    <button class="btn btn-secondary mt-16">Управление подпиской</button>
+                    <button class="btn btn-secondary mt-16">Выход</button>
+                </div>
+            </div>
+
+            <!-- PAGE: ORDERS -->
+            <div id="page-orders" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Заказы</h3>
+
+                    <div class="stat-card">
+                        <div class="amount">7</div>
+                        <div class="label">Активные заказы</div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px;">Текущие заказы</h3>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">#2506 - Пластиковый контейнер</div>
+                                <div class="history-date">Статус: В работе</div>
+                            </div>
+                            <div class="history-price">✅</div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
+                            100 шт × 12 450 ₽ = 1 245 000 ₽<br/>
+                            Завершение: 10.07.2026
+                        </div>
+                        <div style="width: 100%; height: 4px; background: rgba(46, 107, 242, 0.1); border-radius: 2px; overflow: hidden; margin-bottom: 8px;">
+                            <div style="width: 60%; height: 100%; background: var(--blue);"></div>
+                        </div>
+                        <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px;">Детали</button>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">#2505 - Офисный шкаф</div>
+                                <div class="history-date">Статус: Готово</div>
+                            </div>
+                            <div class="history-price">✅</div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
+                            10 шт × 8 500 ₽ = 85 000 ₽<br/>
+                            Завершено: 06.07.2026
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">Получить</button>
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">Оценить</button>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">#2504 - Стальной каркас</div>
+                                <div class="history-date">Статус: Доставляется</div>
+                            </div>
+                            <div class="history-price">📦</div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
+                            5 шт × 25 000 ₽ = 125 000 ₽<br/>
+                            Ожидаемая доставка: 08.07.2026
+                        </div>
+                        <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px;">Отследить</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- FOOTER NAV -->
@@ -498,15 +736,15 @@
                 <div class="nav-icon" style="font-size: 24px;">🕐</div>
                 <div class="nav-label">История</div>
             </a>
-            <a class="nav-item" onclick="alert('Файлы и документы')">
+            <a class="nav-item" onclick="showPage('files')">
                 <div class="nav-icon" style="font-size: 24px;">📁</div>
                 <div class="nav-label">Файлы</div>
             </a>
-            <a class="nav-item" onclick="alert('Аналитика и статистика')">
+            <a class="nav-item" onclick="showPage('analytics')">
                 <div class="nav-icon" style="font-size: 24px;">📈</div>
                 <div class="nav-label">Аналитика</div>
             </a>
-            <a class="nav-item" onclick="alert('Профиль: Ваша компания')">
+            <a class="nav-item" onclick="showPage('profile')">
                 <div class="nav-icon" style="font-size: 24px;">👤</div>
                 <div class="nav-label">Профиль</div>
             </a>
@@ -568,7 +806,11 @@
 
             const titles = {
                 'calculator': 'Расчет стоимости',
-                'history': 'История расчетов'
+                'history': 'История расчетов',
+                'files': 'Файлы и документы',
+                'analytics': 'Аналитика',
+                'profile': 'Профиль компании',
+                'orders': 'Заказы'
             };
             document.getElementById('page-title').textContent = titles[pageId] || 'UNITPLAST';
 
