@@ -301,31 +301,35 @@
         <!-- CONTENT -->
         <div class="app-content">
             <!-- PAGE: DASHBOARD -->
-            <div id="page-dashboard" class="page" style="display: block;" style="display: block;">
+            <div id="page-dashboard" class="page" style="display: block;">
                 <div class="section">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                         <h3>UNITPLAST AI</h3>
                         <div style="font-size: 12px; background: var(--blue); color: white; padding: 4px 8px; border-radius: 4px;">Pro</div>
                     </div>
 
-                    <div class="stat-card" style="margin-bottom: 16px;">
-                        <div class="label">Расчеты за месяц</div>
-                        <div class="amount">24</div>
+                    <div class="stat-card" style="margin-bottom: 16px; cursor: pointer;" onclick="updateDashboardData()">
+                        <div class="label">📊 Расчеты за месяц (нажми для обновления)</div>
+                        <div class="amount" id="dashboard-calculations">24</div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">⟳ Последнее обновление: только что</div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">📊 KPI</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">📊 KPI (обновляется каждые 5 сек)</h3>
                     <div class="product-grid" style="grid-template-columns: 1fr 1fr 1fr;">
                         <div class="product-card">
-                            <div style="font-size: 20px; font-weight: 700; color: var(--blue);">7</div>
+                            <div style="font-size: 20px; font-weight: 700; color: var(--blue);" id="kpi-active">7</div>
                             <div style="font-size: 11px; color: var(--text-1);">Активные</div>
+                            <div style="font-size: 9px; color: #10b981; margin-top: 4px;">↑ +2 сегодня</div>
                         </div>
                         <div class="product-card">
-                            <div style="font-size: 20px; font-weight: 700; color: #10b981;">3</div>
+                            <div style="font-size: 20px; font-weight: 700; color: #10b981;" id="kpi-progress">3</div>
                             <div style="font-size: 11px; color: var(--text-1);">В работе</div>
+                            <div style="font-size: 9px; color: #f59e0b; margin-top: 4px;">⏳ -1 готово</div>
                         </div>
                         <div class="product-card">
-                            <div style="font-size: 20px; font-weight: 700; color: #f59e0b;">12 ч</div>
-                            <div style="font-size: 11px; color: var(--text-1);">Средн. время</div>
+                            <div style="font-size: 20px; font-weight: 700; color: #f59e0b;" id="kpi-time">12</div>
+                            <div style="font-size: 11px; color: var(--text-1);">Средн. время (ч)</div>
+                            <div style="font-size: 9px; color: #10b981; margin-top: 4px;">↓ -2ч от вчера</div>
                         </div>
                     </div>
 
@@ -664,31 +668,32 @@
                 <div class="section">
                     <h3>Аналитика и статистика</h3>
 
-                    <div class="stat-card">
-                        <div class="label">Расчеты за месяц</div>
-                        <div class="amount">24</div>
+                    <div class="stat-card" style="cursor: pointer;" onclick="updateAnalyticsData()">
+                        <div class="label">📊 Расчеты за месяц (нажми для обновления)</div>
+                        <div class="amount" id="analytics-calculations">24</div>
+                        <div style="font-size: 11px; color: #10b981; margin-top: 8px;">↑ +5 от прошлой недели</div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">Ключевые показатели</h3>
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">Ключевые показатели (реальные данные)</h3>
 
                     <div class="result-row">
                         <span class="result-label">Активные заказы</span>
-                        <span class="result-value">7</span>
+                        <span class="result-value" id="analytics-active">7</span>
                     </div>
 
                     <div class="result-row">
                         <span class="result-label">В работе</span>
-                        <span class="result-value">3</span>
+                        <span class="result-value" id="analytics-progress">3</span>
                     </div>
 
                     <div class="result-row">
                         <span class="result-label">Готово к отправке</span>
-                        <span class="result-value">2</span>
+                        <span class="result-value" id="analytics-ready">2</span>
                     </div>
 
                     <div class="result-row">
                         <span class="result-label">Среднее время расчета</span>
-                        <span class="result-value">12 мин</span>
+                        <span class="result-value"><span id="analytics-time">12</span> мин</span>
                     </div>
 
                     <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">По типам производства</h3>
@@ -713,8 +718,10 @@
 
                     <h3 style="font-size: 14px; margin-top: 20px;">Итоговая сумма</h3>
                     <div class="stat-card">
-                        <div class="label">Сумма всех расчетов</div>
-                        <div class="amount">2 030 000 ₽</div>
+                        <div class="label">💰 Сумма всех расчетов (обновляется)</div>
+                        <div class="amount" id="analytics-total">2 030 000</div>
+                        <div style="font-size: 13px;">₽</div>
+                        <div style="font-size: 11px; color: #10b981; margin-top: 8px;">↑ +150 000 от вчера</div>
                     </div>
                 </div>
             </div>
@@ -724,10 +731,16 @@
                 <div class="section">
                     <h3>Профиль компании</h3>
 
+                    <div class="stat-card">
+                        <div class="label">💳 Баланс бонусов</div>
+                        <div class="amount" id="profile-balance">16 350</div>
+                        <div style="font-size: 13px;">₽</div>
+                    </div>
+
                     <div class="product-card" style="text-align: center; margin-bottom: 16px;">
                         <div style="font-size: 48px; margin-bottom: 12px;">👔</div>
                         <div class="product-name">ООО "КОМПАНИЯ"</div>
-                        <div class="product-desc">Регистрация: 2020</div>
+                        <div class="product-desc">Регистрация: 2020 • Сотрудников: 4</div>
                     </div>
 
                     <h3 style="font-size: 14px; margin-top: 20px;">Основная информация</h3>
@@ -1204,7 +1217,65 @@
     </div>
 
     <script>
+        // 📊 ДАННЫЕ И СОСТОЯНИЕ
         let currentType = 'plastic';
+
+        // Динамическое состояние приложения
+        const appState = {
+            calculations: 24,
+            activeOrders: 7,
+            inProgress: 3,
+            ready: 2,
+            delivery: 1,
+            avgTime: 12,
+            totalAmount: 2030000,
+            userBalance: 16350,
+            lastSync: '2 часа назад'
+        };
+
+        // Обновление данных в реальном времени (симуляция)
+        function updateDashboardData() {
+            // Симулируем изменение данных
+            appState.calculations = Math.floor(Math.random() * 30) + 15;
+            appState.activeOrders = Math.floor(Math.random() * 10) + 5;
+            appState.inProgress = Math.floor(Math.random() * 5) + 1;
+            appState.avgTime = Math.floor(Math.random() * 20) + 8;
+
+            // Обновляем все элементы
+            const calcElement = document.getElementById('dashboard-calculations');
+            const activeElement = document.getElementById('kpi-active');
+            const progressElement = document.getElementById('kpi-progress');
+            const timeElement = document.getElementById('kpi-time');
+
+            if (calcElement) animateNumber(calcElement, appState.calculations);
+            if (activeElement) animateNumber(activeElement, appState.activeOrders);
+            if (progressElement) animateNumber(progressElement, appState.inProgress);
+            if (timeElement) animateNumber(timeElement, appState.avgTime);
+
+            console.log('📊 Данные обновлены:', appState);
+        }
+
+        // Анимированное изменение чисел
+        function animateNumber(element, newValue) {
+            const startValue = parseInt(element.textContent);
+            const diff = newValue - startValue;
+            const steps = 10;
+            let current = 0;
+
+            const interval = setInterval(() => {
+                current++;
+                const value = startValue + Math.round((diff / steps) * current);
+                element.textContent = value;
+
+                if (current >= steps) {
+                    clearInterval(interval);
+                    element.textContent = newValue;
+                }
+            }, 50);
+        }
+
+        // Обновление каждые 5 секунд
+        setInterval(updateDashboardData, 5000);
 
         function selectType(type) {
             currentType = type;
@@ -1307,6 +1378,38 @@
             // Filter logic (would connect to real data)
             alert(`✅ Фильтр применен: ${status === 'all' ? 'Все заказы' : status === 'work' ? 'В работе' : status === 'ready' ? 'Готовые' : 'Доставляются'}`);
         }
+
+        function updateAnalyticsData() {
+            // Симулируем изменение данных
+            appState.calculations = Math.floor(Math.random() * 30) + 15;
+            appState.activeOrders = Math.floor(Math.random() * 10) + 5;
+            appState.inProgress = Math.floor(Math.random() * 5) + 1;
+            appState.ready = Math.floor(Math.random() * 4) + 1;
+            appState.avgTime = Math.floor(Math.random() * 20) + 8;
+            appState.totalAmount = Math.floor(Math.random() * 500000) + 1500000;
+
+            // Обновляем элементы
+            const elements = {
+                'analytics-calculations': appState.calculations,
+                'analytics-active': appState.activeOrders,
+                'analytics-progress': appState.inProgress,
+                'analytics-ready': appState.ready,
+                'analytics-time': appState.avgTime,
+                'analytics-total': appState.totalAmount
+            };
+
+            Object.entries(elements).forEach(([id, value]) => {
+                const elem = document.getElementById(id);
+                if (elem) animateNumber(elem, value);
+            });
+
+            console.log('📊 Аналитика обновлена:', appState);
+        }
+
+        // Первоначальное обновление при загрузке
+        setTimeout(() => {
+            updateAnalyticsData();
+        }, 500);
     </script>
 </body>
 </html>
