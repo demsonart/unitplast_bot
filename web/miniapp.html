@@ -233,6 +233,57 @@
         .history-date { font-size: 11px; color: var(--text-1); }
         .history-price { font-weight: 700; color: var(--blue); }
 
+        .menu-modal {
+            display: none;
+            position: fixed;
+            bottom: 60px;
+            left: 0;
+            right: 0;
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--bg-1);
+            border-top: 1px solid rgba(46, 107, 242, 0.2);
+            border-radius: 12px 12px 0 0;
+            padding: 16px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 99;
+        }
+
+        .menu-modal.open {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .menu-item {
+            padding: 12px;
+            background: rgba(46, 107, 242, 0.08);
+            border: 1px solid rgba(46, 107, 242, 0.15);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-0);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .menu-item:hover {
+            background: rgba(46, 107, 242, 0.15);
+            border-color: var(--blue);
+        }
+
+        .menu-icon { font-size: 20px; min-width: 20px; }
+
         @media (max-width: 600px) {
             .app-wrapper { max-width: 100%; height: 100vh; }
         }
@@ -1019,7 +1070,15 @@
                         <div class="label">Активные заказы</div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-top: 20px;">Текущие заказы</h3>
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">🔍 Фильтры</h3>
+                    <div style="display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 8px;">
+                        <button class="category-btn active" onclick="filterOrders('all')">Все (7)</button>
+                        <button class="category-btn" onclick="filterOrders('work')">В работе (3)</button>
+                        <button class="category-btn" onclick="filterOrders('ready')">Готово (2)</button>
+                        <button class="category-btn" onclick="filterOrders('delivery')">Доставляется (1)</button>
+                    </div>
+
+                    <h3 style="font-size: 14px;">Текущие заказы</h3>
 
                     <div class="history-item">
                         <div class="history-header">
@@ -1075,6 +1134,46 @@
             </div>
         </div>
 
+        <!-- MENU MODAL -->
+        <div id="menu-modal" class="menu-modal">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="font-size: 14px; font-weight: 700;">Дополнительно</h3>
+                <button onclick="toggleMenu()" style="background: none; border: none; color: var(--text-0); cursor: pointer; font-size: 20px;">✕</button>
+            </div>
+            <a class="menu-item" onclick="showPage('1c'); toggleMenu();">
+                <span class="menu-icon">🔗</span>
+                <span>Интеграция 1С</span>
+            </a>
+            <a class="menu-item" onclick="showPage('production'); toggleMenu();">
+                <span class="menu-icon">🏭</span>
+                <span>Производство</span>
+            </a>
+            <a class="menu-item" onclick="showPage('materials'); toggleMenu();">
+                <span class="menu-icon">📚</span>
+                <span>Материалы</span>
+            </a>
+            <a class="menu-item" onclick="showPage('files'); toggleMenu();">
+                <span class="menu-icon">📁</span>
+                <span>Файлы</span>
+            </a>
+            <a class="menu-item" onclick="showPage('profile'); toggleMenu();">
+                <span class="menu-icon">👤</span>
+                <span>Профиль</span>
+            </a>
+            <a class="menu-item" onclick="showPage('history'); toggleMenu();">
+                <span class="menu-icon">📜</span>
+                <span>История</span>
+            </a>
+            <a class="menu-item" onclick="showPage('support'); toggleMenu();">
+                <span class="menu-icon">❓</span>
+                <span>Поддержка</span>
+            </a>
+            <a class="menu-item" onclick="showPage('settings'); toggleMenu();">
+                <span class="menu-icon">⚙️</span>
+                <span>Настройки</span>
+            </a>
+        </div>
+
         <!-- FOOTER NAV -->
         <div class="app-footer">
             <a class="nav-item active" onclick="showPage('dashboard')">
@@ -1097,7 +1196,7 @@
                 <div class="nav-icon" style="font-size: 24px;">👥</div>
                 <div class="nav-label">Команда</div>
             </a>
-            <a class="nav-item" onclick="alert('⚙️ Ещё меню...')">
+            <a class="nav-item" onclick="toggleMenu()">
                 <div class="nav-icon" style="font-size: 24px;">☰</div>
                 <div class="nav-label">Меню</div>
             </a>
@@ -1182,6 +1281,31 @@
             }
 
             document.querySelector('.app-content').scrollTop = 0;
+        }
+
+        function toggleMenu() {
+            const modal = document.getElementById('menu-modal');
+            modal.classList.toggle('open');
+        }
+
+        // Закрыть меню при клике вне
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('menu-modal');
+            const navItem = event.target.closest('.nav-item');
+            if (!modal.contains(event.target) && !navItem) {
+                modal.classList.remove('open');
+            }
+        });
+
+        function filterOrders(status) {
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Filter logic (would connect to real data)
+            alert(`✅ Фильтр применен: ${status === 'all' ? 'Все заказы' : status === 'work' ? 'В работе' : status === 'ready' ? 'Готовые' : 'Доставляются'}`);
         }
     </script>
 </body>
