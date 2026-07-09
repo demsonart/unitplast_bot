@@ -175,7 +175,7 @@
             background: var(--bg-1);
             border-top: 1px solid rgba(46, 107, 242, 0.1);
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             height: 60px;
             z-index: 100;
         }
@@ -249,8 +249,68 @@
 
         <!-- CONTENT -->
         <div class="app-content">
+            <!-- PAGE: DASHBOARD -->
+            <div id="page-dashboard" class="page" style="display: block;" style="display: block;">
+                <div class="section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3>UNITPLAST AI</h3>
+                        <div style="font-size: 12px; background: var(--blue); color: white; padding: 4px 8px; border-radius: 4px;">Pro</div>
+                    </div>
+
+                    <div class="stat-card" style="margin-bottom: 16px;">
+                        <div class="label">Расчеты за месяц</div>
+                        <div class="amount">24</div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">📊 KPI</h3>
+                    <div class="product-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                        <div class="product-card">
+                            <div style="font-size: 20px; font-weight: 700; color: var(--blue);">7</div>
+                            <div style="font-size: 11px; color: var(--text-1);">Активные</div>
+                        </div>
+                        <div class="product-card">
+                            <div style="font-size: 20px; font-weight: 700; color: #10b981;">3</div>
+                            <div style="font-size: 11px; color: var(--text-1);">В работе</div>
+                        </div>
+                        <div class="product-card">
+                            <div style="font-size: 20px; font-weight: 700; color: #f59e0b;">12 ч</div>
+                            <div style="font-size: 11px; color: var(--text-1);">Средн. время</div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⚡ Быстрые действия</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(46, 107, 242, 0.8);" onclick="showPage('calculator')">➕ Новый расчет</button>
+                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(16, 185, 129, 0.8);" onclick="showPage('orders')">📦 Заказы</button>
+                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(245, 158, 11, 0.8);" onclick="showPage('analytics')">📈 Аналитика</button>
+                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(139, 109, 242, 0.8);" onclick="showPage('team')">👥 Команда</button>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">📋 Недавние заказы</h3>
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">#2506 - Контейнер</div>
+                                <div class="history-date">В работе</div>
+                            </div>
+                            <div class="history-price">60%</div>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">#2505 - Шкаф</div>
+                                <div class="history-date">Готово</div>
+                            </div>
+                            <div class="history-price">✅</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- PAGE: CALCULATOR -->
-            <div id="page-calculator" class="page">
+            <div id="page-calculator" class="page" style="display: none;">
                 <div class="section">
                     <div class="stat-card">
                         <div class="amount" id="total-price">0 ₽</div>
@@ -660,6 +720,295 @@
                 </div>
             </div>
 
+            <!-- PAGE: TEAM MANAGEMENT -->
+            <div id="page-team" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Команда и доступы</h3>
+
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <button class="btn" style="flex: 1; font-size: 12px; padding: 8px;">➕ Добавить пользователя</button>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">👥 Сотрудники (4)</h3>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">👨‍💼 Игорь К.</div>
+                                <div class="history-date">Администратор</div>
+                            </div>
+                            <div style="font-size: 12px; color: var(--blue);">✓ Активен</div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">Все права • Создание и удаление • Настройки</div>
+                        <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px;">Редактировать</button>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">👩‍💻 Анна С.</div>
+                                <div class="history-date">Менеджер</div>
+                            </div>
+                            <div style="font-size: 12px; color: #10b981;">✓ Активен</div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">Расчеты • Заказы • Аналитика</div>
+                        <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px;">Редактировать</button>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">👨‍🔧 Дмитрий П.</div>
+                                <div class="history-date">Оператор</div>
+                            </div>
+                            <div style="font-size: 12px; color: #f59e0b;">⏸ Отключен</div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">Только чтение • Расчеты</div>
+                        <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px;">Редактировать</button>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">🔐 Роли и разрешения</h3>
+                    <div class="product-card">
+                        <div class="product-name">Администратор</div>
+                        <div style="font-size: 11px; color: var(--text-1);">✓ Все права</div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-name">Менеджер</div>
+                        <div style="font-size: 11px; color: var(--text-1);">✓ Расчеты, Заказы, Аналитика</div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-name">Оператор</div>
+                        <div style="font-size: 11px; color: var(--text-1);">✓ Только расчеты (чтение)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: 1C INTEGRATION -->
+            <div id="page-1c" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Интеграция с 1С</h3>
+
+                    <div class="product-card" style="background: rgba(16, 185, 129, 0.1); border-color: #10b981; margin-bottom: 16px;">
+                        <div style="color: #10b981; font-weight: 700; margin-bottom: 8px;">✓ Подключено</div>
+                        <div style="font-size: 13px; color: var(--text-0);">1С Предприятие 8.3 (Enterprise)</div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">Последняя синхронизация: 2 часа назад</div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">⚙️ Параметры синхронизации</h3>
+
+                    <div class="result-row">
+                        <span class="result-label">Справочник материалов</span>
+                        <span class="result-value" style="color: #10b981;">✓</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Остатки на складе</span>
+                        <span class="result-value" style="color: #10b981;">✓</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Цены и тарифы</span>
+                        <span class="result-value" style="color: #10b981;">✓</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Документы (КП)</span>
+                        <span class="result-value" style="color: #10b981;">✓</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">История заказов</span>
+                        <span class="result-value" style="color: #f59e0b;">⏸</span>
+                    </div>
+
+                    <button class="btn mt-16">🔄 Синхронизировать сейчас</button>
+                    <button class="btn btn-secondary mt-16">⚙️ Расширенные настройки</button>
+                </div>
+            </div>
+
+            <!-- PAGE: PRODUCTION CONTROL -->
+            <div id="page-production" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Контроль производства</h3>
+
+                    <div class="stat-card">
+                        <div class="amount">87%</div>
+                        <div class="label">Загруженность производства</div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">🏭 Станки и линии</h3>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Линия 1 (Пластик)</div>
+                                <div class="history-date">Работает</div>
+                            </div>
+                            <div style="color: #10b981;">✓</div>
+                        </div>
+                        <div style="width: 100%; height: 4px; background: rgba(46, 107, 242, 0.1); border-radius: 2px; margin: 8px 0; overflow: hidden;">
+                            <div style="width: 95%; height: 100%; background: #10b981;"></div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1);">Выполнено: 95% • Осталось: 2 часа</div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Линия 2 (Мебель)</div>
+                                <div class="history-date">На обслуживании</div>
+                            </div>
+                            <div style="color: #f59e0b;">⏸</div>
+                        </div>
+                        <div style="width: 100%; height: 4px; background: rgba(46, 107, 242, 0.1); border-radius: 2px; margin: 8px 0; overflow: hidden;">
+                            <div style="width: 60%; height: 100%; background: #f59e0b;"></div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1);">Осталось: 4 часа обслуживания</div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Линия 3 (Металл)</div>
+                                <div class="history-date">Ожидает</div>
+                            </div>
+                            <div style="color: #6b7280;">○</div>
+                        </div>
+                        <div style="width: 100%; height: 4px; background: rgba(46, 107, 242, 0.1); border-radius: 2px; margin: 8px 0; overflow: hidden;">
+                            <div style="width: 0%; height: 100%; background: #6b7280;"></div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1);">Готово к запуску</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: MATERIALS CATALOG -->
+            <div id="page-materials" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Справочник материалов</h3>
+
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <input type="text" placeholder="Поиск материала..." style="flex: 1; padding: 8px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid var(--blue); border-radius: 6px; color: var(--text-0); font-size: 13px;">
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">♻️ Пластик</h3>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">ABS пластик</div>
+                                <div class="history-date">350-500 ₽/кг</div>
+                            </div>
+                            <div style="color: #10b981;">📦 35 кг</div>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">PP пластик</div>
+                                <div class="history-date">200-350 ₽/кг</div>
+                            </div>
+                            <div style="color: #10b981;">📦 120 кг</div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⚙️ Металл</h3>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Черная сталь</div>
+                                <div class="history-date">400-600 ₽/кг</div>
+                            </div>
+                            <div style="color: #10b981;">📦 500 кг</div>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Алюминий</div>
+                                <div class="history-date">600-900 ₽/кг</div>
+                            </div>
+                            <div style="color: #f59e0b;">📦 80 кг (мало)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: SUPPORT -->
+            <div id="page-support" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Справка и поддержка</h3>
+
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <button class="btn btn-secondary" style="flex: 1; font-size: 12px; padding: 8px;" onclick="alert('📞 +7 (495) 123-45-67')">📞 Позвонить</button>
+                        <button class="btn btn-secondary" style="flex: 1; font-size: 12px; padding: 8px;" onclick="alert('💬 support@unitplast.ru')">💬 Chat</button>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">❓ Частые вопросы</h3>
+
+                    <div class="product-card" style="cursor: pointer; margin-bottom: 8px;">
+                        <div class="product-name">Как добавить пользователя?</div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-top: 4px;">Перейдите в Команда и доступы → Добавить пользователя</div>
+                    </div>
+
+                    <div class="product-card" style="cursor: pointer; margin-bottom: 8px;">
+                        <div class="product-name">Как синхронизировать 1С?</div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-top: 4px;">Перейдите в Интеграция с 1С → Синхронизировать сейчас</div>
+                    </div>
+
+                    <div class="product-card" style="cursor: pointer; margin-bottom: 8px;">
+                        <div class="product-name">Где найти расчеты?</div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-top: 4px;">В меню История → Все расчеты отсортированы по дате</div>
+                    </div>
+
+                    <button class="btn mt-16" style="background: rgba(139, 109, 242, 0.8);">📚 Открыть документацию</button>
+                    <button class="btn btn-secondary mt-16">📧 Отправить запрос</button>
+                </div>
+            </div>
+
+            <!-- PAGE: SETTINGS -->
+            <div id="page-settings" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Настройки</h3>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;">🌙 Внешний вид</h3>
+
+                    <div class="result-row">
+                        <span class="result-label">Тёмная тема</span>
+                        <span style="cursor: pointer; font-size: 20px;">✓</span>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;">🔔 Уведомления</h3>
+
+                    <div class="result-row">
+                        <span class="result-label">Новые заказы</span>
+                        <span style="cursor: pointer; font-size: 20px;">✓</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Завершение расчетов</span>
+                        <span style="cursor: pointer; font-size: 20px;">✓</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Ошибки синхронизации</span>
+                        <span style="cursor: pointer; font-size: 20px;">✓</span>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;">📊 Экспорт</h3>
+
+                    <button class="btn btn-secondary mt-16">💾 Скачать резервную копию</button>
+                    <button class="btn btn-secondary mt-16">📤 Экспортировать в CSV</button>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;">⚠️ Опасные действия</h3>
+
+                    <button class="btn btn-secondary mt-16" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">🗑️ Очистить кэш</button>
+                </div>
+            </div>
+
             <!-- PAGE: ORDERS -->
             <div id="page-orders" class="page" style="display: none;">
                 <div class="section">
@@ -728,25 +1077,29 @@
 
         <!-- FOOTER NAV -->
         <div class="app-footer">
-            <a class="nav-item active" onclick="showPage('calculator')">
-                <div class="nav-icon" style="font-size: 24px;">📊</div>
+            <a class="nav-item active" onclick="showPage('dashboard')">
+                <div class="nav-icon" style="font-size: 24px;">🏠</div>
+                <div class="nav-label">Главная</div>
+            </a>
+            <a class="nav-item" onclick="showPage('calculator')">
+                <div class="nav-icon" style="font-size: 24px;">🧮</div>
                 <div class="nav-label">Расчёты</div>
             </a>
-            <a class="nav-item" onclick="showPage('history')">
-                <div class="nav-icon" style="font-size: 24px;">🕐</div>
-                <div class="nav-label">История</div>
-            </a>
-            <a class="nav-item" onclick="showPage('files')">
-                <div class="nav-icon" style="font-size: 24px;">📁</div>
-                <div class="nav-label">Файлы</div>
+            <a class="nav-item" onclick="showPage('orders')">
+                <div class="nav-icon" style="font-size: 24px;">📦</div>
+                <div class="nav-label">Заказы</div>
             </a>
             <a class="nav-item" onclick="showPage('analytics')">
                 <div class="nav-icon" style="font-size: 24px;">📈</div>
                 <div class="nav-label">Аналитика</div>
             </a>
-            <a class="nav-item" onclick="showPage('profile')">
-                <div class="nav-icon" style="font-size: 24px;">👤</div>
-                <div class="nav-label">Профиль</div>
+            <a class="nav-item" onclick="showPage('team')">
+                <div class="nav-icon" style="font-size: 24px;">👥</div>
+                <div class="nav-label">Команда</div>
+            </a>
+            <a class="nav-item" onclick="alert('⚙️ Ещё меню...')">
+                <div class="nav-icon" style="font-size: 24px;">☰</div>
+                <div class="nav-label">Меню</div>
             </a>
         </div>
     </div>
@@ -805,12 +1158,19 @@
             }
 
             const titles = {
+                'dashboard': 'UNITPLAST AI',
                 'calculator': 'Расчет стоимости',
                 'history': 'История расчетов',
                 'files': 'Файлы и документы',
                 'analytics': 'Аналитика',
                 'profile': 'Профиль компании',
-                'orders': 'Заказы'
+                'orders': 'Заказы',
+                'team': 'Команда и доступы',
+                '1c': 'Интеграция с 1С',
+                'production': 'Контроль производства',
+                'materials': 'Справочник материалов',
+                'support': 'Справка и поддержка',
+                'settings': 'Настройки'
             };
             document.getElementById('page-title').textContent = titles[pageId] || 'UNITPLAST';
 
