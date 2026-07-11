@@ -1,0 +1,35 @@
+[Unit]
+Description=UNITPLAST Agent Status Collector
+Documentation=https://unitgroup.tech
+After=network.target
+Wants=unitplast.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/var/www/unitplast_bot
+Environment="PYTHONUNBUFFERED=1"
+Environment="PYTHONPATH=/var/www/unitplast_bot"
+
+# Safe mode (read-only collection only)
+Environment="SAFE_MODE=true"
+
+ExecStart=/var/www/unitplast_bot/venv/bin/python3 -m agents.agent_status
+
+# Auto-restart on failure
+Restart=always
+RestartSec=10
+StartLimitInterval=60
+StartLimitBurst=5
+
+# Logging
+StandardOutput=append:/var/www/unitplast_bot/logs/agent_status.log
+StandardError=append:/var/www/unitplast_bot/logs/agent_status.error.log
+
+# Process management
+KillMode=process
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target
