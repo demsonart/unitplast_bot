@@ -335,14 +335,14 @@
 
                     <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⚡ Быстрые действия</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(46, 107, 242, 0.8);" onclick="showPage('calculator')">➕ Новый расчет</button>
-                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(16, 185, 129, 0.8);" onclick="showPage('orders')">📦 Заказы</button>
-                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(245, 158, 11, 0.8);" onclick="showPage('analytics')">📈 Аналитика</button>
+                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(46, 107, 242, 0.8);" onclick="showPage('calculator')">➕ Расчет</button>
+                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(16, 185, 129, 0.8);" onclick="showPage('new-order')">📝 Заказ</button>
+                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(245, 158, 11, 0.8);" onclick="showPage('notifications')">🔔 Уведомления</button>
                         <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(139, 109, 242, 0.8);" onclick="showPage('team')">👥 Команда</button>
                     </div>
 
                     <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">📋 Недавние заказы</h3>
-                    <div class="history-item">
+                    <div class="history-item" onclick="showPage('order-detail')" style="cursor: pointer;">
                         <div class="history-header">
                             <div>
                                 <div class="history-name">#2506 - Контейнер</div>
@@ -352,7 +352,7 @@
                         </div>
                     </div>
 
-                    <div class="history-item">
+                    <div class="history-item" onclick="showPage('order-detail')" style="cursor: pointer;">
                         <div class="history-header">
                             <div>
                                 <div class="history-name">#2505 - Шкаф</div>
@@ -1033,6 +1033,181 @@
                 </div>
             </div>
 
+            <!-- PAGE: CALCULATOR DETAIL -->
+            <div id="page-calc-detail" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Пошаговый расчет</h3>
+
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <button style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;" onclick="showPage('calculator')">← Назад</button>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">📋 Шаги расчета (3/3)</h3>
+
+                    <div class="history-item">
+                        <div style="margin-bottom: 8px;">
+                            <div style="font-weight: 600; margin-bottom: 4px;">1️⃣ Параметры изделия</div>
+                            <div style="font-size: 11px; color: var(--text-1);">✓ Выбран: ABS пластик, размер 800x600x400мм</div>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div style="margin-bottom: 8px;">
+                            <div style="font-weight: 600; margin-bottom: 4px;">2️⃣ Расчет стоимости</div>
+                            <div style="font-size: 11px; color: var(--text-1);">✓ Базовая цена: 2 450 ₽</div>
+                            <div style="font-size: 11px; color: var(--text-1);">  Кол-во: 100 шт = 245 000 ₽</div>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div style="margin-bottom: 8px;">
+                            <div style="font-weight: 600; margin-bottom: 4px;">3️⃣ Итого и доставка</div>
+                            <div style="font-size: 11px; color: var(--text-1);">✓ Стоимость: 245 000 ₽</div>
+                            <div style="font-size: 11px; color: var(--text-1);">  Доставка: 2 500 ₽</div>
+                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px; font-weight: 600;">Итого: 247 500 ₽</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="label">⏱️ Срок изготовления</div>
+                        <div class="amount">5-7</div>
+                        <div style="font-size: 13px;">дней</div>
+                    </div>
+
+                    <button class="btn mt-16" style="background: rgba(16, 185, 129, 0.8);">✓ Подтвердить и создать заказ</button>
+                </div>
+            </div>
+
+            <!-- PAGE: NEW ORDER -->
+            <div id="page-new-order" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Новый заказ</h3>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">📝 Быстрое создание</h3>
+
+                    <div class="input-group">
+                        <label>Номер расчета</label>
+                        <select style="width: 100%; padding: 10px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 6px; color: var(--text-0); font-size: 13px;">
+                            <option>#2506 - Контейнер (245 000 ₽)</option>
+                            <option>#2507 - Шкаф (85 000 ₽)</option>
+                            <option>#2508 - Каркас (125 000 ₽)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Кол-во</label>
+                        <input type="number" value="1" style="width: 100%; padding: 10px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 6px; color: var(--text-0);">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Примечание</label>
+                        <input type="text" placeholder="Срочно, красный цвет..." style="width: 100%; padding: 10px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 6px; color: var(--text-0);">
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="label">Стоимость</div>
+                        <div class="amount">245 000</div>
+                        <div style="font-size: 13px;">₽</div>
+                    </div>
+
+                    <button class="btn mt-16" style="background: rgba(16, 185, 129, 0.8);" onclick="alert('✅ Заказ #2509 создан!')">✓ Создать заказ</button>
+                    <button class="btn btn-secondary mt-16" onclick="showPage('dashboard')">← Отмена</button>
+                </div>
+            </div>
+
+            <!-- PAGE: ORDER DETAIL -->
+            <div id="page-order-detail" class="page" style="display: none;">
+                <div class="section">
+                    <h3>#2506 - Контейнер</h3>
+
+                    <div class="stat-card">
+                        <div class="amount">60%</div>
+                        <div class="label">Выполнено</div>
+                    </div>
+
+                    <div style="width: 100%; height: 8px; background: rgba(46, 107, 242, 0.1); border-radius: 4px; margin-bottom: 16px; overflow: hidden;">
+                        <div style="width: 60%; height: 100%; background: linear-gradient(90deg, var(--blue), #10b981);"></div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">📊 Информация</h3>
+
+                    <div class="result-row">
+                        <span class="result-label">Статус</span>
+                        <span class="result-value" style="color: #10b981;">⚙️ В работе</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Стоимость</span>
+                        <span class="result-value">245 000 ₽</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Кол-во</span>
+                        <span class="result-value">100 шт</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Начало</span>
+                        <span class="result-value">07.07.2026</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Завершение</span>
+                        <span class="result-value">12.07.2026</span>
+                    </div>
+
+                    <button class="btn mt-16">📞 Связаться</button>
+                    <button class="btn btn-secondary mt-16" onclick="showPage('orders')">← Назад</button>
+                </div>
+            </div>
+
+            <!-- PAGE: NOTIFICATIONS -->
+            <div id="page-notifications" class="page" style="display: none;">
+                <div class="section">
+                    <h3>Уведомления</h3>
+
+                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">✅ Заказ готов!</div>
+                                <div class="history-date">10 минут назад</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1);">Заказ #2505 готов к отправке</div>
+                    </div>
+
+                    <div class="history-item" style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b;">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">⚠️ Внимание!</div>
+                                <div class="history-date">1 час назад</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1);">Остаток материала ABS менее 50 кг</div>
+                    </div>
+
+                    <div class="history-item" style="background: rgba(46, 107, 242, 0.1); border-left: 3px solid var(--blue);">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">🔄 Синхронизация</div>
+                                <div class="history-date">3 часа назад</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1);">Данные синхронизированы с 1С</div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">📊 Ежедневный отчет</div>
+                                <div class="history-date">Вчера, 18:00</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1);">24 расчета, 7 активных заказов</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- PAGE: SETTINGS -->
             <div id="page-settings" class="page" style="display: none;">
                 <div class="section">
@@ -1150,9 +1325,29 @@
         <!-- MENU MODAL -->
         <div id="menu-modal" class="menu-modal">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h3 style="font-size: 14px; font-weight: 700;">Дополнительно</h3>
+                <h3 style="font-size: 14px; font-weight: 700;">Меню</h3>
                 <button onclick="toggleMenu()" style="background: none; border: none; color: var(--text-0); cursor: pointer; font-size: 20px;">✕</button>
             </div>
+
+            <div style="margin-bottom: 12px;">
+                <button class="btn" style="width: 100%; background: rgba(16, 185, 129, 0.8); font-size: 12px; padding: 8px;" onclick="showPage('new-order'); toggleMenu();">➕ Новый заказ</button>
+            </div>
+
+            <a class="menu-item" onclick="showPage('notifications'); toggleMenu();">
+                <span class="menu-icon">🔔</span>
+                <span>Уведомления (4)</span>
+            </a>
+            <a class="menu-item" onclick="showPage('calc-detail'); toggleMenu();">
+                <span class="menu-icon">📋</span>
+                <span>Детали расчета</span>
+            </a>
+            <a class="menu-item" onclick="showPage('order-detail'); toggleMenu();">
+                <span class="menu-icon">📦</span>
+                <span>Детали заказа</span>
+            </a>
+
+            <hr style="border: none; border-top: 1px solid rgba(46, 107, 242, 0.1); margin: 12px 0;">
+
             <a class="menu-item" onclick="showPage('1c'); toggleMenu();">
                 <span class="menu-icon">🔗</span>
                 <span>Интеграция 1С</span>
@@ -1172,10 +1367,6 @@
             <a class="menu-item" onclick="showPage('profile'); toggleMenu();">
                 <span class="menu-icon">👤</span>
                 <span>Профиль</span>
-            </a>
-            <a class="menu-item" onclick="showPage('history'); toggleMenu();">
-                <span class="menu-icon">📜</span>
-                <span>История</span>
             </a>
             <a class="menu-item" onclick="showPage('support'); toggleMenu();">
                 <span class="menu-icon">❓</span>
