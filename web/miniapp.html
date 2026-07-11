@@ -723,6 +723,8 @@
                         <div style="font-size: 13px;">₽</div>
                         <div style="font-size: 11px; color: #10b981; margin-top: 8px;">↑ +150 000 от вчера</div>
                     </div>
+
+                    <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);" onclick="showPage('advanced-analytics')">📊 Расширенная аналитика →</button>
                 </div>
             </div>
 
@@ -844,6 +846,8 @@
                         <div class="product-name">Оператор</div>
                         <div style="font-size: 11px; color: var(--text-1);">✓ Только расчеты (чтение)</div>
                     </div>
+
+                    <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);" onclick="showPage('team-advanced')">👥 Расширенное управление →</button>
                 </div>
             </div>
 
@@ -943,6 +947,8 @@
                         </div>
                         <div style="font-size: 11px; color: var(--text-1);">Готово к запуску</div>
                     </div>
+
+                    <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);" onclick="showPage('production-advanced')">🏭 Управление производством →</button>
                 </div>
             </div>
 
@@ -998,6 +1004,8 @@
                             <div style="color: #f59e0b;">📦 80 кг (мало)</div>
                         </div>
                     </div>
+
+                    <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);" onclick="showPage('materials-advanced')">📚 Управление материалами →</button>
                 </div>
             </div>
 
@@ -1248,6 +1256,336 @@
                 </div>
             </div>
 
+            <!-- PAGE: ADVANCED ANALYTICS -->
+            <div id="page-advanced-analytics" class="page" style="display: none;">
+                <div class="section">
+                    <h3>📊 Расширенная аналитика</h3>
+
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <button onclick="showPage('analytics')" style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">← Назад</button>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">📈 Тренды по типам</h3>
+
+                    <div class="stat-card">
+                        <div class="label">UP (Пластик)</div>
+                        <div class="amount">156</div>
+                        <div style="font-size: 11px; color: #10b981;">↑ +15% от последней недели</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="label">UF (Мебель)</div>
+                        <div class="amount">89</div>
+                        <div style="font-size: 11px; color: #f59e0b;">→ 0% изменений</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="label">UM (Металл)</div>
+                        <div class="amount">62</div>
+                        <div style="font-size: 11px; color: #ef4444;">↓ -8% от последней недели</div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">💰 Выручка (месяц)</h3>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="stat-card">
+                            <div class="label">Всего</div>
+                            <div class="amount">2.4M</div>
+                            <div style="font-size: 11px;">₽</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Средн. заказ</div>
+                            <div class="amount">34K</div>
+                            <div style="font-size: 11px;">₽</div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⏱️ Скорость обработки</h3>
+
+                    <div class="result-row">
+                        <span class="result-label">Макс время</span>
+                        <span class="result-value">14 дней</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Мин время</span>
+                        <span class="result-value">2 дня</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Средн время</span>
+                        <span class="result-value">6 дней</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: PRODUCTION ADVANCED -->
+            <div id="page-production-advanced" class="page" style="display: none;">
+                <div class="section">
+                    <h3>🏭 Управление производством</h3>
+
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <button onclick="showPage('production')" style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">← Назад</button>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">🔧 Линии производства (3)</h3>
+
+                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Линия A - Пластик</div>
+                                <div class="history-date">✅ Работает</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 18px; font-weight: 700;">87%</div>
+                                <div style="font-size: 10px;">загрузка</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
+                            Текущий заказ: #2506 (60% готово)
+                        </div>
+                    </div>
+
+                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Линия B - Мебель</div>
+                                <div class="history-date">✅ Работает</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 18px; font-weight: 700;">65%</div>
+                                <div style="font-size: 10px;">загрузка</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
+                            Текущий заказ: #2507 (45% готово)
+                        </div>
+                    </div>
+
+                    <div class="history-item" style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b;">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Линия C - Металл</div>
+                                <div class="history-date">⚠️ Техническое обслуживание</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 18px; font-weight: 700;">0%</div>
+                                <div style="font-size: 10px;">загрузка</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
+                            Предполагаемое время: 2 часа
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⚡ Скорость работы</h3>
+
+                    <div class="result-row">
+                        <span class="result-label">Шт/час (среднее)</span>
+                        <span class="result-value">125 шт</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Общая производительность</span>
+                        <span class="result-value">76%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: TEAM ADVANCED -->
+            <div id="page-team-advanced" class="page" style="display: none;">
+                <div class="section">
+                    <h3>👥 Расширенное управление командой</h3>
+
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <button onclick="showPage('team')" style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">← Назад</button>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">👤 Сотрудники (12)</h3>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Иван Петров</div>
+                                <div class="history-date">Менеджер</div>
+                            </div>
+                            <div style="text-align: right;">⭐</div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1);">Опыт: 5 лет, Заказы обработано: 234</div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Мария Сидорова</div>
+                                <div class="history-date">Оператор</div>
+                            </div>
+                            <div style="text-align: right;">⭐⭐</div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1);">Опыт: 3 года, Заказы обработано: 156</div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Алексей Козлов</div>
+                                <div class="history-date">Инженер</div>
+                            </div>
+                            <div style="text-align: right;">⭐⭐⭐</div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1);">Опыт: 8 лет, Специалист: Металл</div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">📊 Статистика</h3>
+
+                    <div class="result-row">
+                        <span class="result-label">Активных сотрудников</span>
+                        <span class="result-value">10</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">В отпуске</span>
+                        <span class="result-value">2</span>
+                    </div>
+
+                    <button class="btn mt-16">➕ Добавить сотрудника</button>
+                </div>
+            </div>
+
+            <!-- PAGE: MATERIALS ADVANCED -->
+            <div id="page-materials-advanced" class="page" style="display: none;">
+                <div class="section">
+                    <h3>📚 Управление материалами</h3>
+
+                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <button onclick="showPage('materials')" style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">← Назад</button>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">🏭 Пластик (UP)</h3>
+
+                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">ABS пластик</div>
+                                <div class="history-date">✅ В норме</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 18px; font-weight: 700;">450 кг</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-item" style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b;">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">PP пластик</div>
+                                <div class="history-date">⚠️ Низкий запас</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 18px; font-weight: 700;">35 кг</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">🪑 Мебель (UF)</h3>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Фанера (18мм)</div>
+                                <div class="history-date">✅ 820 листов</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">ЛДСП цветная</div>
+                                <div class="history-date">✅ 125 листов</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⚙️ Металл (UM)</h3>
+
+                    <div class="history-item" style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444;">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">Стальной профиль</div>
+                                <div class="history-date">🔴 Критично</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 18px; font-weight: 700;">8 т</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn mt-16" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">⚠️ Заказать материалы</button>
+                </div>
+            </div>
+
+            <!-- PAGE: SYNC STATUS -->
+            <div id="page-sync-status" class="page" style="display: none;">
+                <div class="section">
+                    <h3>🔄 Статус синхронизации</h3>
+
+                    <h3 style="font-size: 14px; margin-bottom: 12px;">📊 Последние синхронизации</h3>
+
+                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">✅ 1С Бухгалтерия 8.3</div>
+                                <div class="history-date">Синхронизировано</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
+                            Последнее обновление: 5 минут назад<br/>
+                            Синхронизировано: 156 документов
+                        </div>
+                    </div>
+
+                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">✅ Google Sheets</div>
+                                <div class="history-date">Синхронизировано</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
+                            Последнее обновление: 3 часа назад<br/>
+                            Экспортировано: 12 таблиц
+                        </div>
+                    </div>
+
+                    <div class="history-item" style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b;">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-name">⚠️ Telegram API</div>
+                                <div class="history-date">Подготовка...</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
+                            Статус: В разработке
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⚙️ Параметры синхронизации</h3>
+
+                    <div class="result-row">
+                        <span class="result-label">Интервал автосинхронизации</span>
+                        <span class="result-value">5 мин</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">Последняя ошибка</span>
+                        <span class="result-value">Нет</span>
+                    </div>
+
+                    <button class="btn mt-16">🔄 Синхронизировать сейчас</button>
+                </div>
+            </div>
+
             <!-- PAGE: ORDERS -->
             <div id="page-orders" class="page" style="display: none;">
                 <div class="section">
@@ -1352,13 +1690,25 @@
                 <span class="menu-icon">🔗</span>
                 <span>Интеграция 1С</span>
             </a>
-            <a class="menu-item" onclick="showPage('production'); toggleMenu();">
+            <a class="menu-item" onclick="showPage('production-advanced'); toggleMenu();">
                 <span class="menu-icon">🏭</span>
-                <span>Производство</span>
+                <span>Производство (расш)</span>
             </a>
-            <a class="menu-item" onclick="showPage('materials'); toggleMenu();">
+            <a class="menu-item" onclick="showPage('materials-advanced'); toggleMenu();">
                 <span class="menu-icon">📚</span>
-                <span>Материалы</span>
+                <span>Материалы (расш)</span>
+            </a>
+            <a class="menu-item" onclick="showPage('advanced-analytics'); toggleMenu();">
+                <span class="menu-icon">📈</span>
+                <span>Аналитика (расш)</span>
+            </a>
+            <a class="menu-item" onclick="showPage('team-advanced'); toggleMenu();">
+                <span class="menu-icon">👥</span>
+                <span>Команда (расш)</span>
+            </a>
+            <a class="menu-item" onclick="showPage('sync-status'); toggleMenu();">
+                <span class="menu-icon">🔄</span>
+                <span>Синхронизация</span>
             </a>
             <a class="menu-item" onclick="showPage('files'); toggleMenu();">
                 <span class="menu-icon">📁</span>
