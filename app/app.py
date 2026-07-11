@@ -7,6 +7,7 @@ Serves: Landing Page + Mini App + API Endpoints
 from flask import Flask, jsonify
 from flask_cors import CORS
 import os
+import json
 from pathlib import Path
 from datetime import datetime
 from app.api_v1 import api as api_v1
@@ -143,6 +144,104 @@ def create_app():
                 return f.read(), 200, {'Content-Type': 'image/svg+xml; charset=utf-8'}
         except FileNotFoundError:
             return '', 404
+
+    @app.route('/data/<filename>')
+    def serve_data(filename):
+        """Serve catalog data files (JSON)"""
+        try:
+            if not filename.endswith('.json') and not filename.endswith('.md'):
+                return jsonify({"error": "Invalid file type"}), 403
+            data_path = WEB_DIR / "data" / filename
+            with open(data_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+                content_type = 'application/json' if filename.endswith('.json') else 'text/markdown'
+                return content, 200, {'Content-Type': f'{content_type}; charset=utf-8'}
+        except FileNotFoundError:
+            return jsonify({"error": "File not found"}), 404
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route('/js/<filename>')
+    def serve_js(filename):
+        """Serve JavaScript files"""
+        try:
+            if not filename.endswith('.js'):
+                return jsonify({"error": "Invalid file type"}), 403
+            js_path = WEB_DIR / "js" / filename
+            with open(js_path, 'r', encoding='utf-8') as f:
+                return f.read(), 200, {'Content-Type': 'application/javascript; charset=utf-8'}
+        except FileNotFoundError:
+            return jsonify({"error": "File not found"}), 404
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    # ═══════════════════════════════════════════════════════════════════════════════
+    # AGENTS API (Autonomous agents monitoring)
+    # ═══════════════════════════════════════════════════════════════════════════════
+
+    @app.route('/api/agents/status')
+    def agents_status():
+        """Get current status of all agents (read-only)"""
+        try:
+            data_dir = Path(__file__).parent.parent / "data"
+            status_file = data_dir / "agents_status.json"
+
+            if status_file.exists():
+                with open(status_file, 'r') as f:
+                    data = jsonify(json.load(f))
+                    return data, 200
+
+            return jsonify({"error": "Agent status file not found", "status": "initializing"}), 404
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route('/api/agents/health')
+    def agents_health():
+        """Get health check history from monitor agent"""
+        try:
+            log_dir = Path(__file__).parent.parent / "logs"
+            health_file = log_dir / "health_monitor.log"
+
+            if not health_file.exists():
+                return jsonify({"error": "Health log not found"}), 404
+
+            # Return last 20 health check entries
+            with open(health_file, 'r') as f:
+                lines = f.readlines()[-20:]
+
+            entries = []
+            for line in lines:
+                try:
+                    entries.append(json.loads(line.strip()))
+                except:
+                    pass
+
+            return jsonify({"history": entries, "count": len(entries)}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route('/api/agents/logs/<agent_name>')
+    def agents_logs(agent_name):
+        """Get logs for specific agent"""
+        try:
+            # Whitelist agent names to prevent path traversal
+            allowed_agents = ['health_monitor', 'agent_status', 'system_monitor', 'unitplast']
+            if agent_name not in allowed_agents:
+                return jsonify({"error": "Invalid agent name"}), 403
+
+            log_dir = Path(__file__).parent.parent / "logs"
+            log_file = log_dir / f"{agent_name}.log"
+
+            if not log_file.exists():
+                return jsonify({"error": f"Log for {agent_name} not found"}), 404
+
+            # Return last 50 lines
+            with open(log_file, 'r') as f:
+                lines = f.readlines()[-50:]
+
+            return jsonify({"agent": agent_name, "lines": lines}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
 
     # ═══════════════════════════════════════════════════════════════════════════════
     # ERROR HANDLERS

@@ -1,0 +1,36 @@
+[Unit]
+Description=UNITPLAST Health Monitor Agent
+Documentation=https://unitgroup.tech
+After=network.target
+Wants=unitplast.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/var/www/unitplast_bot
+Environment="PYTHONUNBUFFERED=1"
+Environment="PYTHONPATH=/var/www/unitplast_bot"
+
+# Safe mode defaults (all monitoring, no actions)
+Environment="SAFE_MODE=true"
+Environment="DRY_RUN=true"
+
+ExecStart=/var/www/unitplast_bot/venv/bin/python3 -m agents.health_monitor
+
+# Auto-restart on failure
+Restart=always
+RestartSec=10
+StartLimitInterval=60
+StartLimitBurst=5
+
+# Logging
+StandardOutput=append:/var/www/unitplast_bot/logs/health_monitor.log
+StandardError=append:/var/www/unitplast_bot/logs/health_monitor.error.log
+
+# Process management
+KillMode=process
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target
