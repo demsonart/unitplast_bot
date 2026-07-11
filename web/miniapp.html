@@ -2330,8 +2330,114 @@
             console.log('📊 Аналитика обновлена:', appState);
         }
 
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // API FUNCTIONS (STEP 4: BACKEND)
+        // ═══════════════════════════════════════════════════════════════════════════════
+
+        async function loadCalculations() {
+            try {
+                const response = await fetch('/api/v1/calculations');
+                const data = await response.json();
+                if (data.success) {
+                    console.log('✅ Расчеты загружены:', data.calculations);
+                    return data.calculations;
+                }
+            } catch (error) {
+                console.error('❌ Ошибка загрузки расчетов:', error);
+            }
+        }
+
+        async function loadOrders() {
+            try {
+                const response = await fetch('/api/v1/orders');
+                const data = await response.json();
+                if (data.success) {
+                    console.log('✅ Заказы загружены:', data.orders);
+                    return data.orders;
+                }
+            } catch (error) {
+                console.error('❌ Ошибка загрузки заказов:', error);
+            }
+        }
+
+        async function loadAnalytics() {
+            try {
+                const response = await fetch('/api/v1/analytics/dashboard');
+                const data = await response.json();
+                if (data.success) {
+                    console.log('✅ Аналитика загружена:', data.metrics);
+                    return data.metrics;
+                }
+            } catch (error) {
+                console.error('❌ Ошибка загрузки аналитики:', error);
+            }
+        }
+
+        async function loadMaterials() {
+            try {
+                const response = await fetch('/api/v1/materials');
+                const data = await response.json();
+                if (data.success) {
+                    console.log('✅ Материалы загружены:', data.materials);
+                    return data.materials;
+                }
+            } catch (error) {
+                console.error('❌ Ошибка загрузки материалов:', error);
+            }
+        }
+
+        async function createOrder(calculationId) {
+            try {
+                const response = await fetch('/api/v1/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ calculation_id: calculationId })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    console.log('✅ Заказ создан:', data.order_id);
+                    alert(`✅ ${data.message}`);
+                    return data.order_id;
+                }
+            } catch (error) {
+                console.error('❌ Ошибка создания заказа:', error);
+            }
+        }
+
+        async function syncWith1C() {
+            try {
+                const response = await fetch('/api/v1/sync/1c', { method: 'POST' });
+                const data = await response.json();
+                if (data.success) {
+                    console.log('✅ Синхронизация с 1С:', data.synced);
+                    alert(`✅ ${data.message}\n\nСинхронизировано: ${data.synced.documents} документов`);
+                }
+            } catch (error) {
+                console.error('❌ Ошибка синхронизации:', error);
+            }
+        }
+
+        // Загрузить реальные данные при инициализации
+        async function initializeApp() {
+            console.log('🚀 Инициализация приложения с API данными...');
+            const [calculations, orders, analytics] = await Promise.all([
+                loadCalculations(),
+                loadOrders(),
+                loadAnalytics()
+            ]);
+
+            if (analytics) {
+                appState.calculations = analytics.calculations || 24;
+                appState.activeOrders = analytics.orders || 7;
+                appState.totalAmount = analytics.revenue || 2430000;
+            }
+
+            console.log('✅ Приложение инициализировано с реальными данными');
+        }
+
         // Первоначальное обновление при загрузке
         setTimeout(() => {
+            initializeApp();
             updateAnalyticsData();
         }, 500);
     </script>

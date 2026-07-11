@@ -9,6 +9,7 @@ from flask_cors import CORS
 import os
 from pathlib import Path
 from datetime import datetime
+from app.api_v1 import api as api_v1
 
 def create_app():
     """Create and configure Flask application"""
@@ -156,6 +157,12 @@ def create_app():
     def server_error(error):
         """500 error handler"""
         return jsonify({"error": "Internal server error", "status": 500}), 500
+
+    # ═══════════════════════════════════════════════════════════════════════════════
+    # REGISTER BLUEPRINTS
+    # ═══════════════════════════════════════════════════════════════════════════════
+
+    app.register_blueprint(api_v1)
 
     return app
 
