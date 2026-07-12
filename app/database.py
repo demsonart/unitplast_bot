@@ -17,6 +17,13 @@ class Database:
         conn = self.get_connection()
         cursor = conn.cursor()
 
+        # Drop old orders table if it exists (for migration)
+        # This allows us to create the new schema
+        try:
+            cursor.execute("DROP TABLE IF EXISTS orders")
+        except:
+            pass
+
         # Таблица для отслеживания обработанных писем
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS processed_emails (
