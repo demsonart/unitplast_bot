@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNITGROUP — Управление производством. Три материала. Одна система.</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/icons.css">
+    <style>
+        :root {
+            --orange: #FF6B35;
+            --green: #10b981;
+            --gray: #5A5A5A;
+            --blue: #0066CC;
+            --dark: #1A1A1A;
+            --light: #F8F8F8;
+            --action: #FF6B35;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { font-family: 'Inter', sans-serif; color: var(--dark); background: white; }
+
+        /* === GRADIENT ACCENT === */
+        .gradient-accent {
+            background: linear-gradient(90deg, var(--orange) 0%, var(--green) 50%, var(--gray) 100%);
+            height: 4px;
+        }
+
+        /* === TYPOGRAPHY === */
+        h1, h2, h3, .display-5 { font-family: 'IBM Plex Serif', serif; font-weight: 700; letter-spacing: -0.5px; }
+        h1 { font-size: 3.5rem; line-height: 1.15; }
+        h2 { font-size: 2.5rem; line-height: 1.2; }
+        h3 { font-size: 1.5rem; line-height: 1.3; }
+
+        p { line-height: 1.6; color: #555; }
+        .lead { font-size: 1.1rem; color: #666; font-weight: 400; }
+
+        /* === BUTTONS === */
+        .btn-primary {
+            background: var(--blue);
+            border: none;
+            color: white;
+            padding: 14px 36px;
+            font-weight: 600;
+            font-size: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: #004499;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 102, 204, 0.25);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--dark);
+            color: var(--dark);
+            background: transparent;
+            padding: 12px 34px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline:hover {
+            background: var(--dark);
+            color: white;
+        }
+
+        /* === NAVBAR === */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #E8E8E8;
+            padding: 16px 0;
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            font-family: 'IBM Plex Serif', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        .nav-link {
+            color: var(--dark);
+            font-weight: 500;
+            margin: 0 12px;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: var(--orange);
+        }
+
+        /* === HERO === */
+        .hero {
+            background: white;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            right: -200px;
+            top: -200px;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255,107,53,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.15;
+        }
+        .hero-gradient-text {
+            background: linear-gradient(90deg, var(--orange) 0%, var(--green) 50%, var(--gray) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* === STATS === */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'IBM Plex Serif', serif;
+            background: linear-gradient(90deg, var(--orange) 0%, var(--green) 50%, var(--gray) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+
+        /* === FEATURES === */
+        .section {
+            padding: 80px 0;
+        }
+        .section-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--orange);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+        .feature-card {
+            background: white;
+            border: 1px solid #E8E8E8;
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            border-color: var(--orange);
+            box-shadow: 0 12px 32px rgba(255, 107, 53, 0.1);
+            transform: translateY(-4px);
+        }
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--green) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+
+        /* === BRANDS/MATERIALS === */
+        .brands-section {
+            background: var(--light);
+        }
+        .material-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        .material-card:hover {
+            border-color: currentColor;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            transform: translateY(-8px);
+        }
+        .material-header {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+        }
+        .material-content {
+            padding: 32px;
+            text-align: center;
+        }
+        .material-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+        .material-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'IBM Plex Serif', serif;
+            margin-bottom: 8px;
+        }
+        .material-desc {
+            color: #666;
+            margin-bottom: 24px;
+        }
+        .material-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 24px 0;
+            border-top: 1px solid #E8E8E8;
+            border-bottom: 1px solid #E8E8E8;
+            margin: 24px 0;
+        }
+        .stat { text-align: center; }
+        .stat-val { font-size: 1.5rem; font-weight: 700; }
+        .stat-key { font-size: 11px; color: #999; text-transform: uppercase; margin-top: 4px; }
+
+        /* === DEMO SECTION === */
+        .demo-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);
+        }
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+        .demo-text h2 {
+            margin-bottom: 24px;
+        }
+        .demo-feature {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .demo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: white;
+            font-weight: 700;
+        }
+        .demo-content h4 {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .demo-phone {
+            background: white;
+            border-radius: 32px;
+            padding: 12px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        /* === PRICING === */
+        .pricing-section {
+            background: white;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+        .pricing-card {
+            background: white;
+            border: 2px solid #E8E8E8;
+            border-radius: 16px;
+            padding: 40px 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .pricing-card.featured {
+            border-color: var(--orange);
+            background: linear-gradient(135deg, rgba(255,107,53,0.02) 0%, transparent 100%);
+            transform: scale(1.05);
+        }
+        .pricing-card:hover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .price-tag {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'IBM Plex Serif', serif;
+            margin: 16px 0;
+        }
+        .price-currency {
+            font-size: 0.6em;
+            vertical-align: super;
+        }
+        .features-list {
+            text-align: left;
+            margin: 32px 0;
+            padding: 32px 0;
+            border-top: 1px solid #E8E8E8;
+            border-bottom: 1px solid #E8E8E8;
+        }
+        .features-list li {
+            padding: 8px 0;
+            color: #555;
+            font-size: 14px;
+        }
+
+        /* === CONTACT FORM === */
+        .contact-section {
+            background: var(--light);
+        }
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 48px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--dark);
+        }
+        .form-control {
+            border: 1px solid #E8E8E8;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+        .checkbox-group {
+            background: linear-gradient(135deg, rgba(255,107,53,0.08) 0%, rgba(16,185,129,0.08) 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 24px 0;
+            font-size: 13px;
+        }
+
+        /* === FOOTER === */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 48px 0 24px;
+            text-align: center;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            h2 { font-size: 1.75rem; }
+            .demo-container { grid-template-columns: 1fr; }
+            .pricing-card.featured { transform: scale(1); }
+            .stats-row { grid-template-columns: 1fr; }
+        }
+
+        /* === ANIMATIONS === */
+        @media (prefers-reduced-motion: no-preference) {
+            .feature-card, .material-card, .pricing-card {
+                animation: fadeInUp 0.6s ease-out;
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-lg">
+        <a class="navbar-brand" href="#hero">
+            <svg style="width: 32px; height: 32px;" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+                <g><path d="M 30 35 L 42 28 L 54 35 L 54 50 L 42 57 L 30 50 Z" fill="none" stroke="#5A5A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M 32 40 L 42 35 L 52 40 L 52 48 L 42 53 L 32 48 Z" fill="none" stroke="#5A5A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/></g>
+                <g><path d="M 90 35 L 102 28 L 114 35 L 114 50 L 102 57 L 90 50 Z" fill="none" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M 92 40 L 102 35 L 112 40 L 112 48 L 102 53 L 92 48 Z" fill="none" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/></g>
+                <g><path d="M 150 35 L 162 28 L 174 35 L 174 50 L 162 57 L 150 50 Z" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M 152 40 L 162 35 L 172 40 L 172 48 L 162 53 L 152 48 Z" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/></g>
+            </svg>
+            UNITGROUP
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#features">Возможности</a></li>
+                <li class="nav-item"><a class="nav-link" href="#brands">Бренды</a></li>
+                <li class="nav-item"><a class="nav-link" href="#pricing">Тарифы</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Контакты</a></li>
+                <li class="nav-item ms-3"><a href="miniapp.html" class="btn btn-primary">Калькулятор</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="gradient-accent"></div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+    <div class="container-lg">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Управление производством<br>
+                <span class="hero-gradient-text">Три материала. Одна система.</span>
+            </h1>
+            <p class="lead">Профессиональный калькулятор, управление заказами в реальном времени и аналитика — всё для пластика, мебели и металла в одной платформе.</p>
+
+            <div style="display: flex; gap: 16px; margin-top: 32px; flex-wrap: wrap;">
+                <a href="miniapp.html" class="btn btn-primary">Запросить демонстрацию</a>
+                <button class="btn btn-outline">Скачать брошюру</button>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Компаний доверяют</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">Лет опыта</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Техподдержка</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Масштабируемость</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="gradient-accent"></div>
+
+<!-- ===== FEATURES ===== -->
+<section class="section" id="features">
+    <div class="container-lg">
+        <div class="section-label">Возможности</div>
+        <h2>Всё необходимое для успеха</h2>
+        <p class="lead">Инструменты, которые действительно нужны производственным компаниям</p>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, var(--orange) 0%, #FF8A5B 100%); color: white;">
+                    <svg class="icon icon-lg" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-calculator"/></svg>
+                </div>
+                <h3>Профессиональный калькулятор</h3>
+                <p>Расчет стоимости за секунды для пластика, мебели и металла. Точные формулы, учитывающие все параметры производства.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, var(--green) 0%, #26d07c 100%); color: white;">
+                    <svg class="icon icon-lg" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg>
+                </div>
+                <h3>Управление заказами</h3>
+                <p>Отслеживание статуса каждого заказа: от расчёта до доставки. Уведомления, аналитика, экспорт — всё под контролем.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, var(--gray) 0%, #7A7A7A 100%); color: white;">
+                    <svg class="icon icon-lg" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>
+                </div>
+                <h3>Аналитика и отчеты</h3>
+                <p>Видите прибыльность каждого проекта, тренды продаж, статистику по материалам. Данные для правильных решений.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #0066CC 0%, #0088FF 100%); color: white;">
+                    <svg class="icon icon-lg" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-users"/></svg>
+                </div>
+                <h3>Управление командой</h3>
+                <p>Приглашайте сотрудников, управляйте доступом и ролями. Разные уровни для разных задач — от менеджеров до исполнителей.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #FF6B35 0%, #FF8A5B 100%); color: white;">
+                    <svg class="icon icon-lg" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg>
+                </div>
+                <h3>Коммерческие предложения</h3>
+                <p>Генерируйте КП за минуты. PDF с вашим логотипом, реквизитами, подписью — готово к отправке клиентам.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, var(--green) 0%, #26d07c 100%); color: white;">
+                    <svg class="icon icon-lg" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-shield"/></svg>
+                </div>
+                <h3>Безопасность и масштаб</h3>
+                <p>Облачное хранилище, резервные копии, многоуровневая защита. Растите без ограничений и опасений.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="gradient-accent"></div>
+
+<!-- ===== BRANDS/MATERIALS ===== -->
+<section class="section brands-section" id="brands">
+    <div class="container-lg">
+        <div class="section-label">Наши бренды</div>
+        <h2>Решение для каждого материала</h2>
+        <p class="lead">Три направления производства, объединённые одной мощной платформой</p>
+
+        <div class="row g-4" style="margin-top: 48px;">
+            <!-- UNITPLAST -->
+            <div class="col-lg-4">
+                <div class="material-card" style="border-color: var(--orange); color: var(--orange);">
+                    <div class="material-header" style="background: linear-gradient(135deg, var(--orange) 0%, #FF8A5B 100%);">
+                        <svg style="width: 64px; height: 64px;" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 3h12v18H6z"/><path d="M9 6h6M9 10h6M9 14h6"/><circle cx="12" cy="19" r="1.5" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="material-content">
+                        <div class="material-name">UNITPLAST</div>
+                        <div class="material-desc">Системы для производства пластика</div>
+                        <div class="material-stats">
+                            <div class="stat">
+                                <div class="stat-val">500+</div>
+                                <div class="stat-key">Клиентов</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-val">20+</div>
+                                <div class="stat-key">Лет опыта</div>
+                            </div>
+                        </div>
+                        <a href="miniapp.html" class="btn btn-primary w-100">Калькулятор</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UNIFURNITURE -->
+            <div class="col-lg-4">
+                <div class="material-card" style="border-color: var(--green); color: var(--green);">
+                    <div class="material-header" style="background: linear-gradient(135deg, var(--green) 0%, #26d07c 100%);">
+                        <svg style="width: 64px; height: 64px;" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5M3 5h18M8 8v7M12 8v7M16 8v7"/>
+                        </svg>
+                    </div>
+                    <div class="material-content">
+                        <div class="material-name">UNIFURNITURE</div>
+                        <div class="material-desc">Решения для мебельного производства</div>
+                        <div class="material-stats">
+                            <div class="stat">
+                                <div class="stat-val">1000+</div>
+                                <div class="stat-key">Проектов</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-val">50+</div>
+                                <div class="stat-key">Стран</div>
+                            </div>
+                        </div>
+                        <a href="miniapp.html" class="btn btn-primary w-100">Калькулятор</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UNIMETALL -->
+            <div class="col-lg-4">
+                <div class="material-card" style="border-color: var(--gray); color: var(--gray);">
+                    <div class="material-header" style="background: linear-gradient(135deg, var(--gray) 0%, #7A7A7A 100%);">
+                        <svg style="width: 64px; height: 64px;" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12h18M5 5l2 14h10l2-14M9 5v14M15 5v14M8 9h8"/>
+                        </svg>
+                    </div>
+                    <div class="material-content">
+                        <div class="material-name">UNIMETALL</div>
+                        <div class="material-desc">Системы для металлоконструкций</div>
+                        <div class="material-stats">
+                            <div class="stat">
+                                <div class="stat-val">100+</div>
+                                <div class="stat-key">Партнёров</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-val">24/7</div>
+                                <div class="stat-key">Поддержка</div>
+                            </div>
+                        </div>
+                        <a href="miniapp.html" class="btn btn-primary w-100">Калькулятор</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="gradient-accent"></div>
+
+<!-- ===== DEMO SECTION ===== -->
+<section class="section demo-section">
+    <div class="container-lg">
+        <div class="demo-container">
+            <div class="demo-text">
+                <div class="section-label">Как это работает</div>
+                <h2>Панель управления в действии</h2>
+                <p class="lead">Вся информация о заказах, расчетах и сроках в одном месте. Принимайте решения быстрее, работайте эффективнее.</p>
+
+                <div class="demo-feature">
+                    <div class="demo-icon" style="background: var(--orange);">1</div>
+                    <div>
+                        <h4>Загрузите параметры</h4>
+                        <p style="margin: 0; color: #666;">Укажите размеры, материал, количество. Система мгновенно рассчитает стоимость.</p>
+                    </div>
+                </div>
+
+                <div class="demo-feature">
+                    <div class="demo-icon" style="background: var(--green);">2</div>
+                    <div>
+                        <h4>Получите КП</h4>
+                        <p style="margin: 0; color: #666;">Профессиональное коммерческое предложение готово за минуты, а не часы.</p>
+                    </div>
+                </div>
+
+                <div class="demo-feature">
+                    <div class="demo-icon" style="background: var(--gray);">3</div>
+                    <div>
+                        <h4>Отслеживайте заказ</h4>
+                        <p style="margin: 0; color: #666;">От производства до доставки — видите каждый этап в реальном времени.</p>
+                    </div>
+                </div>
+
+                <a href="miniapp.html" class="btn btn-primary" style="margin-top: 24px;">Попробовать бесплатно</a>
+            </div>
+
+            <div class="demo-phone">
+                <div style="background: linear-gradient(135deg, rgba(46, 107, 242, 0.15), rgba(139, 109, 242, 0.08)); border-radius: 28px; overflow: hidden; color: white; font-family: 'Inter', sans-serif;">
+                    <div style="background: linear-gradient(90deg, var(--orange) 0%, var(--green) 50%, var(--gray) 100%); padding: 16px; text-align: center; font-weight: 700; font-size: 13px;">
+                        UNITGROUP
+                    </div>
+                    <div style="background: #04060c; padding: 24px; min-height: 400px;">
+                        <div style="background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.2); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                            <div style="font-size: 20px; font-weight: 700; color: #2e6bf2; margin-bottom: 4px;">2 490 ₽</div>
+                            <div style="font-size: 11px; color: rgba(255,255,255,0.7);">Примерная стоимость</div>
+                        </div>
+                        <div style="font-size: 12px; font-weight: 600; margin-bottom: 12px;">Выберите материал</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;">
+                            <div style="background: rgba(255, 107, 53, 0.2); border: 1px solid var(--orange); border-radius: 8px; padding: 12px; text-align: center; font-size: 11px; font-weight: 600; color: var(--orange);">Пластик</div>
+                            <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid var(--green); border-radius: 8px; padding: 12px; text-align: center; font-size: 11px; font-weight: 600; color: var(--green);">Мебель</div>
+                        </div>
+                        <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-bottom: 8px;">📦 Параметры</div>
+                        <div style="font-size: 11px; line-height: 1.6; color: rgba(255,255,255,0.8); margin-bottom: 16px;">
+                            Высота: 200мм<br>Ширина: 150мм<br>Толщина: 2мм
+                        </div>
+                        <button style="width: 100%; background: var(--orange); border: none; color: white; padding: 12px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer;">Сохранить расчет</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="gradient-accent"></div>
+
+<!-- ===== PRICING ===== -->
+<section class="section pricing-section" id="pricing">
+    <div class="container-lg">
+        <div class="section-label">Тарифы</div>
+        <h2>Прозрачная цена для роста</h2>
+        <p class="lead">Начните с базового плана, повышайте по мере развития бизнеса</p>
+
+        <div class="pricing-grid">
+            <!-- STARTER -->
+            <div class="pricing-card">
+                <div style="font-weight: 700; font-size: 1.25rem; margin-bottom: 8px;">STARTER</div>
+                <div class="price-tag">
+                    <span class="price-currency">₽</span>0
+                </div>
+                <p style="color: #999; margin: 8px 0 32px;">Навсегда бесплатно</p>
+
+                <features-list style="list-style: none; margin: 0; padding: 0;">
+                    <ul class="features-list">
+                        <li>✅ Профессиональный калькулятор</li>
+                        <li>✅ Все 3 материала (UNITPLAST)</li>
+                        <li>✅ Управление заказами</li>
+                        <li>✅ История расчётов</li>
+                        <li>❌ Интеграция 1С</li>
+                        <li>❌ Аналитика премиум</li>
+                        <li>✅ Email поддержка</li>
+                    </ul>
+                </features-list>
+
+                <a href="miniapp.html" class="btn btn-primary w-100">Начать</a>
+            </div>
+
+            <!-- PROFESSIONAL -->
+            <div class="pricing-card featured">
+                <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--orange); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Популярный</div>
+                <div style="font-weight: 700; font-size: 1.25rem; margin-bottom: 8px; margin-top: 12px;">PROFESSIONAL</div>
+                <div class="price-tag">
+                    <span class="price-currency">₽</span><span style="font-size: 0.8em;">2</span>990
+                </div>
+                <p style="color: #999; margin: 8px 0 32px;">в месяц</p>
+
+                <features-list style="list-style: none; margin: 0; padding: 0;">
+                    <ul class="features-list">
+                        <li>✅ Все из STARTER</li>
+                        <li>✅ Все 3 материала (включая мебель)</li>
+                        <li>✅ Коммерческие предложения</li>
+                        <li>✅ Аналитика и отчеты</li>
+                        <li>✅ Управление командой (до 5 чел)</li>
+                        <li>✅ Интеграция 1С (базовая)</li>
+                        <li>✅ Приоритетная поддержка</li>
+                    </ul>
+                </features-list>
+
+                <a href="miniapp.html" class="btn btn-primary w-100">Выбрать</a>
+            </div>
+
+            <!-- ENTERPRISE -->
+            <div class="pricing-card">
+                <div style="font-weight: 700; font-size: 1.25rem; margin-bottom: 8px;">ENTERPRISE</div>
+                <div class="price-tag">
+                    <span class="price-currency">₽</span><span style="font-size: 0.8em;">9</span>990<span style="font-size: 0.5em;">+</span>
+                </div>
+                <p style="color: #999; margin: 8px 0 32px;">Под ваши задачи</p>
+
+                <features-list style="list-style: none; margin: 0; padding: 0;">
+                    <ul class="features-list">
+                        <li>✅ Всё из PROFESSIONAL</li>
+                        <li>✅ Неограниченная команда</li>
+                        <li>✅ Полная интеграция 1С</li>
+                        <li>✅ Белый лейбл</li>
+                        <li>✅ Выделенный аккаунт-менеджер</li>
+                        <li>✅ SLA гарантия 99.9%</li>
+                        <li>✅ 24/7 премиум поддержка</li>
+                    </ul>
+                </features-list>
+
+                <a href="#contact" class="btn btn-primary w-100">Связаться</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="gradient-accent"></div>
+
+<!-- ===== CONTACT ===== -->
+<section class="section contact-section" id="contact">
+    <div class="container-lg">
+        <div style="text-align: center; margin-bottom: 48px;">
+            <div class="section-label" style="justify-content: center;">Контакты</div>
+            <h2>Готовы начать?</h2>
+            <p class="lead">Свяжитесь с нами для демонстрации или вопросов</p>
+        </div>
+
+        <div class="contact-form">
+            <form onsubmit="event.preventDefault();">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Ваше имя</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Компания</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Телефон</label>
+                            <input type="tel" class="form-control phone-input" placeholder="+7 (XXX) XXX-XX-XX" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control email-input" placeholder="name@company.com" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Сообщение</label>
+                    <textarea class="form-control" rows="5" required></textarea>
+                </div>
+
+                <div class="checkbox-group">
+                    <div style="margin-bottom: 8px;">
+                        <input type="checkbox" id="agree-terms" required>
+                        <label for="agree-terms">
+                            Я согласен с <a href="/docs/terms.html" style="color: var(--orange); text-decoration: none;">условиями обработки персональных данных</a> и <a href="/docs/privacy.html" style="color: var(--orange); text-decoration: none;">политикой конфиденциальности</a>
+                        </label>
+                    </div>
+                    <div style="font-size: 12px; color: #666; margin-top: 8px;">
+                        При нажатии кнопки ваши данные будут обработаны в соответствии с 152-ФЗ
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" style="padding: 14px;">Отправить</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div class="gradient-accent"></div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="container-lg">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; margin-bottom: 48px; text-align: left;">
+            <div>
+                <h4 style="font-weight: 700; margin-bottom: 16px;">UNITGROUP</h4>
+                <p style="color: #999; font-size: 14px;">Управление производством в одной системе для пластика, мебели и металла.</p>
+            </div>
+            <div>
+                <h4 style="font-weight: 700; margin-bottom: 16px;">Продукт</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li><a href="miniapp.html" style="color: #999; text-decoration: none; font-size: 14px;">Калькулятор</a></li>
+                    <li><a href="#pricing" style="color: #999; text-decoration: none; font-size: 14px;">Тарифы</a></li>
+                    <li><a href="#contact" style="color: #999; text-decoration: none; font-size: 14px;">Контакты</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="font-weight: 700; margin-bottom: 16px;">Поддержка</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li><a href="/docs/terms.html" style="color: #999; text-decoration: none; font-size: 14px;">Условия</a></li>
+                    <li><a href="/docs/privacy.html" style="color: #999; text-decoration: none; font-size: 14px;">Конфиденциальность</a></li>
+                    <li><a href="tel:+79161616193" style="color: #999; text-decoration: none; font-size: 14px;">+7 (916) 161-61-93</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="font-weight: 700; margin-bottom: 16px;">Контакты</h4>
+                <p style="color: #999; font-size: 14px;">Лётная ул., 1<br>Долгопрудный<br>support@unitgroup.tech</p>
+            </div>
+        </div>
+
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; text-align: center; color: #666;">
+            <p style="margin: 0; font-size: 14px;">© 2026 UNITGROUP. Все права защищены. | Разработано с <span style="color: var(--orange);">❤</span> для производства</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Phone mask
+    document.querySelectorAll('.phone-input').forEach(input => {
+        input.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            if (value.length === 0) e.target.value = '';
+            else if (value.length <= 1) e.target.value = '+' + value;
+            else if (value.length <= 4) e.target.value = '+' + value.slice(0, 1) + ' (' + value.slice(1);
+            else if (value.length <= 7) e.target.value = '+' + value.slice(0, 1) + ' (' + value.slice(1, 4) + ') ' + value.slice(4);
+            else if (value.length <= 9) e.target.value = '+' + value.slice(0, 1) + ' (' + value.slice(1, 4) + ') ' + value.slice(4, 7) + '-' + value.slice(7);
+            else e.target.value = '+' + value.slice(0, 1) + ' (' + value.slice(1, 4) + ') ' + value.slice(4, 7) + '-' + value.slice(7, 9) + '-' + value.slice(9, 11);
+        });
+    });
+
+    // Email validation
+    document.querySelectorAll('.email-input').forEach(input => {
+        input.addEventListener('blur', function(e) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (e.target.value && !emailRegex.test(e.target.value)) {
+                e.target.style.borderColor = '#dc3545';
+            } else {
+                e.target.style.borderColor = '';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
