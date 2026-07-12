@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/icons.css">
     <style>
         :root {
             --bg-0: #04060c;
@@ -295,7 +296,7 @@
         <div class="app-header">
             <button onclick="window.history.back()">←</button>
             <h2 id="page-title">Расчет стоимости</h2>
-            <button onclick="alert('Меню')">⚙️</button>
+            <button onclick="alert('Меню')"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️</button>
         </div>
 
         <!-- CONTENT -->
@@ -309,12 +310,12 @@
                     </div>
 
                     <div class="stat-card" style="margin-bottom: 16px; cursor: pointer;" onclick="updateDashboardData()">
-                        <div class="label">📊 Расчеты за месяц (нажми для обновления)</div>
+                        <div class="label"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Расчеты за месяц (нажми для обновления)</div>
                         <div class="amount" id="dashboard-calculations">24</div>
                         <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">⟳ Последнее обновление: только что</div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">📊 KPI (обновляется каждые 5 сек)</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> KPI (обновляется каждые 5 сек)</h3>
                     <div class="product-grid" style="grid-template-columns: 1fr 1fr 1fr;">
                         <div class="product-card">
                             <div style="font-size: 20px; font-weight: 700; color: var(--blue);" id="kpi-active">7</div>
@@ -341,7 +342,7 @@
                         <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(139, 109, 242, 0.8);" onclick="showPage('team')">👥 Команда</button>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">📋 Недавние заказы</h3>
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg> Недавние заказы</h3>
                     <div class="history-item" onclick="showPage('order-detail')" style="cursor: pointer;">
                         <div class="history-header">
                             <div>
@@ -358,7 +359,7 @@
                                 <div class="history-name">#2505 - Шкаф</div>
                                 <div class="history-date">Готово</div>
                             </div>
-                            <div class="history-price">✅</div>
+                            <div class="history-price"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg></div>
                         </div>
                     </div>
                 </div>
@@ -546,7 +547,7 @@
 
                     <div style="display: flex; gap: 12px;">
                         <button class="btn" onclick="saveCalculation()">💾 Сохранить расчет</button>
-                        <button class="btn btn-secondary" onclick="showPage('history')">📋 История</button>
+                        <button class="btn btn-secondary" onclick="showPage('history')"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg> История</button>
                     </div>
                 </div>
             </div>
@@ -587,7 +588,7 @@
                     <div class="history-item">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">⚙️ Стальной каркас</div>
+                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Стальной каркас</div>
                                 <div class="history-date">05.07.2026 14:20</div>
                             </div>
                             <div class="history-price">25 000 ₽</div>
@@ -608,7 +609,7 @@
                     <h3>Файлы и документы</h3>
 
                     <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <button class="btn" style="flex: 1; font-size: 13px; padding: 8px;">📤 Загрузить файл</button>
+                        <button class="btn" style="flex: 1; font-size: 13px; padding: 8px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-send"/></svg> Загрузить файл</button>
                     </div>
 
                     <h3 style="font-size: 14px; margin-top: 20px;">Недавние файлы</h3>
@@ -616,7 +617,7 @@
                     <div class="history-item">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">📊 Расчет_2506.xlsx</div>
+                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Расчет_2506.xlsx</div>
                                 <div class="history-date">Сегодня, 15:32</div>
                             </div>
                         </div>
@@ -624,7 +625,7 @@
                             Размер: 245 KB | EXCEL
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">📥 Скачать</button>
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-inbox"/></svg> Скачать</button>
                             <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">🔗 Поделиться</button>
                         </div>
                     </div>
@@ -640,7 +641,7 @@
                             Размер: 1.2 MB | PDF
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">📥 Скачать</button>
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-inbox"/></svg> Скачать</button>
                             <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">🔗 Поделиться</button>
                         </div>
                     </div>
@@ -648,7 +649,7 @@
                     <div class="history-item">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">🔧 3D_Model.step</div>
+                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-wrench"/></svg> 3D_Model.step</div>
                                 <div class="history-date">2 дня назад, 14:20</div>
                             </div>
                         </div>
@@ -656,7 +657,7 @@
                             Размер: 3.8 MB | STEP
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">📥 Скачать</button>
+                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-inbox"/></svg> Скачать</button>
                             <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">🔗 Поделиться</button>
                         </div>
                     </div>
@@ -669,7 +670,7 @@
                     <h3>Аналитика и статистика</h3>
 
                     <div class="stat-card" style="cursor: pointer;" onclick="updateAnalyticsData()">
-                        <div class="label">📊 Расчеты за месяц (нажми для обновления)</div>
+                        <div class="label"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Расчеты за месяц (нажми для обновления)</div>
                         <div class="amount" id="analytics-calculations">24</div>
                         <div style="font-size: 11px; color: #10b981; margin-top: 8px;">↑ +5 от прошлой недели</div>
                     </div>
@@ -724,7 +725,7 @@
                         <div style="font-size: 11px; color: #10b981; margin-top: 8px;">↑ +150 000 от вчера</div>
                     </div>
 
-                    <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);" onclick="showPage('advanced-analytics')">📊 Расширенная аналитика →</button>
+                    <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);" onclick="showPage('advanced-analytics')"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Расширенная аналитика →</button>
                 </div>
             </div>
 
@@ -772,12 +773,12 @@
                     <div class="product-card" style="margin-bottom: 16px;">
                         <div class="product-name">Тариф Pro</div>
                         <div style="font-size: 13px; color: var(--text-1); margin: 8px 0;">
-                            ✅ Все возможности платформы<br/>
-                            ✅ Приоритетная поддержка<br/>
-                            ✅ Интеграция 1С
+                            <svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Все возможности платформы<br/>
+                            <svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Приоритетная поддержка<br/>
+                            <svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Интеграция 1С
                         </div>
                         <div style="font-size: 12px; color: var(--blue); margin-top: 8px;">
-                            🔄 Продление: 30 дней
+                            <svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg> Продление: 30 дней
                         </div>
                     </div>
 
@@ -824,7 +825,7 @@
                     <div class="history-item">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">👨‍🔧 Дмитрий П.</div>
+                                <div class="history-name">👨‍<svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-wrench"/></svg> Дмитрий П.</div>
                                 <div class="history-date">Оператор</div>
                             </div>
                             <div style="font-size: 12px; color: #f59e0b;">⏸ Отключен</div>
@@ -862,7 +863,7 @@
                         <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">Последняя синхронизация: 2 часа назад</div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">⚙️ Параметры синхронизации</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Параметры синхронизации</h3>
 
                     <div class="result-row">
                         <span class="result-label">Справочник материалов</span>
@@ -889,8 +890,8 @@
                         <span class="result-value" style="color: #f59e0b;">⏸</span>
                     </div>
 
-                    <button class="btn mt-16">🔄 Синхронизировать сейчас</button>
-                    <button class="btn btn-secondary mt-16">⚙️ Расширенные настройки</button>
+                    <button class="btn mt-16"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg> Синхронизировать сейчас</button>
+                    <button class="btn btn-secondary mt-16"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Расширенные настройки</button>
                 </div>
             </div>
 
@@ -983,7 +984,7 @@
                         </div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⚙️ Металл</h3>
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Металл</h3>
 
                     <div class="history-item">
                         <div class="history-header">
@@ -1015,8 +1016,8 @@
                     <h3>Справка и поддержка</h3>
 
                     <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <button class="btn btn-secondary" style="flex: 1; font-size: 12px; padding: 8px;" onclick="alert('📞 +7 (495) 123-45-67')">📞 Позвонить</button>
-                        <button class="btn btn-secondary" style="flex: 1; font-size: 12px; padding: 8px;" onclick="alert('💬 support@unitplast.ru')">💬 Chat</button>
+                        <button class="btn btn-secondary" style="flex: 1; font-size: 12px; padding: 8px;" onclick="alert('<svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-phone"/></svg> +7 (495) 123-45-67')"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-phone"/></svg> Позвонить</button>
+                        <button class="btn btn-secondary" style="flex: 1; font-size: 12px; padding: 8px;" onclick="alert('<svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-notification"/></svg> support@unitplast.ru')"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-notification"/></svg> Chat</button>
                     </div>
 
                     <h3 style="font-size: 14px; margin-bottom: 12px;">❓ Частые вопросы</h3>
@@ -1050,7 +1051,7 @@
                         <button style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;" onclick="showPage('calculator')">← Назад</button>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">📋 Шаги расчета (3/3)</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg> Шаги расчета (3/3)</h3>
 
                     <div class="history-item">
                         <div style="margin-bottom: 8px;">
@@ -1118,7 +1119,7 @@
                         <div style="font-size: 13px;">₽</div>
                     </div>
 
-                    <button class="btn mt-16" style="background: rgba(16, 185, 129, 0.8);" onclick="alert('✅ Заказ #2509 создан!')">✓ Создать заказ</button>
+                    <button class="btn mt-16" style="background: rgba(16, 185, 129, 0.8);" onclick="alert('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Заказ #2509 создан!')">✓ Создать заказ</button>
                     <button class="btn btn-secondary mt-16" onclick="showPage('dashboard')">← Отмена</button>
                 </div>
             </div>
@@ -1137,11 +1138,11 @@
                         <div style="width: 60%; height: 100%; background: linear-gradient(90deg, var(--blue), #10b981);"></div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">📊 Информация</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Информация</h3>
 
                     <div class="result-row">
                         <span class="result-label">Статус</span>
-                        <span class="result-value" style="color: #10b981;">⚙️ В работе</span>
+                        <span class="result-value" style="color: #10b981;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ В работе</span>
                     </div>
 
                     <div class="result-row">
@@ -1164,7 +1165,7 @@
                         <span class="result-value">12.07.2026</span>
                     </div>
 
-                    <button class="btn mt-16">📞 Связаться</button>
+                    <button class="btn mt-16"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-phone"/></svg> Связаться</button>
                     <button class="btn btn-secondary mt-16" onclick="showPage('orders')">← Назад</button>
                 </div>
             </div>
@@ -1177,7 +1178,7 @@
                     <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">✅ Заказ готов!</div>
+                                <div class="history-name"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Заказ готов!</div>
                                 <div class="history-date">10 минут назад</div>
                             </div>
                         </div>
@@ -1187,7 +1188,7 @@
                     <div class="history-item" style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b;">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">⚠️ Внимание!</div>
+                                <div class="history-name"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-alert-triangle"/></svg>️ Внимание!</div>
                                 <div class="history-date">1 час назад</div>
                             </div>
                         </div>
@@ -1197,7 +1198,7 @@
                     <div class="history-item" style="background: rgba(46, 107, 242, 0.1); border-left: 3px solid var(--blue);">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">🔄 Синхронизация</div>
+                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg> Синхронизация</div>
                                 <div class="history-date">3 часа назад</div>
                             </div>
                         </div>
@@ -1207,7 +1208,7 @@
                     <div class="history-item">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">📊 Ежедневный отчет</div>
+                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Ежедневный отчет</div>
                                 <div class="history-date">Вчера, 18:00</div>
                             </div>
                         </div>
@@ -1245,12 +1246,12 @@
                         <span style="cursor: pointer; font-size: 20px;">✓</span>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;">📊 Экспорт</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Экспорт</h3>
 
                     <button class="btn btn-secondary mt-16">💾 Скачать резервную копию</button>
-                    <button class="btn btn-secondary mt-16">📤 Экспортировать в CSV</button>
+                    <button class="btn btn-secondary mt-16"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-send"/></svg> Экспортировать в CSV</button>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;">⚠️ Опасные действия</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-alert-triangle"/></svg>️ Опасные действия</h3>
 
                     <button class="btn btn-secondary mt-16" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">🗑️ Очистить кэш</button>
                 </div>
@@ -1259,13 +1260,13 @@
             <!-- PAGE: ADVANCED ANALYTICS -->
             <div id="page-advanced-analytics" class="page" style="display: none;">
                 <div class="section">
-                    <h3>📊 Расширенная аналитика</h3>
+                    <h3><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Расширенная аналитика</h3>
 
                     <div style="display: flex; gap: 8px; margin-bottom: 16px;">
                         <button onclick="showPage('analytics')" style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">← Назад</button>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">📈 Тренды по типам</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Тренды по типам</h3>
 
                     <div class="stat-card">
                         <div class="label">UP (Пластик)</div>
@@ -1328,13 +1329,13 @@
                         <button onclick="showPage('production')" style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">← Назад</button>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">🔧 Линии производства (3)</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-wrench"/></svg> Линии производства (3)</h3>
 
                     <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
                         <div class="history-header">
                             <div>
                                 <div class="history-name">Линия A - Пластик</div>
-                                <div class="history-date">✅ Работает</div>
+                                <div class="history-date"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Работает</div>
                             </div>
                             <div style="text-align: right;">
                                 <div style="font-size: 18px; font-weight: 700;">87%</div>
@@ -1350,7 +1351,7 @@
                         <div class="history-header">
                             <div>
                                 <div class="history-name">Линия B - Мебель</div>
-                                <div class="history-date">✅ Работает</div>
+                                <div class="history-date"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Работает</div>
                             </div>
                             <div style="text-align: right;">
                                 <div style="font-size: 18px; font-weight: 700;">65%</div>
@@ -1366,7 +1367,7 @@
                         <div class="history-header">
                             <div>
                                 <div class="history-name">Линия C - Металл</div>
-                                <div class="history-date">⚠️ Техническое обслуживание</div>
+                                <div class="history-date"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-alert-triangle"/></svg>️ Техническое обслуживание</div>
                             </div>
                             <div style="text-align: right;">
                                 <div style="font-size: 18px; font-weight: 700;">0%</div>
@@ -1436,7 +1437,7 @@
                         <div style="font-size: 11px; color: var(--text-1);">Опыт: 8 лет, Специалист: Металл</div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">📊 Статистика</h3>
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Статистика</h3>
 
                     <div class="result-row">
                         <span class="result-label">Активных сотрудников</span>
@@ -1467,7 +1468,7 @@
                         <div class="history-header">
                             <div>
                                 <div class="history-name">ABS пластик</div>
-                                <div class="history-date">✅ В норме</div>
+                                <div class="history-date"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> В норме</div>
                             </div>
                             <div style="text-align: right;">
                                 <div style="font-size: 18px; font-weight: 700;">450 кг</div>
@@ -1479,7 +1480,7 @@
                         <div class="history-header">
                             <div>
                                 <div class="history-name">PP пластик</div>
-                                <div class="history-date">⚠️ Низкий запас</div>
+                                <div class="history-date"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-alert-triangle"/></svg>️ Низкий запас</div>
                             </div>
                             <div style="text-align: right;">
                                 <div style="font-size: 18px; font-weight: 700;">35 кг</div>
@@ -1493,7 +1494,7 @@
                         <div class="history-header">
                             <div>
                                 <div class="history-name">Фанера (18мм)</div>
-                                <div class="history-date">✅ 820 листов</div>
+                                <div class="history-date"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> 820 листов</div>
                             </div>
                         </div>
                     </div>
@@ -1502,12 +1503,12 @@
                         <div class="history-header">
                             <div>
                                 <div class="history-name">ЛДСП цветная</div>
-                                <div class="history-date">✅ 125 листов</div>
+                                <div class="history-date"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> 125 листов</div>
                             </div>
                         </div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⚙️ Металл (UM)</h3>
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Металл (UM)</h3>
 
                     <div class="history-item" style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444;">
                         <div class="history-header">
@@ -1521,21 +1522,21 @@
                         </div>
                     </div>
 
-                    <button class="btn mt-16" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">⚠️ Заказать материалы</button>
+                    <button class="btn mt-16" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-alert-triangle"/></svg>️ Заказать материалы</button>
                 </div>
             </div>
 
             <!-- PAGE: SYNC STATUS -->
             <div id="page-sync-status" class="page" style="display: none;">
                 <div class="section">
-                    <h3>🔄 Статус синхронизации</h3>
+                    <h3><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg> Статус синхронизации</h3>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">📊 Последние синхронизации</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Последние синхронизации</h3>
 
                     <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">✅ 1С Бухгалтерия 8.3</div>
+                                <div class="history-name"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> 1С Бухгалтерия 8.3</div>
                                 <div class="history-date">Синхронизировано</div>
                             </div>
                         </div>
@@ -1548,7 +1549,7 @@
                     <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">✅ Google Sheets</div>
+                                <div class="history-name"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Google Sheets</div>
                                 <div class="history-date">Синхронизировано</div>
                             </div>
                         </div>
@@ -1561,7 +1562,7 @@
                     <div class="history-item" style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b;">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">⚠️ Telegram API</div>
+                                <div class="history-name"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-alert-triangle"/></svg>️ Telegram API</div>
                                 <div class="history-date">Подготовка...</div>
                             </div>
                         </div>
@@ -1570,7 +1571,7 @@
                         </div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⚙️ Параметры синхронизации</h3>
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Параметры синхронизации</h3>
 
                     <div class="result-row">
                         <span class="result-label">Интервал автосинхронизации</span>
@@ -1582,14 +1583,14 @@
                         <span class="result-value">Нет</span>
                     </div>
 
-                    <button class="btn mt-16">🔄 Синхронизировать сейчас</button>
+                    <button class="btn mt-16"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg> Синхронизировать сейчас</button>
                 </div>
             </div>
 
             <!-- PAGE: EXPORT ORDERS -->
             <div id="page-export-orders" class="page" style="display: none;">
                 <div class="section">
-                    <h3>📤 Экспорт заказов</h3>
+                    <h3><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-send"/></svg> Экспорт заказов</h3>
 
                     <h3 style="font-size: 14px; margin-bottom: 12px;">🔍 Выбор данных</h3>
 
@@ -1615,7 +1616,7 @@
                         </select>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">📊 Формат экспорта</h3>
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Формат экспорта</h3>
 
                     <div class="result-row">
                         <span class="result-label">Всего записей</span>
@@ -1623,8 +1624,8 @@
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;">
-                        <button class="btn" style="background: rgba(16, 185, 129, 0.8);">📊 Excel (.xlsx)</button>
-                        <button class="btn" style="background: rgba(16, 185, 129, 0.8);">📋 CSV (.csv)</button>
+                        <button class="btn" style="background: rgba(16, 185, 129, 0.8);"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Excel (.xlsx)</button>
+                        <button class="btn" style="background: rgba(16, 185, 129, 0.8);"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg> CSV (.csv)</button>
                         <button class="btn" style="background: rgba(46, 107, 242, 0.8);">📄 PDF</button>
                         <button class="btn" style="background: rgba(46, 107, 242, 0.8);">🔗 1C XML</button>
                     </div>
@@ -1644,7 +1645,7 @@
                         <div style="font-size: 11px;">₽</div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">📋 Последние платежи</h3>
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg> Последние платежи</h3>
 
                     <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
                         <div class="history-header">
@@ -1686,14 +1687,14 @@
             <!-- PAGE: REPORTS -->
             <div id="page-reports" class="page" style="display: none;">
                 <div class="section">
-                    <h3>📊 Конструктор отчетов</h3>
+                    <h3><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Конструктор отчетов</h3>
 
                     <h3 style="font-size: 14px; margin-bottom: 12px;">📅 Шаблоны отчетов</h3>
 
                     <div class="history-item">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">📊 Ежемесячный отчет</div>
+                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Ежемесячный отчет</div>
                                 <div class="history-date">Автоматический</div>
                             </div>
                         </div>
@@ -1703,7 +1704,7 @@
                     <div class="history-item">
                         <div class="history-header">
                             <div>
-                                <div class="history-name">📈 Анализ продаж</div>
+                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Анализ продаж</div>
                                 <div class="history-date">Еженедельный</div>
                             </div>
                         </div>
@@ -1719,7 +1720,7 @@
                         </div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">🔧 Создать новый</h3>
+                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-wrench"/></svg> Создать новый</h3>
 
                     <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);">➕ Новый отчет</button>
                 </div>
@@ -1823,7 +1824,7 @@
                 <div class="section">
                     <h3>⚫ UNIMETALL Быстрый расчет</h3>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">⚙️ Популярные профили</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Популярные профили</h3>
 
                     <div class="product-grid">
                         <div class="product-card" onclick="alert('Швеллер: 400-600 ₽/кг')">
@@ -1865,7 +1866,7 @@
                 <div class="section">
                     <h3>⚡ Пакетные операции</h3>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">📋 Загрузить заказы</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg> Загрузить заказы</h3>
 
                     <div style="background: rgba(46, 107, 242, 0.1); border: 2px dashed rgba(46, 107, 242, 0.5); border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 16px; cursor: pointer;">
                         <div style="font-size: 24px; margin-bottom: 8px;">📁</div>
@@ -1873,7 +1874,7 @@
                         <div style="font-size: 11px; color: var(--text-1); margin-top: 4px;">Поддерживаются: CSV, Excel, XML</div>
                     </div>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">📊 Действия над выбранным</h3>
+                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Действия над выбранным</h3>
 
                     <div class="result-row">
                         <span class="result-label">Выбрано заказов</span>
@@ -1883,8 +1884,8 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;">
                         <button class="btn btn-secondary">✏️ Редактировать</button>
                         <button class="btn btn-secondary">🗑️ Удалить</button>
-                        <button class="btn btn-secondary">📤 Экспортировать</button>
-                        <button class="btn btn-secondary">🔄 Изменить статус</button>
+                        <button class="btn btn-secondary"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-send"/></svg> Экспортировать</button>
+                        <button class="btn btn-secondary"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg> Изменить статус</button>
                     </div>
 
                     <button class="btn mt-16" style="background: rgba(16, 185, 129, 0.8);">✓ Применить операцию</button>
@@ -1904,7 +1905,7 @@
                                 <div class="history-name" style="word-break: break-all;">sk_live_51234567890abcdef</div>
                                 <div class="history-date">Активный</div>
                             </div>
-                            <div style="cursor: pointer; font-size: 16px;">📋</div>
+                            <div style="cursor: pointer; font-size: 16px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg></div>
                         </div>
                         <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
                             Создан: 07.07.2026 • Последний запрос: 1 мин назад
@@ -1957,7 +1958,7 @@
                                 <div class="history-name">#2506 - Пластиковый контейнер</div>
                                 <div class="history-date">Статус: В работе</div>
                             </div>
-                            <div class="history-price">✅</div>
+                            <div class="history-price"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg></div>
                         </div>
                         <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
                             100 шт × 12 450 ₽ = 1 245 000 ₽<br/>
@@ -1975,7 +1976,7 @@
                                 <div class="history-name">#2505 - Офисный шкаф</div>
                                 <div class="history-date">Статус: Готово</div>
                             </div>
-                            <div class="history-price">✅</div>
+                            <div class="history-price"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg></div>
                         </div>
                         <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
                             10 шт × 8 500 ₽ = 85 000 ₽<br/>
@@ -2021,7 +2022,7 @@
                 <span>Уведомления (4)</span>
             </a>
             <a class="menu-item" onclick="showPage('calc-detail'); toggleMenu();">
-                <span class="menu-icon">📋</span>
+                <span class="menu-icon"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg></span>
                 <span>Детали расчета</span>
             </a>
             <a class="menu-item" onclick="showPage('order-detail'); toggleMenu();">
@@ -2044,7 +2045,7 @@
                 <span>Материалы (расш)</span>
             </a>
             <a class="menu-item" onclick="showPage('advanced-analytics'); toggleMenu();">
-                <span class="menu-icon">📈</span>
+                <span class="menu-icon"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg></span>
                 <span>Аналитика (расш)</span>
             </a>
             <a class="menu-item" onclick="showPage('team-advanced'); toggleMenu();">
@@ -2052,7 +2053,7 @@
                 <span>Команда (расш)</span>
             </a>
             <a class="menu-item" onclick="showPage('sync-status'); toggleMenu();">
-                <span class="menu-icon">🔄</span>
+                <span class="menu-icon"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg></span>
                 <span>Синхронизация</span>
             </a>
 
@@ -2071,7 +2072,7 @@
                 <span>Быстро: Металл</span>
             </a>
             <a class="menu-item" onclick="showPage('export-orders'); toggleMenu();">
-                <span class="menu-icon">📤</span>
+                <span class="menu-icon"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-send"/></svg></span>
                 <span>Экспорт</span>
             </a>
             <a class="menu-item" onclick="showPage('batch-operations'); toggleMenu();">
@@ -2079,7 +2080,7 @@
                 <span>Пакет. операции</span>
             </a>
             <a class="menu-item" onclick="showPage('reports'); toggleMenu();">
-                <span class="menu-icon">📊</span>
+                <span class="menu-icon"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg></span>
                 <span>Отчеты</span>
             </a>
             <a class="menu-item" onclick="showPage('billing'); toggleMenu();">
@@ -2106,7 +2107,7 @@
                 <span>Поддержка</span>
             </a>
             <a class="menu-item" onclick="showPage('settings'); toggleMenu();">
-                <span class="menu-icon">⚙️</span>
+                <span class="menu-icon"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️</span>
                 <span>Настройки</span>
             </a>
         </div>
@@ -2118,7 +2119,7 @@
                 <div class="nav-label">Главная</div>
             </a>
             <a class="nav-item" onclick="showPage('calculator')">
-                <div class="nav-icon" style="font-size: 24px;">🧮</div>
+                <div class="nav-icon" style="font-size: 24px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-calculator"/></svg></div>
                 <div class="nav-label">Расчёты</div>
             </a>
             <a class="nav-item" onclick="showPage('orders')">
@@ -2126,7 +2127,7 @@
                 <div class="nav-label">Заказы</div>
             </a>
             <a class="nav-item" onclick="showPage('analytics')">
-                <div class="nav-icon" style="font-size: 24px;">📈</div>
+                <div class="nav-icon" style="font-size: 24px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg></div>
                 <div class="nav-label">Аналитика</div>
             </a>
             <a class="nav-item" onclick="showPage('team')">
@@ -2141,7 +2142,7 @@
     </div>
 
     <script>
-        // 📊 ДАННЫЕ И СОСТОЯНИЕ
+        // <svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> ДАННЫЕ И СОСТОЯНИЕ
         let currentType = 'plastic';
 
         // Динамическое состояние приложения
@@ -2176,7 +2177,7 @@
             if (progressElement) animateNumber(progressElement, appState.inProgress);
             if (timeElement) animateNumber(timeElement, appState.avgTime);
 
-            console.log('📊 Данные обновлены:', appState);
+            console.log('<svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Данные обновлены:', appState);
         }
 
         // Анимированное изменение чисел
@@ -2233,11 +2234,11 @@
         }
 
         function saveCalculation() {
-            alert('✅ Расчет сохранен! Можете найти его в истории.');
+            alert('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Расчет сохранен! Можете найти его в истории.');
         }
 
         function loadFromHistory() {
-            alert('✅ Расчет восстановлен из истории');
+            alert('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Расчет восстановлен из истории');
             showPage('calculator');
         }
 
@@ -2300,7 +2301,7 @@
             event.target.classList.add('active');
 
             // Filter logic (would connect to real data)
-            alert(`✅ Фильтр применен: ${status === 'all' ? 'Все заказы' : status === 'work' ? 'В работе' : status === 'ready' ? 'Готовые' : 'Доставляются'}`);
+            alert(`<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Фильтр применен: ${status === 'all' ? 'Все заказы' : status === 'work' ? 'В работе' : status === 'ready' ? 'Готовые' : 'Доставляются'}`);
         }
 
         function updateAnalyticsData() {
@@ -2327,7 +2328,7 @@
                 if (elem) animateNumber(elem, value);
             });
 
-            console.log('📊 Аналитика обновлена:', appState);
+            console.log('<svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Аналитика обновлена:', appState);
         }
 
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -2339,11 +2340,11 @@
                 const response = await fetch('/api/v1/calculations');
                 const data = await response.json();
                 if (data.success) {
-                    console.log('✅ Расчеты загружены:', data.calculations);
+                    console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Расчеты загружены:', data.calculations);
                     return data.calculations;
                 }
             } catch (error) {
-                console.error('❌ Ошибка загрузки расчетов:', error);
+                console.error('<svg class="icon icon-md text-error" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-x-circle"/></svg> Ошибка загрузки расчетов:', error);
             }
         }
 
@@ -2352,11 +2353,11 @@
                 const response = await fetch('/api/v1/orders');
                 const data = await response.json();
                 if (data.success) {
-                    console.log('✅ Заказы загружены:', data.orders);
+                    console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Заказы загружены:', data.orders);
                     return data.orders;
                 }
             } catch (error) {
-                console.error('❌ Ошибка загрузки заказов:', error);
+                console.error('<svg class="icon icon-md text-error" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-x-circle"/></svg> Ошибка загрузки заказов:', error);
             }
         }
 
@@ -2365,11 +2366,11 @@
                 const response = await fetch('/api/v1/analytics/dashboard');
                 const data = await response.json();
                 if (data.success) {
-                    console.log('✅ Аналитика загружена:', data.metrics);
+                    console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Аналитика загружена:', data.metrics);
                     return data.metrics;
                 }
             } catch (error) {
-                console.error('❌ Ошибка загрузки аналитики:', error);
+                console.error('<svg class="icon icon-md text-error" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-x-circle"/></svg> Ошибка загрузки аналитики:', error);
             }
         }
 
@@ -2378,11 +2379,11 @@
                 const response = await fetch('/api/v1/materials');
                 const data = await response.json();
                 if (data.success) {
-                    console.log('✅ Материалы загружены:', data.materials);
+                    console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Материалы загружены:', data.materials);
                     return data.materials;
                 }
             } catch (error) {
-                console.error('❌ Ошибка загрузки материалов:', error);
+                console.error('<svg class="icon icon-md text-error" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-x-circle"/></svg> Ошибка загрузки материалов:', error);
             }
         }
 
@@ -2395,12 +2396,12 @@
                 });
                 const data = await response.json();
                 if (data.success) {
-                    console.log('✅ Заказ создан:', data.order_id);
-                    alert(`✅ ${data.message}`);
+                    console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Заказ создан:', data.order_id);
+                    alert(`<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> ${data.message}`);
                     return data.order_id;
                 }
             } catch (error) {
-                console.error('❌ Ошибка создания заказа:', error);
+                console.error('<svg class="icon icon-md text-error" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-x-circle"/></svg> Ошибка создания заказа:', error);
             }
         }
 
@@ -2409,11 +2410,11 @@
                 const response = await fetch('/api/v1/sync/1c', { method: 'POST' });
                 const data = await response.json();
                 if (data.success) {
-                    console.log('✅ Синхронизация с 1С:', data.synced);
-                    alert(`✅ ${data.message}\n\nСинхронизировано: ${data.synced.documents} документов`);
+                    console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Синхронизация с 1С:', data.synced);
+                    alert(`<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> ${data.message}\n\nСинхронизировано: ${data.synced.documents} документов`);
                 }
             } catch (error) {
-                console.error('❌ Ошибка синхронизации:', error);
+                console.error('<svg class="icon icon-md text-error" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-x-circle"/></svg> Ошибка синхронизации:', error);
             }
         }
 
@@ -2432,7 +2433,7 @@
                 appState.totalAmount = analytics.revenue || 2430000;
             }
 
-            console.log('✅ Приложение инициализировано с реальными данными');
+            console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Приложение инициализировано с реальными данными');
         }
 
         // Первоначальное обновление при загрузке
