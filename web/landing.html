@@ -12,16 +12,20 @@
 
     <style>
         :root {
-            --bg-0: #04060c;
-            --bg-1: #070b14;
-            --bg-2: #0b1019;
-            --panel: #0e1422;
-            --text-0: #f3f5f9;
-            --text-1: #aab2c5;
-            --blue: #2e6bf2;
+            --bg-0: #0a0e27;
+            --bg-1: #0f1429;
+            --bg-2: #151d3f;
+            --panel: #1a2450;
+            --text-0: #ffffff;
+            --text-1: #a3afc9;
+            --blue: #3b5bdb;
             --blue-light: #4d7fff;
+            --blue-dark: #2840b8;
             --green: #10b981;
-            --gray-border: rgba(170, 178, 197, 0.15);
+            --purple: #8b5cf6;
+            --cyan: #06b6d4;
+            --orange: #f97316;
+            --gray-border: rgba(163, 175, 201, 0.2);
         }
 
         * { box-sizing: border-box; }
@@ -80,19 +84,21 @@
         }
 
         .cta-btn {
-            background: var(--blue);
+            background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
             color: white;
-            padding: 10px 24px;
+            padding: 12px 28px;
             border: none;
             border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(59, 91, 219, 0.3);
         }
 
         .cta-btn:hover {
-            background: var(--blue-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(59, 91, 219, 0.4);
         }
 
         /* ===== SECTION BASE ===== */
@@ -112,11 +118,15 @@
         }
 
         .section-heading {
-            font-size: 52px;
+            font-size: 56px;
             font-weight: 800;
             margin: 0 0 24px 0;
-            line-height: 1.2;
+            line-height: 1.15;
             color: var(--text-0);
+            background: linear-gradient(135deg, #ffffff 0%, #a3afc9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .section-desc {
@@ -216,21 +226,31 @@
         }
 
         .feature-card {
-            background: var(--panel);
+            background: linear-gradient(135deg, rgba(26, 36, 80, 0.4) 0%, rgba(26, 36, 80, 0.2) 100%);
             border: 1px solid var(--gray-border);
             padding: 32px;
-            border-radius: 12px;
+            border-radius: 16px;
             transition: all 0.3s;
+            backdrop-filter: blur(10px);
         }
 
         .feature-card:hover {
             border-color: var(--blue);
-            background: rgba(46, 107, 242, 0.05);
+            background: linear-gradient(135deg, rgba(59, 91, 219, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(59, 91, 219, 0.2);
         }
 
         .feature-icon {
-            font-size: 40px;
+            font-size: 48px;
             margin-bottom: 16px;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(59, 91, 219, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-radius: 12px;
         }
 
         .feature-card h3 {
@@ -254,15 +274,19 @@
         }
 
         .brand-card {
-            background: var(--panel);
-            border: 1px solid var(--gray-border);
-            padding: 32px;
-            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(26, 36, 80, 0.4) 0%, rgba(26, 36, 80, 0.2) 100%);
+            border: 2px solid var(--gray-border);
+            padding: 40px;
+            border-radius: 16px;
             transition: all 0.3s;
+            backdrop-filter: blur(10px);
         }
 
         .brand-card:hover {
             border-color: var(--blue);
+            background: linear-gradient(135deg, rgba(59, 91, 219, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(59, 91, 219, 0.25);
         }
 
         .brand-logo {
@@ -535,10 +559,17 @@
         }
 
         .contact-card {
-            background: var(--panel);
+            background: linear-gradient(135deg, rgba(26, 36, 80, 0.5) 0%, rgba(26, 36, 80, 0.3) 100%);
             border: 1px solid var(--gray-border);
-            padding: 24px;
-            border-radius: 12px;
+            padding: 28px;
+            border-radius: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-card:hover {
+            border-color: var(--blue);
+            background: linear-gradient(135deg, rgba(59, 91, 219, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
         }
 
         .contact-card h4 {
@@ -638,7 +669,7 @@
 <body>
     <!-- NAVIGATION -->
     <nav>
-        <div class="logo">◆ UNITPLAST</div>
+        <div class="logo" style="font-size: 20px;">▲ UNITPLAST</div>
         <ul class="nav-menu">
             <li><a href="#features">Решения</a></li>
             <li><a href="#brands">Отрасли</a></li>
@@ -657,27 +688,27 @@
             <p class="section-desc">Доступ ко всем возможностям UNITPLAST — на вашем устройстве. Работайте с производством, заказами и аналитикой в любое время с компьютера, мобильного приложения или Mini App в Telegram.</p>
 
             <div class="download-buttons">
-                <button class="download-btn">🍎 App Store</button>
-                <button class="download-btn">▶ Google Play</button>
-                <button class="download-btn">📱 RuStore</button>
+                <button class="download-btn">📲 App Store</button>
+                <button class="download-btn">📱 Google Play</button>
+                <button class="download-btn">🛍️ RuStore</button>
             </div>
 
             <div class="platform-icons">
                 <div class="platform-item">
-                    <div class="platform-item-icon">🍎</div>
-                    <div class="platform-item-text">iOS</div>
+                    <div class="platform-item-icon">🍎 iOS</div>
+                    <div class="platform-item-text">Оптимизировано для iPhone</div>
                 </div>
                 <div class="platform-item">
-                    <div class="platform-item-icon">🤖</div>
-                    <div class="platform-item-text">Android</div>
+                    <div class="platform-item-icon">🤖 Android</div>
+                    <div class="platform-item-text">Полная функциональность</div>
                 </div>
                 <div class="platform-item">
-                    <div class="platform-item-icon">🌐</div>
-                    <div class="platform-item-text">Web</div>
+                    <div class="platform-item-icon">🌐 Web</div>
+                    <div class="platform-item-text">На любом браузере</div>
                 </div>
                 <div class="platform-item">
-                    <div class="platform-item-icon">✈️</div>
-                    <div class="platform-item-text">Telegram</div>
+                    <div class="platform-item-icon">✈️ Telegram</div>
+                    <div class="platform-item-text">Mini App в мессенджере</div>
                 </div>
             </div>
         </div>
@@ -696,33 +727,33 @@
         <div class="features-grid">
             <div class="feature-card">
                 <div class="feature-icon">⚡</div>
-                <h3>Расчёт за 30 секунд</h3>
-                <p>AI и умные алгоритмы мгновенно рассчитывают стоимость и сроки производства.</p>
+                <h3>Расчёт за 30 сек</h3>
+                <p>AI мгновенно рассчитывает стоимость, сроки и производственные параметры.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🧩</div>
-                <h3>Единая система для 3 производств</h3>
-                <p>Пластик, мебель, металл — всё в одной платформе без перестроек.</p>
+                <h3>3 бизнеса в 1</h3>
+                <p>Пластик, мебель, металл — единая система без перестроек и переделок.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">📦</div>
-                <h3>Склад и остатки в реальном времени</h3>
-                <p>Актуальные остатки, резервирование и движение материалов онлайн на всех складах.</p>
+                <h3>Склад онлайн</h3>
+                <p>Остатки, резервирование и движение материалов в реальном времени.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">📄</div>
-                <h3>Автоматическое КП</h3>
-                <p>КП формируется автоматически с логотипом, реквизитами и контактами исполнителя.</p>
+                <h3>КП за клик</h3>
+                <p>Автоматическое коммерческое предложение с логотипом и реквизитами.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🔗</div>
-                <h3>Интеграция с 1С и CRM</h3>
-                <p>Данные синхронизируются с 1С, CRM и другими системами без ручного ввода.</p>
+                <h3>1С и CRM</h3>
+                <p>Синхронизация данных с 1С, CRM и другими системами без ручного труда.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">📊</div>
-                <h3>Аналитика и контроль прибыли</h3>
-                <p>Отслеживайте маржинальность, загрузку производства и эффективность в динамике.</p>
+                <h3>Аналитика</h3>
+                <p>Маржинальность, загрузка производства, эффективность в динамике.</p>
             </div>
         </div>
     </section>
@@ -735,7 +766,7 @@
 
         <div class="brands-grid">
             <div class="brand-card">
-                <div class="brand-logo">◆</div>
+                <div class="brand-logo" style="font-size: 36px;">▲</div>
                 <h3>UNITPLAST</h3>
                 <p style="color: var(--text-1); font-size: 14px;">Литьё пластика под давлением</p>
                 <ul class="brand-features">
