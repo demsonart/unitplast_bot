@@ -595,11 +595,19 @@
     </nav>
 
     <!-- HERO -->
-    <section id="hero" class="py-5">
+    <section id="hero" class="py-5" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 600px; display: flex; align-items: center;">
         <div class="container-lg">
             <div class="row align-items-center">
                 <div class="col-lg-6 pb-5 pb-lg-0">
-                    <h1 class="hero-title display-4 fw-bold mb-4">Производство. Прибыль. Простота.</h1>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+                        <svg style="width: 40px; height: 40px;" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+                            <g><path d="M 30 35 L 42 28 L 54 35 L 54 50 L 42 57 L 30 50 Z" fill="none" stroke="#5A5A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M 32 40 L 42 35 L 52 40 L 52 48 L 42 53 L 32 48 Z" fill="none" stroke="#5A5A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/></g>
+                            <g><path d="M 90 35 L 102 28 L 114 35 L 114 50 L 102 57 L 90 50 Z" fill="none" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M 92 40 L 102 35 L 112 40 L 112 48 L 102 53 L 92 48 Z" fill="none" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/></g>
+                            <g><path d="M 150 35 L 162 28 L 174 35 L 174 50 L 162 57 L 150 50 Z" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M 152 40 L 162 35 L 172 40 L 172 48 L 162 53 L 152 48 Z" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/></g>
+                        </svg>
+                        <span style="font-family: 'IBM Plex Serif', serif; font-size: 18px; font-weight: 700; color: #1a1a1a;">UNITGROUP</span>
+                    </div>
+                    <h1 class="hero-title" style="font-family: 'IBM Plex Serif', serif; font-size: 52px; font-weight: 700; line-height: 1.2; color: #1a1a1a; margin-bottom: 24px;">Производство. Прибыль. Простота.</h1>
                     <p class="hero-desc fs-5">Три отдельных материала требуют разных расчётов и логики. Мы собрали всё в одну систему: коммерческие предложения за минуты, заказы под контролем, прибыль видна в реальном времени.</p>
 
                     <div class="row g-3 mb-4 p-4 bg-light rounded">
@@ -701,7 +709,7 @@
     <!-- DEMO SECTION - APP IN ACTION -->
     <section class="py-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
         <div class="container-lg">
-            <div class="row align-items-center g-5">
+            <div class="row align-items-center justify-content-center g-5">
                 <div class="col-lg-6">
                     <div class="label">Как это работает</div>
                     <h2 class="display-5 fw-bold mb-4">Мощная рабочая панель<br>для управления производством</h2>
@@ -772,7 +780,13 @@
                         <div style="padding: 12px; background: #000; border-radius: 40px; max-width: 320px; margin: 0 auto;">
                             <div style="background: var(--bg-0, #04060c); border-radius: 32px; overflow: hidden; color: white; font-family: 'Inter', sans-serif;">
                                 <!-- Status Bar -->
-                                <div style="background: linear-gradient(135deg, rgba(46, 107, 242, 0.15), rgba(139, 109, 242, 0.08)); padding: 12px 16px; border-bottom: 1px solid rgba(46, 107, 242, 0.1); text-align: center; font-size: 11px;">
+                                <div style="background: linear-gradient(135deg, rgba(46, 107, 242, 0.15), rgba(139, 109, 242, 0.08)); padding: 12px 16px; border-bottom: 1px solid rgba(46, 107, 242, 0.1); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px;">
+                                    <!-- Logo Icons -->
+                                    <svg viewBox="0 0 60 20" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: auto;">
+                                        <g><path d="M 5 7 L 10 4 L 15 7 L 15 12 L 10 15 L 5 12 Z" fill="none" stroke="#5A5A5A" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M 6 9 L 10 7 L 14 9 L 14 11 L 10 13 L 6 11 Z" fill="none" stroke="#5A5A5A" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/></g>
+                                        <g><path d="M 20 7 L 25 4 L 30 7 L 30 12 L 25 15 L 20 12 Z" fill="none" stroke="#FF6B35" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M 21 9 L 25 7 L 29 9 L 29 11 L 25 13 L 21 11 Z" fill="none" stroke="#FF6B35" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/></g>
+                                        <g><path d="M 35 7 L 40 4 L 45 7 L 45 12 L 40 15 L 35 12 Z" fill="none" stroke="#10b981" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M 36 9 L 40 7 L 44 9 L 44 11 L 40 13 L 36 11 Z" fill="none" stroke="#10b981" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/></g>
+                                    </svg>
                                     <strong>UNITGROUP</strong>
                                 </div>
 
@@ -829,9 +843,13 @@
                 <!-- UNITPLAST -->
                 <div class="col-md-6 col-lg-4">
                     <div class="material-card card h-100 border-0 shadow-sm">
-                        <div class="material-bar plastic" style="height: 4px;"></div>
+                        <div class="material-bar plastic" style="height: 4px; background: #FF6B35;"></div>
                         <div class="material-content" style="position: relative; text-align: center;">
-                            <img src="/assets/logo-unitplast.png" style="width: 100%; max-width: 120px; height: auto; margin: 16px auto; display: block;" alt="UNITPLAST"/>
+                            <div style="width: 120px; height: 120px; margin: 16px auto; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(255, 107, 53, 0.05) 100%); border-radius: 16px;">
+                                <svg style="width: 64px; height: 64px; color: #FF6B35;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M6 3h12v18H6z" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 6h6M9 10h6M9 14h6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/>
+                                </svg>
+                            </div>
                             <div class="material-name">UNITPLAST</div>
                             <p class="material-desc">Системы для производства пластика</p>
                             <div class="material-stats">
@@ -854,7 +872,11 @@
                     <div class="material-card card h-100 border-0 shadow-sm">
                         <div class="material-bar furniture" style="height: 4px; background: #10b981;"></div>
                         <div class="material-content" style="position: relative; text-align: center;">
-                            <img src="/assets/logo-unifurniture.png" style="width: 100%; max-width: 120px; height: auto; margin: 16px auto; display: block;" alt="UNIFURNITURE"/>
+                            <div style="width: 120px; height: 120px; margin: 16px auto; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%); border-radius: 16px;">
+                                <svg style="width: 64px; height: 64px; color: #10b981;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5M3 5h18M8 8v7M12 8v7M16 8v7" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
                             <div class="material-name">UNIFURNITURE</div>
                             <p class="material-desc">Решения для мебельного производства</p>
                             <div class="material-stats">
@@ -877,7 +899,11 @@
                     <div class="material-card card h-100 border-0 shadow-sm">
                         <div class="material-bar metall" style="height: 4px; background: #5A5A5A;"></div>
                         <div class="material-content" style="position: relative; text-align: center;">
-                            <img src="/assets/logo-unimetall.png" style="width: 100%; max-width: 120px; height: auto; margin: 16px auto; display: block;" alt="UNIMETALL"/>
+                            <div style="width: 120px; height: 120px; margin: 16px auto; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(90, 90, 90, 0.15) 0%, rgba(90, 90, 90, 0.05) 100%); border-radius: 16px;">
+                                <svg style="width: 64px; height: 64px; color: #5A5A5A;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M3 12h18M5 5l2 14h10l2-14M9 5v14M15 5v14M8 9h8" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
                             <div class="material-name">UNIMETALL</div>
                             <p class="material-desc">Системы для металлоконструкций</p>
                             <div class="material-stats">
@@ -1278,13 +1304,13 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Телефон</label>
-                                <input type="tel" class="form-control" required>
+                                <input type="tel" class="form-control phone-input" placeholder="+7 (XXX) XXX-XX-XX" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="email" class="form-control" required>
+                                <input type="email" class="form-control email-input" placeholder="name@company.com" required>
                             </div>
                         </div>
                     </div>
@@ -1459,5 +1485,49 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- FORM MASKS -->
+    <script>
+        // Phone mask: +7 (XXX) XXX-XX-XX
+        document.querySelectorAll('.phone-input').forEach(input => {
+            input.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) value = value.slice(0, 11);
+
+                if (value.length === 0) {
+                    e.target.value = '';
+                } else if (value.length <= 1) {
+                    e.target.value = '+' + value;
+                } else if (value.length <= 4) {
+                    e.target.value = '+' + value.slice(0, 1) + ' (' + value.slice(1);
+                } else if (value.length <= 7) {
+                    e.target.value = '+' + value.slice(0, 1) + ' (' + value.slice(1, 4) + ') ' + value.slice(4);
+                } else if (value.length <= 9) {
+                    e.target.value = '+' + value.slice(0, 1) + ' (' + value.slice(1, 4) + ') ' + value.slice(4, 7) + '-' + value.slice(7);
+                } else {
+                    e.target.value = '+' + value.slice(0, 1) + ' (' + value.slice(1, 4) + ') ' + value.slice(4, 7) + '-' + value.slice(7, 9) + '-' + value.slice(9, 11);
+                }
+            });
+
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace') {
+                    e.target.value = e.target.value.slice(0, -1);
+                }
+            });
+        });
+
+        // Email validation
+        document.querySelectorAll('.email-input').forEach(input => {
+            input.addEventListener('blur', function(e) {
+                const email = e.target.value;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (email && !emailRegex.test(email)) {
+                    e.target.style.borderColor = '#dc3545';
+                } else {
+                    e.target.style.borderColor = '';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
