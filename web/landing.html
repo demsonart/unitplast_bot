@@ -304,8 +304,27 @@
         }
 
         .feature-icon {
-            font-size: 32px;
+            width: 48px;
+            height: 48px;
             margin-bottom: 16px;
+        }
+
+        .feature-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .icon-container {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-container svg {
+            width: 100%;
+            height: 100%;
         }
 
         .feature h3 {
@@ -663,7 +682,10 @@
             <!-- UNITPLAST -->
             <div class="material-card">
                 <div class="material-bar plastic"></div>
-                <div class="material-content">
+                <div class="material-content" style="position: relative;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width: 32px; height: 32px; margin-bottom: 12px; position: absolute; top: 0; right: 0;">
+                        <use href="/assets/icons.svg#icon-plastic"/>
+                    </svg>
                     <div class="material-name">UNITPLAST</div>
                     <p class="material-desc">Системы для производства пластика</p>
                     <div class="material-stats">
@@ -683,7 +705,10 @@
             <!-- UNIFURNITURE -->
             <div class="material-card">
                 <div class="material-bar furniture"></div>
-                <div class="material-content">
+                <div class="material-content" style="position: relative;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width: 32px; height: 32px; margin-bottom: 12px; position: absolute; top: 0; right: 0;">
+                        <use href="/assets/icons.svg#icon-furniture"/>
+                    </svg>
                     <div class="material-name">UNIFURNITURE</div>
                     <p class="material-desc">Решения для мебельного производства</p>
                     <div class="material-stats">
@@ -703,7 +728,10 @@
             <!-- UNIMETALL -->
             <div class="material-card">
                 <div class="material-bar metall"></div>
-                <div class="material-content">
+                <div class="material-content" style="position: relative;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width: 32px; height: 32px; margin-bottom: 12px; position: absolute; top: 0; right: 0;">
+                        <use href="/assets/icons.svg#icon-metall"/>
+                    </svg>
                     <div class="material-name">UNIMETALL</div>
                     <p class="material-desc">Системы для металлоконструкций</p>
                     <div class="material-stats">
@@ -729,32 +757,56 @@
         
         <div class="features-grid">
             <div class="feature">
-                <div class="feature-icon">📊</div>
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <use href="/assets/icons.svg#icon-analytics"/>
+                    </svg>
+                </div>
                 <h3>Аналитика</h3>
                 <p>Готовые отчёты, метрики производства, анализ прибыльности по каждому проекту.</p>
             </div>
             <div class="feature">
-                <div class="feature-icon">📋</div>
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <use href="/assets/icons.svg#icon-proposals"/>
+                    </svg>
+                </div>
                 <h3>Коммерческие предложения</h3>
                 <p>Быстрое создание КП, управление версиями, отправка клиентам за один клик.</p>
             </div>
             <div class="feature">
-                <div class="feature-icon">📦</div>
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <use href="/assets/icons.svg#icon-orders"/>
+                    </svg>
+                </div>
                 <h3>Управление заказами</h3>
                 <p>От получения заказа до отгрузки. Отслеживание статуса в реальном времени.</p>
             </div>
             <div class="feature">
-                <div class="feature-icon">🧮</div>
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <use href="/assets/icons.svg#icon-support"/>
+                    </svg>
+                </div>
                 <h3>Калькулятор</h3>
                 <p>Автоматический расчёт стоимости материалов, работ и других компонентов.</p>
             </div>
             <div class="feature">
-                <div class="feature-icon">🔧</div>
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <use href="/assets/icons.svg#icon-integrations"/>
+                    </svg>
+                </div>
                 <h3>Интеграции</h3>
                 <p>Синхронизация с вашей учётной системой, API для кастомизации.</p>
             </div>
             <div class="feature">
-                <div class="feature-icon">👥</div>
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                        <use href="/assets/icons.svg#icon-team"/>
+                    </svg>
+                </div>
                 <h3>Команда</h3>
                 <p>Управление доступом сотрудников, история действий, уведомления в реальном времени.</p>
             </div>
@@ -985,24 +1037,44 @@
         <div class="contact-section">
             <div class="grid-4">
                 <div class="contact-card">
-                    <h4>📞 Главный телефон</h4>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width: 24px; height: 24px;">
+                            <use href="/assets/icons.svg#icon-phone"/>
+                        </svg>
+                        <h4 style="margin: 0;">Главный телефон</h4>
+                    </div>
                     <p>+7 (916) 161-61-93</p>
                     <p>+7 (495) 924-50-96</p>
                     <p style="font-size: 11px; margin-top: 12px;">пн-пт 09:00 - 21:00</p>
                 </div>
                 <div class="contact-card">
-                    <h4>🏢 Адрес офиса</h4>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width: 24px; height: 24px;">
+                            <use href="/assets/icons.svg#icon-location"/>
+                        </svg>
+                        <h4 style="margin: 0;">Адрес офиса</h4>
+                    </div>
                     <p>Лётная ул., 1</p>
                     <p>Долгопрудный</p>
                     <p>м. Физтех</p>
                 </div>
                 <div class="contact-card">
-                    <h4>📧 Email</h4>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width: 24px; height: 24px;">
+                            <use href="/assets/icons.svg#icon-email"/>
+                        </svg>
+                        <h4 style="margin: 0;">Email</h4>
+                    </div>
                     <p>info@unitplast.ru</p>
                     <p style="font-size: 11px; margin-top: 12px;">Ответим в рабочее время</p>
                 </div>
                 <div class="contact-card">
-                    <h4>💬 Мессенджеры</h4>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="width: 24px; height: 24px;">
+                            <use href="/assets/icons.svg#icon-messenger"/>
+                        </svg>
+                        <h4 style="margin: 0;">Мессенджеры</h4>
+                    </div>
                     <p>Telegram</p>
                     <p>WhatsApp</p>
                     <p style="font-size: 11px; margin-top: 12px;">По номерам выше</p>
