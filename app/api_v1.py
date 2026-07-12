@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 import random
 import json
 from pathlib import Path
+from .kp_calculator import KPCalculator
 
 api = Blueprint('api_v1', __name__, url_prefix='/api/v1')
 
@@ -409,6 +410,90 @@ def export_orders(format):
         "records": 24,
         "download_url": f"/downloads/orders_export.{format}"
     }), 200
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CALCULATOR API - REAL PRICING ENGINE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@api.route('/calculator/plastic', methods=['POST'])
+def calculate_plastic():
+    """Calculate UNITPLAST (plastic) product price"""
+    data = request.json
+
+    result = KPCalculator.calculate_plastic(
+        material=data.get('material', 'abs'),
+        height_mm=int(data.get('height_mm', 100)),
+        width_mm=int(data.get('width_mm', 100)),
+        depth_mm=int(data.get('depth_mm', 100)),
+        wall_thickness_mm=float(data.get('wall_thickness_mm', 2)),
+        quantity=int(data.get('quantity', 1))
+    )
+
+    return jsonify(result), 200 if result.get('success') else 400
+
+@api.route('/calculator/furniture', methods=['POST'])
+def calculate_furniture():
+    """Calculate UNIFURNITURE product price"""
+    data = request.json
+
+    result = KPCalculator.calculate_furniture(
+        furniture_type=data.get('furniture_type', 'шкаф'),
+        length_cm=int(data.get('length_cm', 100)),
+        width_cm=int(data.get('width_cm', 100)),
+        height_cm=int(data.get('height_cm', 100)),
+        material_quality=data.get('material_quality', 'стандарт'),
+        quantity=int(data.get('quantity', 1))
+    )
+
+    return jsonify(result), 200 if result.get('success') else 400
+
+@api.route('/calculator/metal', methods=['POST'])
+def calculate_metal():
+    """Calculate UNIMETALL (metal) structure price"""
+    data = request.json
+
+    result = KPCalculator.calculate_metal(
+        structure_type=data.get('structure_type', 'каркас'),
+        width_mm=int(data.get('width_mm', 1000)),
+        height_mm=int(data.get('height_mm', 1000)),
+        depth_mm=int(data.get('depth_mm', 1000)),
+        weight_kg=float(data.get('weight_kg', 10)),
+        quantity=int(data.get('quantity', 1))
+    )
+
+    return jsonify(result), 200 if result.get('success') else 400
+
+@api.route('/calculator/estimate', methods=['POST'])
+def create_estimate():
+    """Create price estimate and save as calculation"""
+    data = request.json
+    material_type = data.get('material_type', 'plastic').lower()
+
+    # Route to correct calculator
+    if material_type.startswith('plastic'):
+        result = KPCalculator.calculate_plastic(**data)
+    elif material_type.startswith('furniture'):
+        result = KPCalculator.calculate_furniture(**data)
+    elif material_type.startswith('metal'):
+        result = KPCalculator.calculate_metal(**data)
+    else:
+        return jsonify({"success": False, "error": "Unknown material type"}), 400
+
+    if not result.get('success'):
+        return jsonify(result), 400
+
+    # Add metadata
+    calc_id = 2600 + random.randint(1, 999)
+    result['id'] = calc_id
+    result['type'] = {'plastic': 'UP', 'furniture': 'UF', 'metal': 'UM'}.get(material_type.split('_')[0], 'UP')
+    result['created_at'] = datetime.now().isoformat()
+    result['status'] = 'saved'
+    result['notes'] = data.get('notes', '')
+
+    # TODO: Save to database
+    # db.save_calculation(result)
+
+    return jsonify(result), 201
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # HEALTH & INFO

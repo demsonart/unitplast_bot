@@ -2219,22 +2219,97 @@
             calculatePrice();
         }
 
-        function calculatePrice() {
-            let price = 0;
+        // Get input values from calculator form
+        function getCalculatorData() {
+            const data = { material_type: currentType };
 
             if (currentType === 'plastic') {
-                price = Math.random() * 5000 + 5000; // 5000-10000 ₽
+                const material = document.querySelector('#plastic-inputs select').value;
+                data.material = material.split('(')[0].trim().toLowerCase();
+                data.height_mm = parseInt(document.querySelectorAll('#plastic-inputs input')[0].value) || 100;
+                data.width_mm = parseInt(document.querySelectorAll('#plastic-inputs input')[1].value) || 100;
+                data.depth_mm = parseInt(document.querySelectorAll('#plastic-inputs input')[2].value) || 100;
+                data.wall_thickness_mm = parseFloat(document.querySelectorAll('#plastic-inputs input')[3].value) || 2;
+                data.quantity = parseInt(document.querySelectorAll('#plastic-inputs input')[4].value) || 1;
             } else if (currentType === 'furniture') {
-                price = Math.random() * 15000 + 5000; // 5000-20000 ₽
+                const furnitureType = document.querySelector('#furniture-inputs select').value;
+                data.furniture_type = furnitureType.split('(')[0].trim().toLowerCase();
+                data.length_cm = parseInt(document.querySelectorAll('#furniture-inputs input')[0].value) || 100;
+                data.width_cm = parseInt(document.querySelectorAll('#furniture-inputs input')[1].value) || 100;
+                data.height_cm = parseInt(document.querySelectorAll('#furniture-inputs input')[2].value) || 100;
+                data.material_quality = document.querySelectorAll('#furniture-inputs select')[1].value.toLowerCase();
+                data.quantity = parseInt(document.querySelectorAll('#furniture-inputs input')[3].value) || 1;
             } else if (currentType === 'metal') {
-                price = Math.random() * 30000 + 10000; // 10000-40000 ₽
+                const structureType = document.querySelector('#metal-inputs select').value;
+                data.structure_type = structureType.split('(')[0].trim().toLowerCase();
+                data.width_mm = parseInt(document.querySelectorAll('#metal-inputs input')[0].value) || 1000;
+                data.height_mm = parseInt(document.querySelectorAll('#metal-inputs input')[1].value) || 1000;
+                data.depth_mm = parseInt(document.querySelectorAll('#metal-inputs input')[2].value) || 1000;
+                data.weight_kg = parseFloat(document.querySelectorAll('#metal-inputs input')[3].value) || 10;
+                data.quantity = parseInt(document.querySelectorAll('#metal-inputs input')[4].value) || 1;
             }
 
-            document.getElementById('total-price').textContent = Math.round(price) + ' ₽';
+            return data;
+        }
+
+        function calculatePrice() {
+            const data = getCalculatorData();
+            const endpoint = currentType === 'plastic' ? '/api/v1/calculator/plastic' :
+                            currentType === 'furniture' ? '/api/v1/calculator/furniture' :
+                            '/api/v1/calculator/metal';
+
+            fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(r => r.json())
+            .then(result => {
+                if (result.success) {
+                    const price = result.total;
+                    document.getElementById('total-price').textContent = Math.round(price).toLocaleString('ru-RU') + ' ₽';
+
+                    // Store result for save
+                    window.lastCalculation = result;
+
+                    // Show details
+                    console.log('Calculation:', result);
+                } else {
+                    console.error('Calculation error:', result.error);
+                    document.getElementById('total-price').textContent = 'Ошибка расчета';
+                }
+            })
+            .catch(e => {
+                console.error('API error:', e);
+                document.getElementById('total-price').textContent = 'Ошибка сети';
+            });
         }
 
         function saveCalculation() {
-            alert('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Расчет сохранен! Можете найти его в истории.');
+            if (!window.lastCalculation) {
+                alert('Сначала сделайте расчет');
+                return;
+            }
+
+            fetch('/api/v1/calculator/estimate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...window.lastCalculation,
+                    material_type: currentType,
+                    notes: prompt('Добавить заметку к расчету (опционально):') || ''
+                })
+            })
+            .then(r => r.json())
+            .then(result => {
+                if (result.success) {
+                    alert('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Расчет сохранен! ID: ' + result.id);
+                    window.lastCalculation = null;
+                } else {
+                    alert('Ошибка: ' + result.error);
+                }
+            })
+            .catch(e => alert('Ошибка сети: ' + e.message));
         }
 
         function loadFromHistory() {
