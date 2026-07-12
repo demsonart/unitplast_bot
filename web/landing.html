@@ -469,32 +469,65 @@
     <div class="container-lg">
         <div class="hero-content">
             <h1 class="hero-title">
-                Управление производством<br>
-                <span class="hero-gradient-text">Три материала. Одна система.</span>
+                <span class="hero-gradient-text">Цифровая платформа<br>управления производственным заказом</span>
             </h1>
-            <p class="lead">Профессиональный калькулятор, управление заказами в реальном времени и аналитика — всё для пластика, мебели и металла в одной платформе.</p>
+            <p class="lead">Полный контроль над заказом от расчёта до доставки. Автоматизация процессов, отслеживание статусов и аналитика в реальном времени — всё в одной системе.</p>
 
             <div style="display: flex; gap: 16px; margin-top: 32px; flex-wrap: wrap;">
-                <a href="miniapp.html" class="btn btn-primary">Запросить демонстрацию</a>
-                <button class="btn btn-outline">Скачать брошюру</button>
+                <a href="miniapp.html" class="btn btn-primary">Начать управление заказами</a>
+                <button class="btn btn-outline">Смотреть демо</button>
             </div>
 
-            <div class="stats-row">
+            <!-- ORDER STATUS FLOW VISUALIZATION -->
+            <div style="margin-top: 48px; padding: 32px; background: linear-gradient(135deg, rgba(255,107,53,0.08) 0%, rgba(16,185,129,0.05) 100%); border-radius: 16px; border: 1px solid rgba(0,102,204,0.1);">
+                <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #999; letter-spacing: 0.5px; margin-bottom: 16px;">Жизненный цикл заказа</div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                    <!-- NEW -->
+                    <div style="text-align: center;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #FF6B35 0%, #FF8A5B 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white; font-weight: 700; font-size: 20px;">📋</div>
+                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px;">Новый заказ</div>
+                        <div style="font-size: 11px; color: #999;">Расчет и КП</div>
+                    </div>
+
+                    <!-- IN PROGRESS -->
+                    <div style="text-align: center;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #5A5A5A 0%, #7A7A7A 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white; font-weight: 700; font-size: 20px;">⚙️</div>
+                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px;">В работе</div>
+                        <div style="font-size: 11px; color: #999;">Производство</div>
+                    </div>
+
+                    <!-- READY -->
+                    <div style="text-align: center;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #0066CC 0%, #0088FF 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white; font-weight: 700; font-size: 20px;">✓</div>
+                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px;">Готово</div>
+                        <div style="font-size: 11px; color: #999;">К отправке</div>
+                    </div>
+
+                    <!-- DELIVERED -->
+                    <div style="text-align: center;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981 0%, #26d07c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white; font-weight: 700; font-size: 20px;">📦</div>
+                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px;">Доставлено</div>
+                        <div style="font-size: 11px; color: #999;">Завершено</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-row" style="margin-top: 48px;">
                 <div class="stat-item">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-label">Компаний доверяют</div>
+                    <div class="stat-number">1500+</div>
+                    <div class="stat-label">Заказов управляется</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">20+</div>
-                    <div class="stat-label">Лет опыта</div>
+                    <div class="stat-number">2.5 ч</div>
+                    <div class="stat-label">Среднее время обработки</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">99.2%</div>
+                    <div class="stat-label">Точность доставки</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">24/7</div>
-                    <div class="stat-label">Техподдержка</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">∞</div>
-                    <div class="stat-label">Масштабируемость</div>
+                    <div class="stat-label">Мониторинг статуса</div>
                 </div>
             </div>
         </div>
