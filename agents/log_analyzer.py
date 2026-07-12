@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 """
-UNITPLAST Log Analyzer Agent
+UNITPLAST Log Analyzer Agent (Enhanced)
 Analyzes health and status logs for patterns, anomalies, and self-improvement
+Requests optimization skills when patterns detected
 Runs every 10 minutes, completely autonomous
 """
 
 import json
 import time
 import sys
+import os
 from datetime import datetime, timedelta
 from pathlib import Path
 from statistics import mean, median, stdev
+from agents.base_agent import BaseAgent
+from agents.skill_requester import SkillRequester
+from agents.skill_loader import SkillLoader
 
 PROJECT_ROOT = Path(__file__).parent.parent
 LOG_DIR = PROJECT_ROOT / "logs"
@@ -237,18 +242,117 @@ def generate_report():
         print(f"  🔮 {len(predictions)} predictions generated")
 
 
+class LogAnalyzerAgent(BaseAgent):
+    def __init__(self):
+        log_file = LOG_DIR / "log_analyzer.log"
+        super().__init__(
+            agent_id="log_analyzer",
+            master_url=os.getenv("MASTER_URL", "http://127.0.0.1:8888"),
+            master_token=os.getenv("MASTER_TOKEN", "unitplast_master_key_2026"),
+            log_file=str(log_file)
+        )
+        self.skill_requester = SkillRequester(
+            self.agent_id,
+            self.master_url,
+            self.master_token
+        )
+        self.skill_loader = SkillLoader(PROJECT_ROOT / "agents" / "skills")
+        self.analysis_history = []
+
+    def run(self):
+        """Main loop"""
+        self.logger.info("Log Analyzer started")
+        self.log_event("startup", {"status": "started"})
+
+        while True:
+            try:
+                self.analyze_and_optimize()
+            except Exception as e:
+                self.logger.error(f"Analysis error: {e}")
+                self.log_event("error", {"error": str(e)})
+
+            time.sleep(CHECK_INTERVAL)
+
+    def analyze_and_optimize(self):
+        """Generate analysis and request optimization if needed"""
+        # Load logs
+        health_logs = load_json_lines(HEALTH_LOG)
+        status_logs = load_json_lines(LOG_DIR / "agent_status.log")
+
+        if not health_logs:
+            return
+
+        # Analyze
+        analysis = analyze_health_logs(health_logs)
+        self.analysis_history.append(analysis)
+
+        # Build patterns from last 24h
+        patterns = build_patterns(self.analysis_history[-144:])
+        if patterns:
+            with open(PATTERNS_FILE, 'w') as f:
+                json.dump(patterns, f, indent=2)
+
+        # Detect anomalies
+        anomalies = detect_anomalies(analysis, patterns)
+
+        # Make predictions
+        predictions = predict_issues(analysis, patterns, status_logs)
+
+        # Save analysis
+        report = {
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "analysis": analysis,
+            "anomalies": anomalies,
+            "predictions": predictions,
+            "status": "ok" if not anomalies else "warning"
+        }
+
+        with open(ANALYSIS_FILE, 'a') as f:
+            f.write(json.dumps(report) + "\n")
+
+        if anomalies:
+            self.log_event("anomalies_detected", {
+                "count": len(anomalies),
+                "anomalies": anomalies
+            })
+            self.request_optimization(anomalies, analysis, patterns)
+
+        if predictions:
+            with open(PREDICTIONS_FILE, 'w') as f:
+                json.dump({"predictions": predictions, "timestamp": datetime.utcnow().isoformat()}, f, indent=2)
+            self.log_event("predictions_generated", {"count": len(predictions)})
+
+    def request_optimization(self, anomalies: list, analysis: dict, patterns: dict):
+        """Request optimization skill based on anomalies"""
+        for anomaly in anomalies:
+            if anomaly['type'] == 'slow_response':
+                current = analysis.get('response_time_avg', 100)
+                target = patterns.get('response_time_avg', 50)
+
+                self.logger.info(f"Requesting response time optimization")
+                result = self.skill_requester.request_optimization_skill(
+                    metric="response_time",
+                    current_value=current,
+                    target_value=target
+                )
+
+                if result and result.get('skill'):
+                    skill = result['skill']
+                    if self.skill_loader.save_skill(skill['skill_id'], skill.get('code', '')):
+                        try:
+                            self.skill_loader.execute_skill(skill['skill_id'])
+                            self.skill_requester.report_installation(skill['skill_id'], True)
+                        except Exception as e:
+                            self.skill_requester.report_installation(skill['skill_id'], False, str(e))
+
+            elif anomaly['type'] == 'error_spike':
+                self.logger.info(f"Requesting error handling optimization")
+                # Similar pattern for error handling
+
 def main():
     """Main loop"""
-    print(f"[{datetime.utcnow().isoformat()}] UNITPLAST Log Analyzer started", file=sys.stderr)
-
-    while True:
-        try:
-            generate_report()
-        except Exception as e:
-            print(f"[{datetime.utcnow().isoformat()}] Error: {e}", file=sys.stderr)
-
-        time.sleep(CHECK_INTERVAL)
-
+    agent = LogAnalyzerAgent()
+    agent.run()
 
 if __name__ == "__main__":
     try:
