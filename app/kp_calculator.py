@@ -15,11 +15,11 @@ class KPCalculator:
     # ════════════════════════════════════════════════════════════════════════
 
     PLASTIC_MATERIALS = {
-        "abs": {"name": "ABS пластик", "price_per_kg": 425, "density": 1.05},
-        "pp": {"name": "PP пластик", "price_per_kg": 275, "density": 0.9},
-        "pvc": {"name": "PVC пластик", "price_per_kg": 325, "density": 1.3},
-        "pc": {"name": "PC пластик", "price_per_kg": 1000, "density": 1.2},
-        "pe": {"name": "PE пластик", "price_per_kg": 150, "density": 0.95},
+        "abs": {"name": "ABS пластик", "price_per_kg": 425, "density_g_cm3": 1.05},
+        "pp": {"name": "PP пластик", "price_per_kg": 275, "density_g_cm3": 0.9},
+        "pvc": {"name": "PVC пластик", "price_per_kg": 325, "density_g_cm3": 1.3},
+        "pc": {"name": "PC пластик", "price_per_kg": 1000, "density_g_cm3": 1.2},
+        "pe": {"name": "PE пластик", "price_per_kg": 150, "density_g_cm3": 0.95},
     }
 
     PLASTIC_LABOR_MULTIPLIER = 0.35  # 35% labor cost on top of material
@@ -38,16 +38,28 @@ class KPCalculator:
         mat_info = KPCalculator.PLASTIC_MATERIALS[material]
 
         # Calculate volume in cm³
-        volume_cm3 = (height_mm * width_mm * depth_mm) / 1000
+        # Dimensions: height, width, depth in mm → convert to cm
+        height_cm = height_mm / 10
+        width_cm = width_mm / 10
+        depth_cm = depth_mm / 10
 
-        # Calculate weight in kg
-        # For hollow product, account for wall thickness
-        outer_volume = volume_cm3
-        inner_volume = ((height_mm - 2*wall_thickness_mm) *
-                       (width_mm - 2*wall_thickness_mm) *
-                       (depth_mm - 2*wall_thickness_mm)) / 1000
-        actual_volume = max(outer_volume - inner_volume, outer_volume * 0.3)
-        weight_kg = actual_volume * mat_info["density"]
+        # Outer volume in cm³
+        outer_volume_cm3 = height_cm * width_cm * depth_cm
+
+        # Inner dimensions (hollow space) - subtract wall thickness from each side
+        wall_cm = wall_thickness_mm / 10
+        inner_height = max(0, height_cm - 2 * wall_cm)
+        inner_width = max(0, width_cm - 2 * wall_cm)
+        inner_depth = max(0, depth_cm - 2 * wall_cm)
+        inner_volume_cm3 = inner_height * inner_width * inner_depth
+
+        # Actual material volume (outer - inner)
+        material_volume_cm3 = outer_volume_cm3 - inner_volume_cm3
+
+        # Weight in kg
+        # Density is in g/cm³, need to convert to kg
+        # density g/cm³ × volume cm³ = grams → ÷1000 = kg
+        weight_kg = (material_volume_cm3 * mat_info["density_g_cm3"]) / 1000
 
         # Material cost
         material_cost = weight_kg * mat_info["price_per_kg"] * quantity
