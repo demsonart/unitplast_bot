@@ -8,35 +8,37 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-0: #0a0e27;
-            --bg-1: #0f1429;
-            --bg-2: #151d3f;
-            --panel: #1a2450;
-            --text-0: #ffffff;
-            --text-1: #a3afc9;
-            --blue: #3b5bdb;
-            --blue-light: #4d7fff;
-            --blue-dark: #2840b8;
+            --bg-dark: #0a0e27;
+            --bg-darker: #040812;
+            --bg-panel: #1a2450;
+            --text-light: #ffffff;
+            --text-muted: #a3afc9;
+            --text-dim: #7a8298;
+            --primary: #3b5bdb;
+            --primary-light: #5b7bff;
+            --primary-dark: #2840b8;
+            --accent-1: #8b5cf6;
+            --accent-2: #06b6d4;
+            --accent-3: #f97316;
             --green: #10b981;
-            --purple: #8b5cf6;
-            --cyan: #06b6d4;
-            --orange: #f97316;
-            --gray-border: rgba(163, 175, 201, 0.2);
         }
 
-        * { box-sizing: border-box; }
-
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background: var(--bg-0);
-            color: var(--text-0);
+        }
+
+        body {
+            background: linear-gradient(180deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+            color: var(--text-light);
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* ===== NAVIGATION ===== */
@@ -44,10 +46,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 40px;
-            background: rgba(4, 6, 12, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--gray-border);
+            padding: 20px 60px;
+            background: rgba(10, 14, 39, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(163, 175, 201, 0.15);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -56,23 +58,21 @@
         .logo {
             font-size: 24px;
             font-weight: 800;
-            color: var(--text-0);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .nav-menu {
             display: flex;
-            gap: 32px;
-            align-items: center;
-            margin: 0;
-            padding: 0;
+            gap: 40px;
             list-style: none;
         }
 
         .nav-menu a {
-            color: var(--text-1);
+            color: var(--text-muted);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -80,202 +80,238 @@
         }
 
         .nav-menu a:hover {
-            color: var(--blue);
+            color: var(--primary-light);
         }
 
-        .cta-btn {
-            background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
+        .nav-cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            padding: 12px 28px;
+            padding: 11px 28px;
             border: none;
             border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
             box-shadow: 0 8px 24px rgba(59, 91, 219, 0.3);
+            transition: all 0.3s;
         }
 
-        .cta-btn:hover {
+        .nav-cta:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 32px rgba(59, 91, 219, 0.4);
         }
 
-        /* ===== SECTION BASE ===== */
+        /* ===== SECTIONS ===== */
         section {
-            padding: 80px 40px;
+            padding: 100px 60px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        .section-label {
-            color: var(--blue);
+        .label {
+            color: var(--primary-light);
             font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.15em;
             margin-bottom: 16px;
         }
 
-        .section-heading {
+        h1, h2 {
             font-size: 56px;
             font-weight: 800;
-            margin: 0 0 24px 0;
             line-height: 1.15;
-            color: var(--text-0);
-            background: linear-gradient(135deg, #ffffff 0%, #a3afc9 100%);
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--text-light) 0%, var(--text-muted) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .section-desc {
+        .desc {
             font-size: 18px;
-            color: var(--text-1);
+            color: var(--text-muted);
+            line-height: 1.8;
+            max-width: 650px;
             margin-bottom: 48px;
-            max-width: 600px;
         }
 
-        /* ===== SECTION 1: HERO ===== */
+        /* ===== HERO ===== */
         #hero {
-            background: linear-gradient(135deg, var(--bg-0) 0%, var(--bg-2) 100%);
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            gap: 80px;
             align-items: center;
-            padding: 120px 40px;
+            padding: 120px 60px;
         }
 
-        .hero-content h1 {
-            font-size: 56px;
-            font-weight: 800;
-            margin: 0 0 24px 0;
-            line-height: 1.2;
-        }
-
-        .download-buttons {
+        .hero-buttons {
             display: flex;
             gap: 16px;
-            margin: 32px 0;
+            margin: 32px 0 48px;
             flex-wrap: wrap;
         }
 
-        .download-btn {
-            background: var(--panel);
-            border: 1px solid var(--gray-border);
-            color: var(--text-0);
-            padding: 12px 20px;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 13px 28px;
+            border: none;
             border-radius: 8px;
-            cursor: pointer;
             font-size: 14px;
             font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(59, 91, 219, 0.3);
             transition: all 0.3s;
         }
 
-        .download-btn:hover {
-            background: var(--blue);
-            border-color: var(--blue);
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(59, 91, 219, 0.4);
         }
 
-        .platform-icons {
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-light);
+            padding: 13px 28px;
+            border: 1.5px solid var(--primary);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(59, 91, 219, 0.1);
+            border-color: var(--primary-light);
+        }
+
+        .platforms {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 24px;
             margin-top: 48px;
         }
 
-        .platform-item {
+        .platform {
+            background: linear-gradient(135deg, rgba(26, 36, 80, 0.3) 0%, rgba(26, 36, 80, 0.1) 100%);
+            border: 1px solid rgba(163, 175, 201, 0.15);
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
+            transition: all 0.3s;
         }
 
-        .platform-item-icon {
+        .platform:hover {
+            border-color: var(--primary);
+            background: rgba(59, 91, 219, 0.1);
+        }
+
+        .platform-icon {
             font-size: 32px;
             margin-bottom: 12px;
         }
 
-        .platform-item-text {
-            font-size: 14px;
-            color: var(--text-1);
+        .platform-name {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .platform-desc {
+            font-size: 12px;
+            color: var(--text-dim);
         }
 
         .hero-visual {
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .qr-code {
-            width: 200px;
-            height: 200px;
-            background: white;
-            border-radius: 16px;
+            height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            color: #000;
+            background: linear-gradient(135deg, rgba(59, 91, 219, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(163, 175, 201, 0.15);
+            overflow: hidden;
         }
 
-        /* ===== SECTION 2: FEATURES ===== */
-        .features-grid {
+        .placeholder-img {
+            text-align: center;
+            color: var(--text-dim);
+        }
+
+        .placeholder-img div {
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 16px;
+        }
+
+        /* ===== GRID CARDS ===== */
+        .grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
+            gap: 28px;
             margin-top: 48px;
         }
 
-        .feature-card {
+        .card {
             background: linear-gradient(135deg, rgba(26, 36, 80, 0.4) 0%, rgba(26, 36, 80, 0.2) 100%);
-            border: 1px solid var(--gray-border);
+            border: 1px solid rgba(163, 175, 201, 0.15);
             padding: 32px;
             border-radius: 16px;
             transition: all 0.3s;
             backdrop-filter: blur(10px);
         }
 
-        .feature-card:hover {
-            border-color: var(--blue);
+        .card:hover {
+            border-color: var(--primary);
             background: linear-gradient(135deg, rgba(59, 91, 219, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(59, 91, 219, 0.2);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(59, 91, 219, 0.25);
         }
 
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
+        .card-icon {
             width: 64px;
             height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, rgba(59, 91, 219, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(59, 91, 219, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
             border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 32px;
         }
 
-        .feature-card h3 {
+        .card h3 {
             font-size: 18px;
             font-weight: 700;
-            margin: 0 0 12px 0;
+            margin-bottom: 12px;
+            color: var(--text-light);
         }
 
-        .feature-card p {
+        .card p {
             font-size: 14px;
-            color: var(--text-1);
-            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.7;
         }
 
-        /* ===== SECTION 3: THREE BRANDS ===== */
-        .brands-grid {
+        /* ===== FEATURES ===== */
+        #features .grid-3 {
+            margin-top: 56px;
+        }
+
+        /* ===== BRANDS ===== */
+        .grid-3-large {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
+            gap: 28px;
             margin-top: 48px;
         }
 
         .brand-card {
-            background: linear-gradient(135deg, rgba(26, 36, 80, 0.4) 0%, rgba(26, 36, 80, 0.2) 100%);
-            border: 2px solid var(--gray-border);
+            background: linear-gradient(135deg, rgba(26, 36, 80, 0.5) 0%, rgba(26, 36, 80, 0.3) 100%);
+            border: 2px solid rgba(163, 175, 201, 0.15);
             padding: 40px;
             border-radius: 16px;
             transition: all 0.3s;
@@ -283,73 +319,82 @@
         }
 
         .brand-card:hover {
-            border-color: var(--blue);
+            border-color: var(--primary);
             background: linear-gradient(135deg, rgba(59, 91, 219, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
-            transform: translateY(-6px);
-            box-shadow: 0 20px 60px rgba(59, 91, 219, 0.25);
+            transform: translateY(-8px);
+            box-shadow: 0 24px 72px rgba(59, 91, 219, 0.3);
         }
 
         .brand-logo {
-            font-size: 32px;
+            font-size: 40px;
             margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-1) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .brand-card h3 {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
-            margin: 0 0 12px 0;
+            margin-bottom: 12px;
         }
 
-        .brand-features {
-            list-style: none;
-            padding: 0;
-            margin: 16px 0;
-        }
-
-        .brand-features li {
+        .brand-card > p {
             font-size: 14px;
-            color: var(--text-1);
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .features-list li {
+            font-size: 13px;
+            color: var(--text-muted);
             padding-left: 24px;
             position: relative;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
-        .brand-features li:before {
+        .features-list li:before {
             content: "✓";
             position: absolute;
             left: 0;
             color: var(--green);
-            font-weight: bold;
+            font-weight: 700;
         }
 
-        .brand-btn {
+        .btn-outline {
             background: transparent;
-            border: 1px solid var(--blue);
-            color: var(--blue);
-            padding: 10px 16px;
-            border-radius: 6px;
+            color: var(--primary-light);
+            padding: 10px 20px;
+            border: 1.5px solid var(--primary);
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            margin-top: 16px;
+            margin-top: 24px;
             transition: all 0.3s;
         }
 
-        .brand-btn:hover {
-            background: var(--blue);
+        .btn-outline:hover {
+            background: var(--primary);
             color: white;
         }
 
-        /* ===== SECTION 4: COMMERCIAL OFFERS ===== */
-        .commercial-content {
+        /* ===== PROCESS ===== */
+        .process-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 48px;
+            gap: 60px;
             align-items: center;
             margin-top: 48px;
         }
 
-        .process-steps {
+        .steps {
             display: flex;
             flex-direction: column;
             gap: 24px;
@@ -358,173 +403,197 @@
         .step {
             display: flex;
             gap: 20px;
-            align-items: flex-start;
         }
 
-        .step-number {
+        .step-num {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: var(--blue);
-            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 12px;
             font-weight: 700;
             flex-shrink: 0;
+            font-size: 18px;
         }
 
         .step-content h4 {
             font-size: 16px;
             font-weight: 700;
-            margin: 0 0 8px 0;
+            margin-bottom: 8px;
+            color: var(--text-light);
         }
 
         .step-content p {
             font-size: 14px;
-            color: var(--text-1);
-            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
         }
 
-        /* ===== SECTION 5: MINI APP ===== */
-        .mini-app-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: center;
+        /* ===== CONTACT FORM ===== */
+        .contact-section {
             margin-top: 48px;
         }
 
-        .mini-app-left h2 {
-            font-size: 48px;
-            font-weight: 800;
-            margin: 0 0 24px 0;
-            line-height: 1.2;
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 48px;
         }
 
-        .mini-app-buttons {
-            display: flex;
-            gap: 16px;
-            margin-top: 24px;
+        .contact-card {
+            background: linear-gradient(135deg, rgba(26, 36, 80, 0.5) 0%, rgba(26, 36, 80, 0.3) 100%);
+            border: 1px solid rgba(163, 175, 201, 0.15);
+            padding: 28px;
+            border-radius: 16px;
+            transition: all 0.3s;
         }
 
-        .mini-app-btn {
-            background: var(--blue);
+        .contact-card:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(59, 91, 219, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+        }
+
+        .contact-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-light);
+        }
+
+        .contact-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .contact-form {
+            background: linear-gradient(135deg, rgba(26, 36, 80, 0.4) 0%, rgba(26, 36, 80, 0.2) 100%);
+            border: 1px solid rgba(163, 175, 201, 0.15);
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-light);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(10, 14, 39, 0.5);
+            border: 1px solid rgba(163, 175, 201, 0.2);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(10, 14, 39, 0.7);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-submit {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            padding: 12px 24px;
+            padding: 13px 32px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            transition: background 0.3s;
+            width: 100%;
+            box-shadow: 0 8px 24px rgba(59, 91, 219, 0.3);
+            transition: all 0.3s;
         }
 
-        .mini-app-btn:hover {
-            background: var(--blue-light);
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(59, 91, 219, 0.4);
         }
 
-        .mini-app-features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 32px;
-        }
-
-        .mini-app-feature {
-            background: rgba(46, 107, 242, 0.1);
-            padding: 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            color: var(--text-1);
-        }
-
-        /* ===== SECTION 6: MANAGEMENT ===== */
-        .management-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: center;
-            margin-top: 48px;
-        }
-
-        .dashboard-preview {
-            background: var(--panel);
-            border: 1px solid var(--gray-border);
-            border-radius: 12px;
-            padding: 24px;
-            min-height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-1);
-        }
-
-        /* ===== SECTION 7: CALCULATOR ===== */
-        .calculator-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: center;
-            margin-top: 48px;
-        }
-
-        .calculator-buttons {
-            display: flex;
-            gap: 16px;
-            margin-top: 24px;
-        }
-
-        .stats-display {
+        /* ===== STATS ===== */
+        .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 32px;
+            gap: 24px;
+            margin-top: 48px;
         }
 
-        .stat-item {
-            background: rgba(46, 107, 242, 0.1);
-            padding: 16px;
-            border-radius: 8px;
+        .stat {
+            background: linear-gradient(135deg, rgba(59, 91, 219, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+            padding: 24px;
+            border-radius: 12px;
             text-align: center;
+            border: 1px solid rgba(163, 175, 201, 0.15);
         }
 
         .stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--blue);
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
         }
 
         .stat-label {
             font-size: 12px;
-            color: var(--text-1);
-            margin-top: 8px;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
-        /* ===== SECTION 8: CTA ===== */
+        /* ===== CTA SECTION ===== */
         #cta {
-            background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
             text-align: center;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 91, 219, 0.1) 0%, transparent 70%);
+            padding: 120px 60px;
         }
 
         .cta-box {
-            background: var(--panel);
-            border: 1px solid var(--gray-border);
-            padding: 48px;
-            border-radius: 12px;
-            max-width: 600px;
+            background: linear-gradient(135deg, rgba(26, 36, 80, 0.5) 0%, rgba(26, 36, 80, 0.3) 100%);
+            border: 1px solid rgba(163, 175, 201, 0.15);
+            padding: 56px 48px;
+            border-radius: 16px;
+            max-width: 700px;
             margin: 32px auto;
+            backdrop-filter: blur(10px);
         }
 
         .cta-box h3 {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
-            margin: 0 0 16px 0;
+            margin-bottom: 16px;
         }
 
         .cta-box p {
             font-size: 16px;
-            color: var(--text-1);
-            margin: 0 0 24px 0;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            line-height: 1.7;
         }
 
         .cta-buttons {
@@ -534,134 +603,36 @@
             flex-wrap: wrap;
         }
 
-        .cta-primary {
-            background: var(--blue);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .cta-primary:hover {
-            background: var(--blue-light);
-        }
-
-        /* ===== SECTION 9: CONTACTS ===== */
-        .contacts-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            margin-top: 48px;
-        }
-
-        .contact-card {
-            background: linear-gradient(135deg, rgba(26, 36, 80, 0.5) 0%, rgba(26, 36, 80, 0.3) 100%);
-            border: 1px solid var(--gray-border);
-            padding: 28px;
-            border-radius: 16px;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .contact-card:hover {
-            border-color: var(--blue);
-            background: linear-gradient(135deg, rgba(59, 91, 219, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
-        }
-
-        .contact-card h4 {
-            font-size: 16px;
-            font-weight: 700;
-            margin: 0 0 12px 0;
-        }
-
-        .contact-card p {
-            font-size: 13px;
-            color: var(--text-1);
-            margin: 8px 0;
-        }
-
-        .contact-form {
-            background: var(--panel);
-            border: 1px solid var(--gray-border);
-            padding: 32px;
-            border-radius: 12px;
-            margin-top: 32px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--text-0);
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--gray-border);
-            background: var(--bg-1);
-            color: var(--text-0);
-            border-radius: 6px;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .form-submit {
-            background: var(--blue);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            width: 100%;
-            transition: background 0.3s;
-        }
-
-        .form-submit:hover {
-            background: var(--blue-light);
-        }
-
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            section { padding: 48px 20px; }
-
-            #hero,
-            .commercial-content,
-            .mini-app-content,
-            .management-content,
-            .calculator-content {
-                grid-template-columns: 1fr;
-            }
-
-            .features-grid,
-            .brands-grid,
-            .contacts-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-heading {
-                font-size: 32px;
+            nav {
+                padding: 16px 24px;
             }
 
             .nav-menu {
                 display: none;
+            }
+
+            section {
+                padding: 60px 24px;
+            }
+
+            h1, h2 {
+                font-size: 36px;
+            }
+
+            #hero,
+            .process-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .grid-3,
+            .grid-3-large,
+            .grid-4,
+            .platforms,
+            .stats {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -669,378 +640,407 @@
 <body>
     <!-- NAVIGATION -->
     <nav>
-        <div class="logo" style="font-size: 20px;">▲ UNITPLAST</div>
+        <div class="logo">▲ UNITPLAST</div>
         <ul class="nav-menu">
             <li><a href="#features">Решения</a></li>
             <li><a href="#brands">Отрасли</a></li>
-            <li><a href="#capabilities">Возможности</a></li>
+            <li><a href="#cta">Возможности</a></li>
             <li><a href="#mini-app">Ключи</a></li>
             <li><a href="#contacts">Контакты</a></li>
         </ul>
-        <button class="cta-btn">Запросить демо</button>
+        <button class="nav-cta">Запросить демо</button>
     </nav>
 
-    <!-- SECTION 1: HERO -->
+    <!-- HERO -->
     <section id="hero">
-        <div class="hero-content">
-            <div class="section-label">приложение</div>
+        <div>
+            <div class="label">Приложение</div>
             <h1>Скачайте приложение и подключитесь к платформе</h1>
-            <p class="section-desc">Доступ ко всем возможностям UNITPLAST — на вашем устройстве. Работайте с производством, заказами и аналитикой в любое время с компьютера, мобильного приложения или Mini App в Telegram.</p>
+            <p class="desc">Доступ ко всем возможностям UNITPLAST — на вашем устройстве. Работайте с производством, заказами и аналитикой в любое время.</p>
 
-            <div class="download-buttons">
-                <button class="download-btn">📲 App Store</button>
-                <button class="download-btn">📱 Google Play</button>
-                <button class="download-btn">🛍️ RuStore</button>
+            <div class="hero-buttons">
+                <button class="btn-primary">📲 App Store</button>
+                <button class="btn-primary">🤖 Google Play</button>
+                <button class="btn-primary">🛍️ RuStore</button>
             </div>
 
-            <div class="platform-icons">
-                <div class="platform-item">
-                    <div class="platform-item-icon">🍎 iOS</div>
-                    <div class="platform-item-text">Оптимизировано для iPhone</div>
+            <div class="platforms">
+                <div class="platform">
+                    <div class="platform-icon">🍎</div>
+                    <div class="platform-name">iOS</div>
+                    <div class="platform-desc">Оптимизировано</div>
                 </div>
-                <div class="platform-item">
-                    <div class="platform-item-icon">🤖 Android</div>
-                    <div class="platform-item-text">Полная функциональность</div>
+                <div class="platform">
+                    <div class="platform-icon">🤖</div>
+                    <div class="platform-name">Android</div>
+                    <div class="platform-desc">Функционально</div>
                 </div>
-                <div class="platform-item">
-                    <div class="platform-item-icon">🌐 Web</div>
-                    <div class="platform-item-text">На любом браузере</div>
+                <div class="platform">
+                    <div class="platform-icon">🌐</div>
+                    <div class="platform-name">Web</div>
+                    <div class="platform-desc">На браузере</div>
                 </div>
-                <div class="platform-item">
-                    <div class="platform-item-icon">✈️ Telegram</div>
-                    <div class="platform-item-text">Mini App в мессенджере</div>
+                <div class="platform">
+                    <div class="platform-icon">✈️</div>
+                    <div class="platform-name">Telegram</div>
+                    <div class="platform-desc">Mini App</div>
                 </div>
             </div>
         </div>
 
         <div class="hero-visual">
-            <div class="qr-code">[QR Code Placeholder]</div>
+            <div class="placeholder-img">
+                <div style="font-size: 64px;">📱</div>
+                <div>Phone Mockup</div>
+            </div>
         </div>
     </section>
 
-    <!-- SECTION 2: FEATURES -->
+    <!-- FEATURES -->
     <section id="features">
-        <div class="section-label">преимущества платформы</div>
-        <h2 class="section-heading">Почему выбирают UNITPLAST</h2>
-        <p class="section-desc">Платформа объединяет расчёты, производство, склад и продажи в одной системе. Экономьте время, снижайте ошибки и увеличивайте прибыль.</p>
+        <div class="label">Преимущества</div>
+        <h2>Почему выбирают UNITPLAST</h2>
+        <p class="desc">Платформа объединяет расчёты, производство, склад и продажи в одной системе.</p>
 
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-icon">⚡</div>
                 <h3>Расчёт за 30 сек</h3>
-                <p>AI мгновенно рассчитывает стоимость, сроки и производственные параметры.</p>
+                <p>AI мгновенно рассчитывает стоимость, сроки и параметры производства.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">🧩</div>
+            <div class="card">
+                <div class="card-icon">🧩</div>
                 <h3>3 бизнеса в 1</h3>
-                <p>Пластик, мебель, металл — единая система без перестроек и переделок.</p>
+                <p>Пластик, мебель, металл — единая система без перестроек.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">📦</div>
+            <div class="card">
+                <div class="card-icon">📦</div>
                 <h3>Склад онлайн</h3>
                 <p>Остатки, резервирование и движение материалов в реальном времени.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">📄</div>
+            <div class="card">
+                <div class="card-icon">📄</div>
                 <h3>КП за клик</h3>
                 <p>Автоматическое коммерческое предложение с логотипом и реквизитами.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔗</div>
+            <div class="card">
+                <div class="card-icon">🔗</div>
                 <h3>1С и CRM</h3>
-                <p>Синхронизация данных с 1С, CRM и другими системами без ручного труда.</p>
+                <p>Синхронизация данных с 1С, CRM и другими системами.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
+            <div class="card">
+                <div class="card-icon">📊</div>
                 <h3>Аналитика</h3>
-                <p>Маржинальность, загрузка производства, эффективность в динамике.</p>
+                <p>Маржинальность, загрузка производства и эффективность в динамике.</p>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 3: THREE BRANDS -->
+    <!-- THREE BRANDS -->
     <section id="brands">
-        <div class="section-label">платформа</div>
-        <h2 class="section-heading">Одна система для трёх производств</h2>
-        <p class="section-desc">Единая цифровая платформа для управления расчётами, производством и данными — для пластика, мебели и металлоконструкций.</p>
+        <div class="label">Платформа</div>
+        <h2>Одна система для трёх производств</h2>
+        <p class="desc">Единая цифровая платформа для управления расчётами, производством и данными.</p>
 
-        <div class="brands-grid">
+        <div class="grid-3-large">
             <div class="brand-card">
-                <div class="brand-logo" style="font-size: 36px;">▲</div>
+                <div class="brand-logo">▲</div>
                 <h3>UNITPLAST</h3>
-                <p style="color: var(--text-1); font-size: 14px;">Литьё пластика под давлением</p>
-                <ul class="brand-features">
-                    <li>Проектирование и расчёт изделий</li>
-                    <li>Технологии литья и оснастка</li>
+                <p>Литьё пластика под давлением</p>
+                <ul class="features-list">
+                    <li>Проектирование и расчёт</li>
+                    <li>Технологии и оснастка</li>
                     <li>Серийное производство</li>
-                    <li>Контроль качества и тестирование</li>
+                    <li>Контроль качества</li>
                     <li>Логистика и упаковка</li>
                 </ul>
-                <button class="brand-btn">Подробнее →</button>
+                <button class="btn-outline">Подробнее →</button>
             </div>
 
             <div class="brand-card">
-                <div class="brand-logo">◆</div>
+                <div class="brand-logo">▲</div>
                 <h3>UNIFURNITURE</h3>
-                <p style="color: var(--text-1); font-size: 14px;">Производство мебели и интерьерных решений</p>
-                <ul class="brand-features">
-                    <li>Корпусная и мягкая мебель</li>
-                    <li>Индивидуальные и серийные решения</li>
-                    <li>Современные материалы и фурнитура</li>
+                <p>Производство мебели и интерьера</p>
+                <ul class="features-list">
+                    <li>Корпусная мебель</li>
+                    <li>Индивидуальные решения</li>
+                    <li>Современные материалы</li>
                     <li>Дизайн и проектирование</li>
                     <li>Комплектация и доставка</li>
                 </ul>
-                <button class="brand-btn">Подробнее →</button>
+                <button class="btn-outline">Подробнее →</button>
             </div>
 
             <div class="brand-card">
-                <div class="brand-logo">◆</div>
+                <div class="brand-logo">▲</div>
                 <h3>UNIMETALL</h3>
-                <p style="color: var(--text-1); font-size: 14px;">Металлоконструкции и изделия из металла</p>
-                <ul class="brand-features">
-                    <li>Проектирование и инжиниринг</li>
-                    <li>Изготовление и обработка металла</li>
-                    <li>Сварка и сборка конструкций</li>
-                    <li>Защитные покрытия и контроль</li>
+                <p>Металлоконструкции и изделия</p>
+                <ul class="features-list">
+                    <li>Проектирование</li>
+                    <li>Обработка металла</li>
+                    <li>Сварка и сборка</li>
+                    <li>Защитные покрытия</li>
                     <li>Поставка и монтаж</li>
                 </ul>
-                <button class="brand-btn">Подробнее →</button>
+                <button class="btn-outline">Подробнее →</button>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 4: COMMERCIAL OFFERS -->
+    <!-- COMMERCIAL OFFERS -->
     <section id="commercial">
-        <div class="section-label">коммерческие предложения</div>
-        <h2 class="section-heading">Готовое КП с логотипом исполнителя, реквизитами и контактами</h2>
-        <p class="section-desc">Автоматизируйте формирование и отправку коммерческих предложений. Больше не нужно собирать документы вручную — система всё делает за вас.</p>
+        <div class="label">Коммерческие предложения</div>
+        <h2>Готовое КП с логотипом и реквизитами</h2>
+        <p class="desc">Автоматизируйте формирование и отправку коммерческих предложений.</p>
 
-        <div class="commercial-content">
-            <div class="process-steps">
+        <div class="process-grid">
+            <div class="steps">
                 <div class="step">
-                    <div class="step-number">1</div>
+                    <div class="step-num">1</div>
                     <div class="step-content">
                         <h4>Выбор исполнителя</h4>
-                        <p>Выберите поставщика из производства из базе проверённых исполнителей.</p>
+                        <p>Выберите поставщика из базы проверённых исполнителей.</p>
                     </div>
                 </div>
                 <div class="step">
-                    <div class="step-number">2</div>
+                    <div class="step-num">2</div>
                     <div class="step-content">
                         <h4>Автоподстановка реквизитов</h4>
-                        <p>Система автоматически подставляет реквизиты, логотип и контакты исполнителя.</p>
+                        <p>Система автоматически подставляет логотип и контакты.</p>
                     </div>
                 </div>
                 <div class="step">
-                    <div class="step-number">3</div>
+                    <div class="step-num">3</div>
                     <div class="step-content">
                         <h4>Формирование сметы</h4>
-                        <p>Добавьте позиции, рассчитайте стоимость и получите готовое КП за секунды.</p>
+                        <p>Добавьте позиции и рассчитайте стоимость за секунды.</p>
                     </div>
                 </div>
                 <div class="step">
-                    <div class="step-number">4</div>
+                    <div class="step-num">4</div>
                     <div class="step-content">
                         <h4>Отправка клиенту</h4>
-                        <p>Отправьте КП клиенту удобным способом: PDF, Telegram или Email.</p>
+                        <p>Отправьте КП удобным способом: PDF, Telegram или Email.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="dashboard-preview">
-                [Commercial Offer Preview]
+            <div class="hero-visual">
+                <div class="placeholder-img">
+                    <div style="font-size: 56px;">📋</div>
+                    <div>Commercial Offer</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 5: MINI APP -->
+    <!-- MINI APP -->
     <section id="mini-app">
-        <div class="section-label">Telegram Mini App</div>
-        <h2 class="section-heading">Откройте UNITPLAST Mini App</h2>
-        <p class="section-desc">Запускайте расчёты, загружайте чертежи, смотрите данные по производству и управляйте проектами — прямо в Telegram.</p>
+        <div class="label">Telegram Mini App</div>
+        <h2>Откройте UNITPLAST Mini App</h2>
+        <p class="desc">Запускайте расчёты, загружайте чертежи и управляйте проектами прямо в Telegram.</p>
 
-        <div class="mini-app-content">
-            <div class="mini-app-left">
-                <p class="section-desc">Быстрый доступ к ключевым функциям платформы прямо в мессенджере. Без установки приложения — просто откройте ссылку в Telegram.</p>
+        <div class="process-grid">
+            <div>
+                <p class="desc" style="margin-bottom: 32px;">Быстрый доступ к ключевым функциям платформы прямо в мессенджере.</p>
 
-                <div class="mini-app-buttons">
-                    <button class="mini-app-btn">✈️ Открыть в Telegram</button>
-                    <button class="mini-app-btn" style="background: transparent; border: 1px solid var(--blue); color: var(--blue);">🔗 Получить ссылку</button>
+                <div class="hero-buttons">
+                    <button class="btn-primary">✈️ Открыть в Telegram</button>
+                    <button class="btn-secondary">🔗 Получить ссылку</button>
                 </div>
 
-                <div class="mini-app-features">
-                    <div class="mini-app-feature">💬 Всегда под рукой — Доступ в любой момент</div>
-                    <div class="mini-app-feature">🔒 Безопасность данных — Защита конфиденциально</div>
-                    <div class="mini-app-feature">⚡ Быстро и удобно — Оптимизировано для мобиля</div>
-                    <div class="mini-app-feature">👥 Команда в одном месте — Общайтесь и координируйте</div>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-label">Всегда под рукой</div>
+                        <p style="font-size: 13px; margin-top: 8px;">Доступ в любой момент</p>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Безопасность</div>
+                        <p style="font-size: 13px; margin-top: 8px;">Защита данных</p>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Быстро</div>
+                        <p style="font-size: 13px; margin-top: 8px;">Оптимизировано</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="dashboard-preview">
-                [Mini App Preview / QR Code]
+            <div class="hero-visual">
+                <div class="placeholder-img">
+                    <div style="font-size: 56px;">📱</div>
+                    <div>Mini App Screenshot</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 6: MANAGEMENT -->
+    <!-- MANAGEMENT -->
     <section id="management">
-        <div class="section-label">управление</div>
-        <h2 class="section-heading">Контролируйте производство и продажи в реальном времени</h2>
-        <p class="section-desc">Единая аналитическая панель для мониторинга ключевых показателей, управления заказами, людьми, финансами и складскими остатками.</p>
+        <div class="label">Управление</div>
+        <h2>Контролируйте производство в реальном времени</h2>
+        <p class="desc">Единая аналитическая панель для мониторинга всех ключевых показателей.</p>
 
-        <div class="management-content">
+        <div class="process-grid">
             <div>
-                <h3 style="font-size: 20px; margin-bottom: 16px;">Видимость бизнеса</h3>
-                <p style="color: var(--text-1); margin-bottom: 16px;">Все ключевые показатели на одной панели в реальном времени.</p>
-
-                <h3 style="font-size: 20px; margin-bottom: 16px;">Управление людьми</h3>
-                <p style="color: var(--text-1); margin-bottom: 16px;">Отслеживайте источники, конверсию и движение лидов по этапам.</p>
-
-                <h3 style="font-size: 20px; margin-bottom: 16px;">Финансовый контроль</h3>
-                <p style="color: var(--text-1); margin-bottom: 24px;">Контролируйте выручку, прибыль и рентабельность в динамике.</p>
-
-                <button class="mini-app-btn">→ Получить доступ</button>
+                <div class="card" style="margin-bottom: 24px;">
+                    <h3 style="color: var(--text-light);">📊 Видимость бизнеса</h3>
+                    <p>Все ключевые показатели на одной панели в реальном времени.</p>
+                </div>
+                <div class="card" style="margin-bottom: 24px;">
+                    <h3 style="color: var(--text-light);">👥 Управление людьми</h3>
+                    <p>Отслеживайте источники, конверсию и движение лидов.</p>
+                </div>
+                <div class="card" style="margin-bottom: 24px;">
+                    <h3 style="color: var(--text-light);">💰 Финансовый контроль</h3>
+                    <p>Контролируйте выручку, прибыль и рентабельность.</p>
+                </div>
+                <button class="btn-primary">Получить доступ</button>
             </div>
 
-            <div class="dashboard-preview">
-                [Analytics Dashboard Preview]
+            <div class="hero-visual">
+                <div class="placeholder-img">
+                    <div style="font-size: 56px;">📈</div>
+                    <div>Analytics Dashboard</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 7: CALCULATOR -->
+    <!-- CALCULATOR -->
     <section id="calculator">
-        <div class="section-label">AI для производства</div>
-        <h2 class="section-heading">Расчёт стоимости производства за 30 секунд</h2>
-        <p class="section-desc">Автоматизируйте расчёты, КП и производственные данные. Telegram Mini App, CRM, 1С и склад в одной системе — для пластика, мебели и металлоконструкций.</p>
+        <div class="label">AI для производства</div>
+        <h2>Расчёт за 30 секунд</h2>
+        <p class="desc">Введите параметры — система мгновенно рассчитает стоимость и сроки.</p>
 
-        <div class="calculator-content">
+        <div class="process-grid">
             <div>
-                <p class="section-desc">Введите параметры изделия, выберите материал и тираж — система мгновенно рассчитает стоимость и сроки.</p>
-
-                <div class="calculator-buttons">
-                    <button class="mini-app-btn">🚀 Получить доступ</button>
-                    <button class="mini-app-btn" style="background: transparent; border: 1px solid var(--blue); color: var(--blue);">▶ Смотреть демо</button>
+                <div class="hero-buttons">
+                    <button class="btn-primary">🚀 Получить доступ</button>
+                    <button class="btn-secondary">▶ Смотреть демо</button>
                 </div>
 
-                <div class="stats-display">
-                    <div class="stat-item">
+                <div class="stats" style="margin-top: 48px;">
+                    <div class="stat">
                         <div class="stat-value">99.8%</div>
                         <div class="stat-label">Точность расчётов</div>
                     </div>
-                    <div class="stat-item">
+                    <div class="stat">
                         <div class="stat-value">-18.7%</div>
                         <div class="stat-label">Экономия материала</div>
                     </div>
-                    <div class="stat-item">
+                    <div class="stat">
                         <div class="stat-value">42+</div>
                         <div class="stat-label">Экранов и модулей</div>
                     </div>
                 </div>
             </div>
 
-            <div class="dashboard-preview">
-                [Cost Calculator Preview]
+            <div class="hero-visual">
+                <div class="placeholder-img">
+                    <div style="font-size: 56px;">🧮</div>
+                    <div>Cost Calculator</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 8: CTA -->
+    <!-- CTA -->
     <section id="cta">
-        <div class="section-label">СДЕЛАЙТЕ СЛЕДУЮЩИЙ ШАГ</div>
-        <h2 class="section-heading">Готовы автоматизировать производство?</h2>
+        <div class="label">Следующий шаг</div>
+        <h2>Готовы автоматизировать производство?</h2>
 
         <div class="cta-box">
             <h3>Запустите автоматизацию уже сегодня</h3>
-            <p>Получите персональную демонстрацию платформы и убедитесь в её преимуществах на практике.</p>
+            <p>Получите персональную демонстрацию платформы и убедитесь в преимуществах.</p>
             <div class="cta-buttons">
-                <button class="cta-primary">🚀 Запросить демонстрацию</button>
-                <button class="cta-primary" style="background: transparent; border: 1px solid var(--blue); color: var(--blue);">🔓 Получить доступ</button>
+                <button class="btn-primary">🚀 Запросить демонстрацию</button>
+                <button class="btn-secondary">🔓 Получить доступ</button>
             </div>
         </div>
 
-        <div class="stats-display" style="max-width: 800px; margin: 48px auto 0;">
-            <div class="stat-item">
+        <div class="stats">
+            <div class="stat">
                 <div class="stat-value">99.8%</div>
-                <div class="stat-label">Точность расчётов</div>
+                <div class="stat-label">Точность</div>
             </div>
-            <div class="stat-item">
+            <div class="stat">
                 <div class="stat-value">-18.7%</div>
-                <div class="stat-label">Экономия материала</div>
+                <div class="stat-label">Экономия</div>
             </div>
-            <div class="stat-item">
+            <div class="stat">
                 <div class="stat-value">42+</div>
-                <div class="stat-label">Экранов и модулей</div>
+                <div class="stat-label">Модулей</div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 9: CONTACTS -->
+    <!-- CONTACTS -->
     <section id="contacts">
-        <div class="section-label">контакты</div>
-        <h2 class="section-heading">Контакты</h2>
-        <p class="section-desc">Обсудите с нами запуск пилотного проекта, демонстрацию платформы или внедрение в вашей компании.</p>
+        <div class="label">Контакты</div>
+        <h2>Свяжитесь с нами</h2>
+        <p class="desc">Обсудите запуск пилотного проекта или внедрение в вашей компании.</p>
 
-        <div class="contacts-grid">
-            <div class="contact-card">
-                <h4>📞 Отдел продаж</h4>
-                <p>+7 (495) 123-45-67</p>
-                <p>sales@unitplast.ru</p>
-                <p>@unitplast_sales</p>
-                <p style="font-size: 12px; color: #aab2c5;">09:00 - 18:00 МСК</p>
+        <div class="contact-section">
+            <div class="grid-4">
+                <div class="contact-card">
+                    <h4>📞 Отдел продаж</h4>
+                    <p>+7 (495) 123-45-67</p>
+                    <p>sales@unitplast.ru</p>
+                    <p>@unitplast_sales</p>
+                    <p style="font-size: 11px; margin-top: 12px;">09:00 - 18:00 МСК</p>
+                </div>
+                <div class="contact-card">
+                    <h4>📋 Проекты</h4>
+                    <p>+7 (495) 987-65-43</p>
+                    <p>projects@unitplast.ru</p>
+                    <p>@unitplast_projects</p>
+                    <p style="font-size: 11px; margin-top: 12px;">09:00 - 18:00 МСК</p>
+                </div>
+                <div class="contact-card">
+                    <h4>🛠️ Поддержка</h4>
+                    <p>+7 (495) 246-80-12</p>
+                    <p>support@unitplast.ru</p>
+                    <p>@unitplast_support</p>
+                    <p style="font-size: 11px; margin-top: 12px;">09:00 - 21:00 МСК</p>
+                </div>
+                <div class="contact-card">
+                    <h4>🏢 Офис</h4>
+                    <p>ООО «ЮНИПЛАСТ»</p>
+                    <p>г. Москва, Преснеская наб., д. 12</p>
+                    <p>info@unitplast.ru</p>
+                </div>
             </div>
-            <div class="contact-card">
-                <h4>📋 Внедрение проектов</h4>
-                <p>+7 (495) 987-65-43</p>
-                <p>projects@unitplast.ru</p>
-                <p>@unitplast_projects</p>
-                <p style="font-size: 12px; color: #aab2c5;">09:00 - 18:00 МСК</p>
-            </div>
-            <div class="contact-card">
-                <h4>🛠️ Техническая поддержка</h4>
-                <p>+7 (495) 246-80-12</p>
-                <p>support@unitplast.ru</p>
-                <p>@unitplast_support</p>
-                <p style="font-size: 12px; color: #aab2c5;">09:00 - 21:00 МСК</p>
-            </div>
-            <div class="contact-card">
-                <h4>🏢 Офис и компания</h4>
-                <p>ООО «ЮНИПЛАСТ»</p>
-                <p>г. Москва, Преснеская наб.</p>
-                <p>д. 12, Башня Федерация</p>
-                <p>info@unitplast.ru</p>
-            </div>
-        </div>
 
-        <div class="contact-form">
-            <h3 style="margin-top: 0;">Отправьте нам заявку</h3>
-            <form>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                    <div class="form-group">
-                        <label>Ваше имя *</label>
-                        <input type="text" required>
+            <div class="contact-form">
+                <h3 style="margin-bottom: 24px;">Отправьте заявку</h3>
+                <form onsubmit="event.preventDefault();">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label>Ваше имя</label>
+                            <input type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Компания</label>
+                            <input type="text" required>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label>Телефон</label>
+                            <input type="tel" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" required>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Название компании *</label>
-                        <input type="text" required>
+                        <label>Сообщение</label>
+                        <textarea></textarea>
                     </div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                    <div class="form-group">
-                        <label>Телефон *</label>
-                        <input type="tel" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email *</label>
-                        <input type="email" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Комментарий</label>
-                    <textarea></textarea>
-                </div>
-                <button type="submit" class="form-submit">Отправить заявку</button>
-            </form>
+                    <button type="submit" class="form-submit">Отправить заявку</button>
+                </form>
+            </div>
         </div>
     </section>
 </body>
