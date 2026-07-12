@@ -1,0 +1,39 @@
+[Unit]
+Description=UNITPLAST Log Analyzer (24/7 Autonomous)
+Documentation=file:///var/www/unitplast_bot/docs/AGENT_AUTONOMY_SYSTEM.md
+After=network-online.target unitplast-health-monitor.service unitplast-agent-status.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=unitplast
+Group=unitplast
+WorkingDirectory=/var/www/unitplast_bot
+Environment="PYTHONUNBUFFERED=1"
+Environment="PYTHONPATH=/var/www/unitplast_bot"
+Environment="SAFE_MODE=true"
+
+ExecStart=/var/www/unitplast_bot/venv/bin/python3 -m agents.log_analyzer
+
+# Auto-restart on failure
+Restart=always
+RestartSec=30
+StartLimitInterval=120
+StartLimitBurst=3
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=log-analyzer
+
+# Process management
+KillMode=process
+KillSignal=SIGTERM
+TimeoutStopSec=10
+
+# Security
+PrivateTmp=yes
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
