@@ -6,13 +6,9 @@
     <title>UNITPLAST — Платформа автоматизации производства</title>
     <meta name="description" content="Расчёты, КП, склад и аналитика для пластика, мебели и металлоконструкций.">
 
-    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- STYLES -->
-    <link rel="stylesheet" href="/assets/css/landing-styles.css">
 
     <style>
         :root {
@@ -23,11 +19,12 @@
             --text-0: #f3f5f9;
             --text-1: #aab2c5;
             --blue: #2e6bf2;
+            --blue-light: #4d7fff;
+            --green: #10b981;
+            --gray-border: rgba(170, 178, 197, 0.15);
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -35,43 +32,39 @@
             background: var(--bg-0);
             color: var(--text-0);
             font-family: 'Inter', sans-serif;
+            line-height: 1.6;
         }
 
-        /* NAVIGATION BAR */
-        nav.navbar {
+        /* ===== NAVIGATION ===== */
+        nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
+            padding: 16px 40px;
             background: rgba(4, 6, 12, 0.95);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(170, 178, 197, 0.1);
+            border-bottom: 1px solid var(--gray-border);
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 100;
         }
 
-        .nav-logo {
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-0);
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-0);
-            text-decoration: none;
-        }
-
-        .nav-logo svg {
-            width: 32px;
-            height: 32px;
+            gap: 8px;
         }
 
         .nav-menu {
             display: flex;
-            gap: 40px;
-            list-style: none;
+            gap: 32px;
+            align-items: center;
             margin: 0;
             padding: 0;
+            list-style: none;
         }
 
         .nav-menu a {
@@ -79,291 +72,945 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: color 0.3s;
         }
 
         .nav-menu a:hover {
             color: var(--blue);
         }
 
-        .nav-cta {
+        .cta-btn {
             background: var(--blue);
             color: white;
+            padding: 10px 24px;
             border: none;
-            padding: 12px 24px;
             border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: background 0.3s;
         }
 
-        .nav-cta:hover {
-            background: #1e4fa8;
+        .cta-btn:hover {
+            background: var(--blue-light);
         }
 
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
-            nav.navbar {
-                padding: 16px 20px;
-            }
-        }
-
-        main {
-            width: 100%;
-        }
-
+        /* ===== SECTION BASE ===== */
         section {
-            padding: 120px 40px;
+            padding: 80px 40px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        section.hero {
-            padding-top: 80px;
+        .section-label {
+            color: var(--blue);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
         }
 
+        .section-heading {
+            font-size: 52px;
+            font-weight: 800;
+            margin: 0 0 24px 0;
+            line-height: 1.2;
+            color: var(--text-0);
+        }
+
+        .section-desc {
+            font-size: 18px;
+            color: var(--text-1);
+            margin-bottom: 48px;
+            max-width: 600px;
+        }
+
+        /* ===== SECTION 1: HERO ===== */
+        #hero {
+            background: linear-gradient(135deg, var(--bg-0) 0%, var(--bg-2) 100%);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            padding: 120px 40px;
+        }
+
+        .hero-content h1 {
+            font-size: 56px;
+            font-weight: 800;
+            margin: 0 0 24px 0;
+            line-height: 1.2;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 16px;
+            margin: 32px 0;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            background: var(--panel);
+            border: 1px solid var(--gray-border);
+            color: var(--text-0);
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            background: var(--blue);
+            border-color: var(--blue);
+        }
+
+        .platform-icons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .platform-item {
+            text-align: center;
+        }
+
+        .platform-item-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .platform-item-text {
+            font-size: 14px;
+            color: var(--text-1);
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            background: white;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #000;
+        }
+
+        /* ===== SECTION 2: FEATURES ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .feature-card {
+            background: var(--panel);
+            border: 1px solid var(--gray-border);
+            padding: 32px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--blue);
+            background: rgba(46, 107, 242, 0.05);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-1);
+            margin: 0;
+        }
+
+        /* ===== SECTION 3: THREE BRANDS ===== */
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .brand-card {
+            background: var(--panel);
+            border: 1px solid var(--gray-border);
+            padding: 32px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .brand-card:hover {
+            border-color: var(--blue);
+        }
+
+        .brand-logo {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .brand-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+        }
+
+        .brand-features {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0;
+        }
+
+        .brand-features li {
+            font-size: 14px;
+            color: var(--text-1);
+            padding-left: 24px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .brand-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--green);
+            font-weight: bold;
+        }
+
+        .brand-btn {
+            background: transparent;
+            border: 1px solid var(--blue);
+            color: var(--blue);
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 16px;
+            transition: all 0.3s;
+        }
+
+        .brand-btn:hover {
+            background: var(--blue);
+            color: white;
+        }
+
+        /* ===== SECTION 4: COMMERCIAL OFFERS ===== */
+        .commercial-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            margin-top: 48px;
+        }
+
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--blue);
+            border-radius: 50%;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        .step-content p {
+            font-size: 14px;
+            color: var(--text-1);
+            margin: 0;
+        }
+
+        /* ===== SECTION 5: MINI APP ===== */
+        .mini-app-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            margin-top: 48px;
+        }
+
+        .mini-app-left h2 {
+            font-size: 48px;
+            font-weight: 800;
+            margin: 0 0 24px 0;
+            line-height: 1.2;
+        }
+
+        .mini-app-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .mini-app-btn {
+            background: var(--blue);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .mini-app-btn:hover {
+            background: var(--blue-light);
+        }
+
+        .mini-app-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .mini-app-feature {
+            background: rgba(46, 107, 242, 0.1);
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-1);
+        }
+
+        /* ===== SECTION 6: MANAGEMENT ===== */
+        .management-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            margin-top: 48px;
+        }
+
+        .dashboard-preview {
+            background: var(--panel);
+            border: 1px solid var(--gray-border);
+            border-radius: 12px;
+            padding: 24px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-1);
+        }
+
+        /* ===== SECTION 7: CALCULATOR ===== */
+        .calculator-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            margin-top: 48px;
+        }
+
+        .calculator-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stats-display {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .stat-item {
+            background: rgba(46, 107, 242, 0.1);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--blue);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-1);
+            margin-top: 8px;
+        }
+
+        /* ===== SECTION 8: CTA ===== */
+        #cta {
+            background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
+            text-align: center;
+        }
+
+        .cta-box {
+            background: var(--panel);
+            border: 1px solid var(--gray-border);
+            padding: 48px;
+            border-radius: 12px;
+            max-width: 600px;
+            margin: 32px auto;
+        }
+
+        .cta-box h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 16px 0;
+        }
+
+        .cta-box p {
+            font-size: 16px;
+            color: var(--text-1);
+            margin: 0 0 24px 0;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-primary {
+            background: var(--blue);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .cta-primary:hover {
+            background: var(--blue-light);
+        }
+
+        /* ===== SECTION 9: CONTACTS ===== */
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .contact-card {
+            background: var(--panel);
+            border: 1px solid var(--gray-border);
+            padding: 24px;
+            border-radius: 12px;
+        }
+
+        .contact-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+        }
+
+        .contact-card p {
+            font-size: 13px;
+            color: var(--text-1);
+            margin: 8px 0;
+        }
+
+        .contact-form {
+            background: var(--panel);
+            border: 1px solid var(--gray-border);
+            padding: 32px;
+            border-radius: 12px;
+            margin-top: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-0);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gray-border);
+            background: var(--bg-1);
+            color: var(--text-0);
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-submit {
+            background: var(--blue);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .form-submit:hover {
+            background: var(--blue-light);
+        }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            section {
-                padding: 80px 20px;
+            section { padding: 48px 20px; }
+
+            #hero,
+            .commercial-content,
+            .mini-app-content,
+            .management-content,
+            .calculator-content {
+                grid-template-columns: 1fr;
             }
-            section.hero {
-                padding-top: 60px;
+
+            .features-grid,
+            .brands-grid,
+            .contacts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading {
+                font-size: 32px;
+            }
+
+            .nav-menu {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
-    <!-- NAVIGATION BAR -->
-    <nav class="navbar">
-        <a href="/" class="nav-logo">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" fill="currentColor"/>
-            </svg>
-            UNITPLAST
-        </a>
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="logo">◆ UNITPLAST</div>
         <ul class="nav-menu">
             <li><a href="#features">Решения</a></li>
-            <li><a href="#features">Отрасли</a></li>
-            <li><a href="#features">Возможности</a></li>
+            <li><a href="#brands">Отрасли</a></li>
+            <li><a href="#capabilities">Возможности</a></li>
+            <li><a href="#mini-app">Ключи</a></li>
             <li><a href="#contacts">Контакты</a></li>
         </ul>
-        <button class="nav-cta" onclick="document.getElementById('cta')?.scrollIntoView({behavior: 'smooth'})">Запросить демо →</button>
+        <button class="cta-btn">Запросить демо</button>
     </nav>
 
-    <main>
-        <!-- SECTION 1: HERO -->
-        <section class="hero">
-            <div style="color: #2e6bf2; font-size: 12px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Приложение</div>
+    <!-- SECTION 1: HERO -->
+    <section id="hero">
+        <div class="hero-content">
+            <div class="section-label">приложение</div>
+            <h1>Скачайте приложение и подключитесь к платформе</h1>
+            <p class="section-desc">Доступ ко всем возможностям UNITPLAST — на вашем устройстве. Работайте с производством, заказами и аналитикой в любое время с компьютера, мобильного приложения или Mini App в Telegram.</p>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-bottom: 80px;">
-                <div class="hero-left">
-                    <h1 style="font-size: 48px; line-height: 1.2; margin: 0 0 20px 0; font-weight: 800;">Скачайте приложение и подключитесь к платформе</h1>
-                    <p style="font-size: 16px; color: var(--text-1); line-height: 1.6; margin: 0 0 40px 0;">Доступ ко всем возможностям UNITPLAST — на вашем устройстве. Работайте с производством, заказами и аналитикой в любое время с компьютера, мобильного приложения или Mini App в Telegram.</p>
+            <div class="download-buttons">
+                <button class="download-btn">🍎 App Store</button>
+                <button class="download-btn">▶ Google Play</button>
+                <button class="download-btn">📱 RuStore</button>
+            </div>
 
-                    <!-- Download buttons -->
-                    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 50px;">
-                        <a href="https://apps.apple.com" style="display: flex; align-items: center; gap: 12px; padding: 14px 20px; border: 1px solid rgba(170, 178, 197, 0.3); border-radius: 8px; text-decoration: none; color: var(--text-0); transition: all 0.3s ease; background: rgba(14, 20, 34, 0.5);" onmouseover="this.style.background='rgba(46, 107, 242, 0.1)'" onmouseout="this.style.background='rgba(14, 20, 34, 0.5)'">
-                            <span style="font-size: 24px;">🍎</span>
-                            <div>
-                                <div style="font-size: 12px; color: var(--text-1);">Загрузите в</div>
-                                <div style="font-size: 16px; font-weight: 600;">App Store</div>
-                            </div>
-                        </a>
-                        <a href="https://play.google.com" style="display: flex; align-items: center; gap: 12px; padding: 14px 20px; border: 1px solid rgba(170, 178, 197, 0.3); border-radius: 8px; text-decoration: none; color: var(--text-0); transition: all 0.3s ease; background: rgba(14, 20, 34, 0.5);" onmouseover="this.style.background='rgba(46, 107, 242, 0.1)'" onmouseout="this.style.background='rgba(14, 20, 34, 0.5)'">
-                            <span style="font-size: 24px;">🤖</span>
-                            <div>
-                                <div style="font-size: 12px; color: var(--text-1);">Доступно в</div>
-                                <div style="font-size: 16px; font-weight: 600;">Google Play</div>
-                            </div>
-                        </a>
-                        <a href="https://rustore.ru" style="display: flex; align-items: center; gap: 12px; padding: 14px 20px; border: 1px solid rgba(170, 178, 197, 0.3); border-radius: 8px; text-decoration: none; color: var(--text-0); transition: all 0.3s ease; background: rgba(14, 20, 34, 0.5);" onmouseover="this.style.background='rgba(46, 107, 242, 0.1)'" onmouseout="this.style.background='rgba(14, 20, 34, 0.5)'">
-                            <span style="font-size: 24px;">📦</span>
-                            <div>
-                                <div style="font-size: 12px; color: var(--text-1);">Скачайте из</div>
-                                <div style="font-size: 16px; font-weight: 600;">RuStore</div>
-                            </div>
-                        </a>
+            <div class="platform-icons">
+                <div class="platform-item">
+                    <div class="platform-item-icon">🍎</div>
+                    <div class="platform-item-text">iOS</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-item-icon">🤖</div>
+                    <div class="platform-item-text">Android</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-item-icon">🌐</div>
+                    <div class="platform-item-text">Web</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-item-icon">✈️</div>
+                    <div class="platform-item-text">Telegram</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="qr-code">[QR Code Placeholder]</div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: FEATURES -->
+    <section id="features">
+        <div class="section-label">преимущества платформы</div>
+        <h2 class="section-heading">Почему выбирают UNITPLAST</h2>
+        <p class="section-desc">Платформа объединяет расчёты, производство, склад и продажи в одной системе. Экономьте время, снижайте ошибки и увеличивайте прибыль.</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Расчёт за 30 секунд</h3>
+                <p>AI и умные алгоритмы мгновенно рассчитывают стоимость и сроки производства.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🧩</div>
+                <h3>Единая система для 3 производств</h3>
+                <p>Пластик, мебель, металл — всё в одной платформе без перестроек.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Склад и остатки в реальном времени</h3>
+                <p>Актуальные остатки, резервирование и движение материалов онлайн на всех складах.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📄</div>
+                <h3>Автоматическое КП</h3>
+                <p>КП формируется автоматически с логотипом, реквизитами и контактами исполнителя.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3>Интеграция с 1С и CRM</h3>
+                <p>Данные синхронизируются с 1С, CRM и другими системами без ручного ввода.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Аналитика и контроль прибыли</h3>
+                <p>Отслеживайте маржинальность, загрузку производства и эффективность в динамике.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: THREE BRANDS -->
+    <section id="brands">
+        <div class="section-label">платформа</div>
+        <h2 class="section-heading">Одна система для трёх производств</h2>
+        <p class="section-desc">Единая цифровая платформа для управления расчётами, производством и данными — для пластика, мебели и металлоконструкций.</p>
+
+        <div class="brands-grid">
+            <div class="brand-card">
+                <div class="brand-logo">◆</div>
+                <h3>UNITPLAST</h3>
+                <p style="color: var(--text-1); font-size: 14px;">Литьё пластика под давлением</p>
+                <ul class="brand-features">
+                    <li>Проектирование и расчёт изделий</li>
+                    <li>Технологии литья и оснастка</li>
+                    <li>Серийное производство</li>
+                    <li>Контроль качества и тестирование</li>
+                    <li>Логистика и упаковка</li>
+                </ul>
+                <button class="brand-btn">Подробнее →</button>
+            </div>
+
+            <div class="brand-card">
+                <div class="brand-logo">◆</div>
+                <h3>UNIFURNITURE</h3>
+                <p style="color: var(--text-1); font-size: 14px;">Производство мебели и интерьерных решений</p>
+                <ul class="brand-features">
+                    <li>Корпусная и мягкая мебель</li>
+                    <li>Индивидуальные и серийные решения</li>
+                    <li>Современные материалы и фурнитура</li>
+                    <li>Дизайн и проектирование</li>
+                    <li>Комплектация и доставка</li>
+                </ul>
+                <button class="brand-btn">Подробнее →</button>
+            </div>
+
+            <div class="brand-card">
+                <div class="brand-logo">◆</div>
+                <h3>UNIMETALL</h3>
+                <p style="color: var(--text-1); font-size: 14px;">Металлоконструкции и изделия из металла</p>
+                <ul class="brand-features">
+                    <li>Проектирование и инжиниринг</li>
+                    <li>Изготовление и обработка металла</li>
+                    <li>Сварка и сборка конструкций</li>
+                    <li>Защитные покрытия и контроль</li>
+                    <li>Поставка и монтаж</li>
+                </ul>
+                <button class="brand-btn">Подробнее →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: COMMERCIAL OFFERS -->
+    <section id="commercial">
+        <div class="section-label">коммерческие предложения</div>
+        <h2 class="section-heading">Готовое КП с логотипом исполнителя, реквизитами и контактами</h2>
+        <p class="section-desc">Автоматизируйте формирование и отправку коммерческих предложений. Больше не нужно собирать документы вручную — система всё делает за вас.</p>
+
+        <div class="commercial-content">
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Выбор исполнителя</h4>
+                        <p>Выберите поставщика из производства из базе проверённых исполнителей.</p>
                     </div>
-
-                    <p style="font-size: 12px; color: var(--text-1); margin: 0 0 30px 0;">🔒 Безопасно. Официальные приложения.</p>
-
-                    <!-- Other access methods -->
-                    <div style="margin-top: 50px; padding-top: 50px; border-top: 1px solid rgba(170, 178, 197, 0.1);">
-                        <h3 style="font-size: 14px; color: var(--text-1); margin: 0 0 20px 0; text-transform: uppercase;">Другие способы доступа</h3>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div style="padding: 16px; border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 8px; background: rgba(46, 107, 242, 0.05);">
-                                <span style="font-size: 24px; display: block; margin-bottom: 10px;">💻</span>
-                                <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600;">Web версия</h4>
-                                <p style="margin: 0; font-size: 13px; color: var(--text-1); line-height: 1.5;">Полный доступ ко всем возможностям платформы через браузер на вашем компьютере.</p>
-                                <a href="#" style="display: inline-flex; gap: 6px; margin-top: 10px; color: var(--blue); text-decoration: none; font-size: 12px; font-weight: 600;">Открыть →</a>
-                            </div>
-                            <div style="padding: 16px; border: 1px solid rgba(170, 178, 197, 0.3); border-radius: 8px; background: rgba(14, 20, 34, 0.5);">
-                                <span style="font-size: 24px; display: block; margin-bottom: 10px;">✈️</span>
-                                <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600;">Telegram Mini App</h4>
-                                <p style="margin: 0; font-size: 13px; color: var(--text-1); line-height: 1.5;">Быстрый доступ к ключевым функциям платформы прямо в Telegram.</p>
-                                <a href="/app/miniapp" style="display: inline-flex; gap: 6px; margin-top: 10px; color: var(--blue); text-decoration: none; font-size: 12px; font-weight: 600;">Открыть →</a>
-                            </div>
-                        </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Автоподстановка реквизитов</h4>
+                        <p>Система автоматически подставляет реквизиты, логотип и контакты исполнителя.</p>
                     </div>
                 </div>
-
-                <div class="hero-right" style="display: flex; flex-direction: column; align-items: center; gap: 40px;">
-                    <!-- 3D render -->
-                    <div class="hero-image" style="width: 100%;">
-                        <img src="/assets/images/hero-3d-render.png" alt="3D макет пластиковых изделий" loading="lazy" style="width: 100%; height: auto; display: block;">
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Формирование сметы</h4>
+                        <p>Добавьте позиции, рассчитайте стоимость и получите готовое КП за секунды.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Отправка клиенту</h4>
+                        <p>Отправьте КП клиенту удобным способом: PDF, Telegram или Email.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Platform support icons -->
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 80px; padding-top: 60px; border-top: 1px solid rgba(170, 178, 197, 0.1);">
-                <div style="padding: 20px; border: 1px solid rgba(170, 178, 197, 0.2); border-radius: 10px; text-align: center;">
-                    <span style="font-size: 32px; display: block; margin-bottom: 12px;">🍎</span>
-                    <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600;">iOS</h4>
-                    <p style="margin: 0; font-size: 12px; color: var(--text-1); line-height: 1.5;">Оптимизировано для iPhone и iPad. Стабильная работа и быстрый доступ.</p>
+            <div class="dashboard-preview">
+                [Commercial Offer Preview]
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: MINI APP -->
+    <section id="mini-app">
+        <div class="section-label">Telegram Mini App</div>
+        <h2 class="section-heading">Откройте UNITPLAST Mini App</h2>
+        <p class="section-desc">Запускайте расчёты, загружайте чертежи, смотрите данные по производству и управляйте проектами — прямо в Telegram.</p>
+
+        <div class="mini-app-content">
+            <div class="mini-app-left">
+                <p class="section-desc">Быстрый доступ к ключевым функциям платформы прямо в мессенджере. Без установки приложения — просто откройте ссылку в Telegram.</p>
+
+                <div class="mini-app-buttons">
+                    <button class="mini-app-btn">✈️ Открыть в Telegram</button>
+                    <button class="mini-app-btn" style="background: transparent; border: 1px solid var(--blue); color: var(--blue);">🔗 Получить ссылку</button>
                 </div>
-                <div style="padding: 20px; border: 1px solid rgba(170, 178, 197, 0.2); border-radius: 10px; text-align: center;">
-                    <span style="font-size: 32px; display: block; margin-bottom: 12px;">🤖</span>
-                    <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600;">Android</h4>
-                    <p style="margin: 0; font-size: 12px; color: var(--text-1); line-height: 1.5;">Полная функциональность на устройствах Android. Удобно и безопасно.</p>
-                </div>
-                <div style="padding: 20px; border: 1px solid rgba(170, 178, 197, 0.2); border-radius: 10px; text-align: center;">
-                    <span style="font-size: 32px; display: block; margin-bottom: 12px;">🌐</span>
-                    <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600;">Web</h4>
-                    <p style="margin: 0; font-size: 12px; color: var(--text-1); line-height: 1.5;">Работайте на любом браузере. Данные синхронизируются мгновенно.</p>
-                </div>
-                <div style="padding: 20px; border: 1px solid rgba(170, 178, 197, 0.2); border-radius: 10px; text-align: center;">
-                    <span style="font-size: 32px; display: block; margin-bottom: 12px;">✈️</span>
-                    <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600;">Telegram</h4>
-                    <p style="margin: 0; font-size: 12px; color: var(--text-1); line-height: 1.5;">Мини-приложение внутри Telegram. Удобно и безопасно.</p>
+
+                <div class="mini-app-features">
+                    <div class="mini-app-feature">💬 Всегда под рукой — Доступ в любой момент</div>
+                    <div class="mini-app-feature">🔒 Безопасность данных — Защита конфиденциально</div>
+                    <div class="mini-app-feature">⚡ Быстро и удобно — Оптимизировано для мобиля</div>
+                    <div class="mini-app-feature">👥 Команда в одном месте — Общайтесь и координируйте</div>
                 </div>
             </div>
-        </section>
 
-        <!-- SECTION 2: FEATURES -->
-        <section class="features" id="features">
-            <h2>Почему выбирают UNITPLAST</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #2e6bf2, #1e4fa8); color: white; font-size: 24px;">⚡</div>
-                    <h3>Расчёт за 30 секунд</h3>
-                    <p>AI и умные алгоритмы мгновенно рассчитывают стоимость и сроки производства.</p>
+            <div class="dashboard-preview">
+                [Mini App Preview / QR Code]
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: MANAGEMENT -->
+    <section id="management">
+        <div class="section-label">управление</div>
+        <h2 class="section-heading">Контролируйте производство и продажи в реальном времени</h2>
+        <p class="section-desc">Единая аналитическая панель для мониторинга ключевых показателей, управления заказами, людьми, финансами и складскими остатками.</p>
+
+        <div class="management-content">
+            <div>
+                <h3 style="font-size: 20px; margin-bottom: 16px;">Видимость бизнеса</h3>
+                <p style="color: var(--text-1); margin-bottom: 16px;">Все ключевые показатели на одной панели в реальном времени.</p>
+
+                <h3 style="font-size: 20px; margin-bottom: 16px;">Управление людьми</h3>
+                <p style="color: var(--text-1); margin-bottom: 16px;">Отслеживайте источники, конверсию и движение лидов по этапам.</p>
+
+                <h3 style="font-size: 20px; margin-bottom: 16px;">Финансовый контроль</h3>
+                <p style="color: var(--text-1); margin-bottom: 24px;">Контролируйте выручку, прибыль и рентабельность в динамике.</p>
+
+                <button class="mini-app-btn">→ Получить доступ</button>
+            </div>
+
+            <div class="dashboard-preview">
+                [Analytics Dashboard Preview]
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: CALCULATOR -->
+    <section id="calculator">
+        <div class="section-label">AI для производства</div>
+        <h2 class="section-heading">Расчёт стоимости производства за 30 секунд</h2>
+        <p class="section-desc">Автоматизируйте расчёты, КП и производственные данные. Telegram Mini App, CRM, 1С и склад в одной системе — для пластика, мебели и металлоконструкций.</p>
+
+        <div class="calculator-content">
+            <div>
+                <p class="section-desc">Введите параметры изделия, выберите материал и тираж — система мгновенно рассчитает стоимость и сроки.</p>
+
+                <div class="calculator-buttons">
+                    <button class="mini-app-btn">🚀 Получить доступ</button>
+                    <button class="mini-app-btn" style="background: transparent; border: 1px solid var(--blue); color: var(--blue);">▶ Смотреть демо</button>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #10b981, #059669); color: white; font-size: 24px;">🎯</div>
-                    <h3>Единая система для 3 производств</h3>
-                    <p>Пластик, мебель, металл — всё в одной платформе без дублирования данных и процессов.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; font-size: 24px;">📦</div>
-                    <h3>Склад и остатки в реальном времени</h3>
-                    <p>Актуальные остатки, резервирование и движение материалов онлайн на всех складах.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #8b6df2, #6b52d4); color: white; font-size: 24px;">📄</div>
-                    <h3>Автоматическое КП</h3>
-                    <p>КП формируется автоматически с логотипом, реквизитами и контактами вашей компании.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #ec4899, #db2777); color: white; font-size: 24px;">🔗</div>
-                    <h3>Интеграция с 1C и CRM</h3>
-                    <p>Данные синхронизируются с 1С, CRM и другими системами без ручного ввода.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2); color: white; font-size: 24px;">📊</div>
-                    <h3>Аналитика и контроль прибыли</h3>
-                    <p>Отслеживайте маржинальность, загруженность производства и эффективность в динамике.</p>
+
+                <div class="stats-display">
+                    <div class="stat-item">
+                        <div class="stat-value">99.8%</div>
+                        <div class="stat-label">Точность расчётов</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">-18.7%</div>
+                        <div class="stat-label">Экономия материала</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">42+</div>
+                        <div class="stat-label">Экранов и модулей</div>
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <!-- SECTION 3: COMMERCIAL OFFERS -->
-        <section class="commercial-offers">
-            <h2>Коммерческие предложения</h2>
-            <p>Готовое КП с логотипом исполнителя, реквизитами и контактами</p>
-        </section>
-
-        <!-- SECTION 4: MINI APP -->
-        <section class="mini-app">
-            <h2>Скачайте приложение</h2>
-            <p>Доступ ко всем возможностям UNITPLAST — на вашем устройстве или в Telegram.</p>
-        </section>
-
-        <!-- SECTION 5: MANAGEMENT DASHBOARD -->
-        <section class="management">
-            <h2>Контролируйте производство и продажи в реальном времени</h2>
-            <p>Единая аналитическая панель для мониторинга ключевых показателей, управления заказами и складскими остатками.</p>
-        </section>
-
-        <!-- SECTION 6: THREE BRANDS -->
-        <section class="three-brands" id="brands">
-            <h2>Одна система для трёх производств</h2>
-            <div class="brands-grid">
-                <div class="brand-card">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 16px; background: linear-gradient(135deg, #2e6bf2, #1e4fa8); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; font-size: 32px;">UP</div>
-                    <h3>UNITPLAST</h3>
-                    <p>Литьё пластика под давлением и изготовление изделий</p>
-                </div>
-                <div class="brand-card">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 16px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; font-size: 32px;">UF</div>
-                    <h3>UNIFURNITURE</h3>
-                    <p>Производство мебели и интерьерных решений</p>
-                </div>
-                <div class="brand-card">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 16px; background: linear-gradient(135deg, #6b7280, #4b5563); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; font-size: 32px;">UM</div>
-                    <h3>UNIMETALL</h3>
-                    <p>Металлоконструкции и изделия из металла</p>
-                </div>
+            <div class="dashboard-preview">
+                [Cost Calculator Preview]
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- SECTION 7: CONTACTS -->
-        <section class="contacts" id="cta">
-            <h2>Контакты</h2>
-            <p>Обсудите с нами запуск пилотного проекта, демонстрацию платформы или внедрение в вашей компании.</p>
-            <div class="contact-cards">
-                <div class="contact-card">
-                    <h4>Отдел продаж</h4>
-                    <p>+7 (495) 123-45-67</p>
-                    <p>sales@unitplast.ru</p>
-                </div>
-                <div class="contact-card">
-                    <h4>Внедрение проектов</h4>
-                    <p>+7 (495) 987-65-43</p>
-                    <p>projects@unitplast.ru</p>
-                </div>
-                <div class="contact-card">
-                    <h4>Техническая поддержка</h4>
-                    <p>+7 (495) 246-80-12</p>
-                    <p>support@unitplast.ru</p>
-                </div>
-                <div class="contact-card">
-                    <h4>Офис и компания</h4>
-                    <p>ООО «ЮНИПЛАСТ»</p>
-                    <p>Москва, Пресненская наб., д. 12</p>
-                </div>
+    <!-- SECTION 8: CTA -->
+    <section id="cta">
+        <div class="section-label">СДЕЛАЙТЕ СЛЕДУЮЩИЙ ШАГ</div>
+        <h2 class="section-heading">Готовы автоматизировать производство?</h2>
+
+        <div class="cta-box">
+            <h3>Запустите автоматизацию уже сегодня</h3>
+            <p>Получите персональную демонстрацию платформы и убедитесь в её преимуществах на практике.</p>
+            <div class="cta-buttons">
+                <button class="cta-primary">🚀 Запросить демонстрацию</button>
+                <button class="cta-primary" style="background: transparent; border: 1px solid var(--blue); color: var(--blue);">🔓 Получить доступ</button>
             </div>
-        </section>
+        </div>
 
-        <!-- SECTION 8: CTA BLOCK -->
-        <section class="cta-block">
-            <h2>Сделайте следующий шаг</h2>
-            <p>Начните автоматизацию производства уже сегодня</p>
-            <button class="btn-primary-large">Запросить демонстрацию</button>
-        </section>
-
-        <!-- SECTION 9: FOOTER -->
-        <footer>
-            <p>&copy; 2026 UNITPLAST. Все права защищены.</p>
-            <div class="footer-links">
-                <a href="#">Политика конфиденциальности</a>
-                <a href="#">Условия использования</a>
-                <a href="#">Контакты</a>
+        <div class="stats-display" style="max-width: 800px; margin: 48px auto 0;">
+            <div class="stat-item">
+                <div class="stat-value">99.8%</div>
+                <div class="stat-label">Точность расчётов</div>
             </div>
-        </footer>
-    </main>
+            <div class="stat-item">
+                <div class="stat-value">-18.7%</div>
+                <div class="stat-label">Экономия материала</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">42+</div>
+                <div class="stat-label">Экранов и модулей</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 9: CONTACTS -->
+    <section id="contacts">
+        <div class="section-label">контакты</div>
+        <h2 class="section-heading">Контакты</h2>
+        <p class="section-desc">Обсудите с нами запуск пилотного проекта, демонстрацию платформы или внедрение в вашей компании.</p>
+
+        <div class="contacts-grid">
+            <div class="contact-card">
+                <h4>📞 Отдел продаж</h4>
+                <p>+7 (495) 123-45-67</p>
+                <p>sales@unitplast.ru</p>
+                <p>@unitplast_sales</p>
+                <p style="font-size: 12px; color: #aab2c5;">09:00 - 18:00 МСК</p>
+            </div>
+            <div class="contact-card">
+                <h4>📋 Внедрение проектов</h4>
+                <p>+7 (495) 987-65-43</p>
+                <p>projects@unitplast.ru</p>
+                <p>@unitplast_projects</p>
+                <p style="font-size: 12px; color: #aab2c5;">09:00 - 18:00 МСК</p>
+            </div>
+            <div class="contact-card">
+                <h4>🛠️ Техническая поддержка</h4>
+                <p>+7 (495) 246-80-12</p>
+                <p>support@unitplast.ru</p>
+                <p>@unitplast_support</p>
+                <p style="font-size: 12px; color: #aab2c5;">09:00 - 21:00 МСК</p>
+            </div>
+            <div class="contact-card">
+                <h4>🏢 Офис и компания</h4>
+                <p>ООО «ЮНИПЛАСТ»</p>
+                <p>г. Москва, Преснеская наб.</p>
+                <p>д. 12, Башня Федерация</p>
+                <p>info@unitplast.ru</p>
+            </div>
+        </div>
+
+        <div class="contact-form">
+            <h3 style="margin-top: 0;">Отправьте нам заявку</h3>
+            <form>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group">
+                        <label>Ваше имя *</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Название компании *</label>
+                        <input type="text" required>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group">
+                        <label>Телефон *</label>
+                        <input type="tel" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Комментарий</label>
+                    <textarea></textarea>
+                </div>
+                <button type="submit" class="form-submit">Отправить заявку</button>
+            </form>
+        </div>
+    </section>
 </body>
 </html>
