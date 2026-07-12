@@ -1256,8 +1256,8 @@
                 </div>
             </div>
 
-            <div class="contact-form bg-light p-4 rounded">
-                <h3 class="fw-bold mb-4">Оставить заявку</h3>
+            <div class="contact-form bg-light p-4 rounded" style="max-width: 600px; margin: 0 auto;">
+                <h3 class="fw-bold mb-4 text-center">Оставить заявку</h3>
                 <form onsubmit="event.preventDefault();">
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -1291,7 +1291,21 @@
                         <label class="form-label">Сообщение</label>
                         <textarea class="form-control" rows="4" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-lg" style="background: var(--action); border: none; color: white;">Отправить заявку</button>
+
+                    <!-- СОГЛАСИЕ -->
+                    <div class="mb-4 p-3 border border-secondary rounded" style="background: rgba(255,255,255,0.5);">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="agree-terms" required>
+                            <label class="form-check-label small" for="agree-terms">
+                                Я согласен с <a href="#" style="color: #0066CC; text-decoration: none;">условиями обработки персональных данных</a> и <a href="#" style="color: #0066CC; text-decoration: none;">политикой конфиденциальности</a>
+                            </label>
+                        </div>
+                        <p class="small text-muted mt-2 mb-0">
+                            При нажатии кнопки «Отправить заявку» ваши данные будут обработаны в соответствии с Федеральным законом «О защите персональных данных» № 152-ФЗ
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn btn-lg w-100" style="background: var(--action); border: none; color: white;">Отправить заявку</button>
                 </form>
             </div>
         </div>
