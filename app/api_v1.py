@@ -10,8 +10,10 @@ import random
 import json
 from pathlib import Path
 from .kp_calculator import KPCalculator
+from .database import Database
 
 api = Blueprint('api_v1', __name__, url_prefix='/api/v1')
+db = Database()
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # CALCULATIONS API
@@ -107,100 +109,136 @@ def create_calculation():
 
 @api.route('/orders', methods=['GET'])
 def get_orders():
-    """Get list of orders"""
+    """Get list of orders with filtering"""
     status = request.args.get('status', 'all')
+    limit = int(request.args.get('limit', 50))
 
-    orders = [
-        {
-            "id": 2506,
-            "calculation_id": 2506,
-            "product": "Пластиковый контейнер",
-            "quantity": 100,
-            "price": 245000,
-            "status": "in_progress",
-            "progress": 60,
-            "created_at": "2026-07-07",
-            "due_date": "2026-07-12"
-        },
-        {
-            "id": 2505,
-            "calculation_id": 2507,
-            "product": "Деревянный шкаф",
-            "quantity": 50,
-            "price": 85000,
-            "status": "ready",
-            "progress": 100,
-            "created_at": "2026-07-05",
-            "due_date": "2026-07-10"
-        },
-        {
-            "id": 2504,
-            "calculation_id": 2508,
-            "product": "Металлический каркас",
-            "quantity": 1,
-            "price": 125000,
-            "status": "delivered",
-            "progress": 100,
-            "created_at": "2026-07-01",
-            "due_date": "2026-07-08"
-        }
-    ]
+    if status == 'all':
+        orders = db.get_all_orders(limit=limit)
+    else:
+        orders = db.get_orders_by_status(status, limit=limit)
 
-    if status != 'all':
-        orders = [o for o in orders if o['status'] == status]
+    stats = db.get_order_statistics()
 
     return jsonify({
         "success": True,
         "orders": orders,
         "total": len(orders),
-        "statuses": {
-            "in_progress": 3,
-            "ready": 2,
-            "delivered": 1,
-            "cancelled": 0
-        }
+        "statistics": stats
     }), 200
+
+@api.route('/orders/create', methods=['POST'])
+def create_order():
+    """Create new order from calculation"""
+    data = request.json
+
+    try:
+        order_id = db.create_order_from_calculation(
+            calculation_id=data.get('calculation_id'),
+            calculation_data=data.get('calculation_data', {}),
+            client_info=data.get('client_info', {})
+        )
+
+        return jsonify({
+            "success": True,
+            "order_id": order_id,
+            "message": "Заказ создан успешно"
+        }), 201
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 400
 
 @api.route('/orders/<int:order_id>', methods=['GET'])
 def get_order(order_id):
     """Get specific order details"""
+    order = db.get_order_by_id(order_id)
+
+    if not order:
+        return jsonify({
+            "success": False,
+            "error": f"Order {order_id} not found"
+        }), 404
+
     return jsonify({
         "success": True,
-        "order": {
-            "id": order_id,
-            "calculation_id": 2506,
-            "product": "Пластиковый контейнер",
-            "quantity": 100,
-            "unit_price": 2450,
-            "total_price": 245000,
-            "status": "in_progress",
-            "progress": 60,
-            "timeline": {
-                "created": "2026-07-07T10:30:00",
-                "started": "2026-07-07T14:00:00",
-                "due": "2026-07-12T17:00:00",
-                "estimated_completion": "2026-07-12"
-            },
-            "production": {
-                "line": "Line A",
-                "current_step": 3,
-                "total_steps": 5,
-                "materials_used": "45 кг"
-            }
-        }
+        "order": order
     }), 200
 
-@api.route('/orders', methods=['POST'])
-def create_order():
-    """Create new order from calculation"""
+@api.route('/orders/<int:order_id>/status', methods=['PATCH', 'PUT'])
+def update_order_status(order_id):
+    """Update order status and progress"""
     data = request.json
-    order_id = 2500 + random.randint(1, 99)
+    status = data.get('status')
+    progress = data.get('progress')
+    notes = data.get('notes')
+
+    if not status:
+        return jsonify({
+            "success": False,
+            "error": "Status is required"
+        }), 400
+
+    valid_statuses = ['new', 'in_progress', 'ready', 'delivered', 'cancelled']
+    if status not in valid_statuses:
+        return jsonify({
+            "success": False,
+            "error": f"Invalid status. Valid: {', '.join(valid_statuses)}"
+        }), 400
+
+    try:
+        db.update_order_status(order_id, status, progress, notes)
+
+        return jsonify({
+            "success": True,
+            "order_id": order_id,
+            "status": status,
+            "progress": progress,
+            "message": "Статус заказа обновлен"
+        }), 200
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 400
+
+@api.route('/orders/<int:order_id>', methods=['PUT', 'PATCH'])
+def update_order(order_id):
+    """Update order details"""
+    data = request.json
+
+    try:
+        success = db.update_order(order_id, **data)
+
+        if not success:
+            return jsonify({
+                "success": False,
+                "error": "No valid fields to update"
+            }), 400
+
+        updated_order = db.get_order_by_id(order_id)
+
+        return jsonify({
+            "success": True,
+            "order": updated_order,
+            "message": "Заказ обновлен"
+        }), 200
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 400
+
+@api.route('/orders/stats/summary', methods=['GET'])
+def get_orders_summary():
+    """Get orders statistics summary"""
+    stats = db.get_order_statistics()
 
     return jsonify({
         "success": True,
-        "order_id": order_id,
-        "message": "Заказ создан и добавлен в очередь производства"
-    }), 201
+        "statistics": stats
+    }), 200
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # MATERIALS API
