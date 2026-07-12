@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNITGROUP — Калькулятор производства</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/icons.css">
+    <style>
+        :root {
+            --orange: #FF6B35;
+            --green: #10b981;
+            --gray: #5A5A5A;
+            --blue: #0066CC;
+            --dark: #1A1A1A;
+            --dark-bg: #04060c;
+            --light: #F8F8F8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            height: 100%;
+        }
+
+        /* === TYPOGRAPHY === */
+        h1, h2, h3 { font-family: 'IBM Plex Serif', serif; font-weight: 700; }
+        h1 { font-size: 2rem; }
+        h2 { font-size: 1.5rem; }
+        h3 { font-size: 1.1rem; }
+
+        /* === LAYOUT === */
+        .app-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--dark-bg);
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(16,185,129,0.05) 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 20px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .app-header-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .app-header-logo svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .app-header-logo h1 {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 16px;
+        }
+
+        .app-nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            padding: 12px 16px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.3);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--orange);
+            background: rgba(255,107,53,0.1);
+        }
+
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* === PAGES === */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* === CARDS === */
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,107,53,0.15) 0%, rgba(16,185,129,0.1) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card .amount {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'IBM Plex Serif', serif;
+            background: linear-gradient(90deg, var(--orange) 0%, var(--green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* === MATERIAL SELECTOR === */
+        .material-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .material-btn {
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .material-btn svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .material-btn.plastic {
+            border-color: var(--orange);
+            background: rgba(255,107,53,0.1);
+        }
+
+        .material-btn.furniture {
+            border-color: var(--green);
+            background: rgba(16,185,129,0.1);
+        }
+
+        .material-btn.metal {
+            border-color: var(--gray);
+            background: rgba(90,90,90,0.1);
+        }
+
+        .material-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255,107,53,0.2);
+        }
+
+        .material-name {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .material-type {
+            font-size: 10px;
+            color: #999;
+        }
+
+        /* === FORM CONTROLS === */
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #aaa;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input::placeholder,
+        .form-select > option {
+            color: #666;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--orange);
+            background: rgba(255,107,53,0.05);
+            box-shadow: 0 0 0 3px rgba(255,107,53,0.1);
+        }
+
+        /* === RESULTS === */
+        .result-card {
+            background: rgba(0,102,204,0.05);
+            border: 1px solid rgba(0,102,204,0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .result-label {
+            color: #999;
+        }
+
+        .result-value {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* === BUTTONS === */
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .btn-primary:hover {
+            background: #0044aa;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,102,204,0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            color: #aaa;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        /* === HISTORY === */
+        .history-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .history-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .history-date {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .history-price {
+            text-align: right;
+            font-size: 16px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--orange) 0%, var(--green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 600px) {
+            .app-wrapper {
+                max-width: 100%;
+                border-radius: 0;
+            }
+
+            h1 { font-size: 1.5rem; }
+            h2 { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-wrapper">
+    <!-- HEADER -->
+    <div class="app-header">
+        <a class="app-header-logo" href="landing.html">
+            <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+                <g><path d="M 30 35 L 42 28 L 54 35 L 54 50 L 42 57 L 30 50 Z" fill="none" stroke="#5A5A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+                <g><path d="M 90 35 L 102 28 L 114 35 L 114 50 L 102 57 L 90 50 Z" fill="none" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+                <g><path d="M 150 35 L 162 28 L 174 35 L 174 50 L 162 57 L 150 50 Z" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+            </svg>
+            <h1>UNITGROUP</h1>
+        </a>
+        <button onclick="alert('⚙️ Настройки')" style="background: rgba(255,107,53,0.1); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--orange);">
+            ⚙️
+        </button>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="app-content">
+        <!-- DASHBOARD PAGE -->
+        <div id="page-dashboard" class="page active">
+            <h2 style="margin-bottom: 24px;">Добро пожаловать</h2>
+
+            <div class="stat-card">
+                <div class="amount" id="dashboard-total">0 ₽</div>
+                <div class="label">Сумма всех расчётов</div>
+            </div>
+
+            <h3 style="margin-bottom: 16px; margin-top: 32px; font-size: 14px;">Ваши последние расчёты</h3>
+
+            <div class="history-item">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">📦 Пластиковый контейнер</div>
+                        <div class="history-date">Сегодня, 14:32</div>
+                    </div>
+                    <div class="history-price">12 490 ₽</div>
+                </div>
+                <div style="font-size: 12px; color: #999;">800x600x400 мм, ABS пластик, 100 шт</div>
+            </div>
+
+            <div class="history-item">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">🪑 Офисный стул</div>
+                        <div class="history-date">Вчера, 10:15</div>
+                    </div>
+                    <div class="history-price">8 500 ₽</div>
+                </div>
+                <div style="font-size: 12px; color: #999;">МДФ, стандартная отделка, 10 шт</div>
+            </div>
+
+            <div class="history-item">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">🔧 Металлический каркас</div>
+                        <div class="history-date">2 дня назад</div>
+                    </div>
+                    <div class="history-price">25 000 ₽</div>
+                </div>
+                <div style="font-size: 12px; color: #999;">Чёрная сталь, 50 кг, 5 шт</div>
+            </div>
+
+            <button onclick="showPage('calculator')" class="btn-action btn-primary" style="margin-top: 24px;">
+                <span>➕ Новый расчёт</span>
+            </button>
+        </div>
+
+        <!-- CALCULATOR PAGE -->
+        <div id="page-calculator" class="page">
+            <h2 style="margin-bottom: 24px;">Калькулятор производства</h2>
+
+            <div class="stat-card">
+                <div class="amount" id="total-price">0 ₽</div>
+                <div class="label">Примерная стоимость</div>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <div class="input-label">Выберите материал</div>
+                <div class="material-selector">
+                    <button class="material-btn plastic active" onclick="selectType('plastic')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M6 3h12v18H6z" stroke-linecap="round"/><path d="M9 6h6M9 10h6M9 14h6"/><circle cx="12" cy="19" r="1" fill="currentColor"/>
+                        </svg>
+                        <div class="material-name">Пластик</div>
+                        <div class="material-type">UNITPLAST</div>
+                    </button>
+                    <button class="material-btn furniture" onclick="selectType('furniture')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5M3 5h18M8 8v7M12 8v7M16 8v7" stroke-linecap="round"/>
+                        </svg>
+                        <div class="material-name">Мебель</div>
+                        <div class="material-type">UNIFURNITURE</div>
+                    </button>
+                    <button class="material-btn metal" onclick="selectType('metal')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 12h18M5 5l2 14h10l2-14M9 5v14M15 5v14M8 9h8" stroke-linecap="round"/>
+                        </svg>
+                        <div class="material-name">Металл</div>
+                        <div class="material-type">UNIMETALL</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PLASTIC INPUTS -->
+            <div id="plastic-inputs">
+                <div class="input-group">
+                    <label class="input-label">Материал</label>
+                    <select class="form-select" onchange="calculatePrice()">
+                        <option>ABS пластик (425 ₽/кг)</option>
+                        <option>PP пластик (275 ₽/кг)</option>
+                        <option>PVC пластик (325 ₽/кг)</option>
+                        <option>PC пластик (1000 ₽/кг)</option>
+                        <option>PE пластик (150 ₽/кг)</option>
+                    </select>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="input-group">
+                        <label class="input-label">Высота (мм)</label>
+                        <input type="number" class="form-input" value="800" onchange="calculatePrice()">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Ширина (мм)</label>
+                        <input type="number" class="form-input" value="600" onchange="calculatePrice()">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="input-group">
+                        <label class="input-label">Глубина (мм)</label>
+                        <input type="number" class="form-input" value="400" onchange="calculatePrice()">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Толщина (мм)</label>
+                        <input type="number" class="form-input" value="2" onchange="calculatePrice()">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Количество (шт)</label>
+                    <input type="number" class="form-input" value="100" onchange="calculatePrice()">
+                </div>
+            </div>
+
+            <!-- FURNITURE INPUTS -->
+            <div id="furniture-inputs" style="display: none;">
+                <div class="input-group">
+                    <label class="input-label">Тип мебели</label>
+                    <select class="form-select" onchange="calculatePrice()">
+                        <option>Шкаф</option>
+                        <option>Стол</option>
+                        <option>Стул</option>
+                        <option>Полка</option>
+                        <option>Комод</option>
+                        <option>Кровать</option>
+                        <option>Диван</option>
+                    </select>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="input-group">
+                        <label class="input-label">Высота (см)</label>
+                        <input type="number" class="form-input" value="180" onchange="calculatePrice()">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Ширина (см)</label>
+                        <input type="number" class="form-input" value="80" onchange="calculatePrice()">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Материал</label>
+                    <select class="form-select" onchange="calculatePrice()">
+                        <option>ДСП (бюджет)</option>
+                        <option>МДФ (стандарт)</option>
+                        <option>Массив дерева (премиум)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Количество (шт)</label>
+                    <input type="number" class="form-input" value="10" onchange="calculatePrice()">
+                </div>
+            </div>
+
+            <!-- METAL INPUTS -->
+            <div id="metal-inputs" style="display: none;">
+                <div class="input-group">
+                    <label class="input-label">Тип конструкции</label>
+                    <select class="form-select" onchange="calculatePrice()">
+                        <option>Рама</option>
+                        <option>Каркас</option>
+                        <option>Стеллаж</option>
+                        <option>Ограда</option>
+                        <option>Лестница</option>
+                        <option>Навес</option>
+                    </select>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="input-group">
+                        <label class="input-label">Высота (см)</label>
+                        <input type="number" class="form-input" value="200" onchange="calculatePrice()">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Ширина (см)</label>
+                        <input type="number" class="form-input" value="100" onchange="calculatePrice()">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Материал</label>
+                    <select class="form-select" onchange="calculatePrice()">
+                        <option>Чёрная сталь</option>
+                        <option>Нержавейка</option>
+                        <option>Алюминий</option>
+                        <option>Оцинкованная сталь</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Вес (кг)</label>
+                    <input type="number" class="form-input" value="50" onchange="calculatePrice()">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Количество (шт)</label>
+                    <input type="number" class="form-input" value="5" onchange="calculatePrice()">
+                </div>
+            </div>
+
+            <!-- RESULTS -->
+            <div style="margin-top: 24px;">
+                <div class="input-label">Детальный расчёт</div>
+                <div class="result-card">
+                    <div class="result-row">
+                        <span class="result-label">Стоимость материала</span>
+                        <span class="result-value">5 400 ₽</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Трудозатраты</span>
+                        <span class="result-value">1 890 ₽</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Маржа</span>
+                        <span class="result-value">1 800 ₽</span>
+                    </div>
+                </div>
+                <div class="result-card" style="background: rgba(16,185,129,0.05); border-color: rgba(16,185,129,0.2); margin-top: 12px;">
+                    <div class="result-row">
+                        <span class="result-label" style="font-weight: 600;">ИТОГО</span>
+                        <span class="result-value" style="font-size: 18px;">9 090 ₽</span>
+                    </div>
+                    <div class="result-row" style="margin-top: 8px; font-size: 12px;">
+                        <span class="result-label">Срок</span>
+                        <span class="result-value">5-7 дней</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 24px;">
+                <button onclick="showPage('dashboard')" class="btn-action btn-secondary">
+                    ← Назад
+                </button>
+                <button onclick="saveCalculation()" class="btn-action btn-primary">
+                    💾 Сохранить
+                </button>
+            </div>
+        </div>
+
+        <!-- HISTORY PAGE -->
+        <div id="page-history" class="page">
+            <h2 style="margin-bottom: 24px;">История расчётов</h2>
+
+            <div class="history-item">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">📦 Пластиковый контейнер</div>
+                        <div class="history-date">07.07.2026 15:32</div>
+                    </div>
+                    <div class="history-price">12 450 ₽</div>
+                </div>
+                <div style="font-size: 12px; color: #999;">800x600x400 мм, ABS, 100 шт</div>
+                <button class="btn-action btn-secondary" style="margin-top: 12px; font-size: 12px;">Восстановить</button>
+            </div>
+
+            <div class="history-item">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">🪑 Офисный стул</div>
+                        <div class="history-date">06.07.2026 10:15</div>
+                    </div>
+                    <div class="history-price">8 500 ₽</div>
+                </div>
+                <div style="font-size: 12px; color: #999;">МДФ, стандарт, 10 шт</div>
+                <button class="btn-action btn-secondary" style="margin-top: 12px; font-size: 12px;">Восстановить</button>
+            </div>
+
+            <div class="history-item">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">🔧 Стальной каркас</div>
+                        <div class="history-date">05.07.2026 14:20</div>
+                    </div>
+                    <div class="history-price">25 000 ₽</div>
+                </div>
+                <div style="font-size: 12px; color: #999;">Чёрная сталь, 50 кг, 5 шт</div>
+                <button class="btn-action btn-secondary" style="margin-top: 12px; font-size: 12px;">Восстановить</button>
+            </div>
+        </div>
+
+        <!-- ANALYTICS PAGE -->
+        <div id="page-analytics" class="page">
+            <h2 style="margin-bottom: 24px;">Аналитика</h2>
+
+            <div class="stat-card">
+                <div class="amount">24</div>
+                <div class="label">Расчётов за месяц</div>
+            </div>
+
+            <div class="result-card" style="margin-top: 16px;">
+                <div class="result-row">
+                    <span class="result-label">Расчёты пластика</span>
+                    <span class="result-value">8</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Расчёты мебели</span>
+                    <span class="result-value">9</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Расчёты металла</span>
+                    <span class="result-value">7</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <div class="input-label" style="margin-bottom: 12px;">Средний расчёт</div>
+                <div class="result-card">
+                    <div class="result-row">
+                        <span class="result-label">Сумма</span>
+                        <span class="result-value">15 500 ₽</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Время</span>
+                        <span class="result-value">8 минут</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROFILE PAGE -->
+        <div id="page-profile" class="page">
+            <h2 style="margin-bottom: 24px;">Профиль</h2>
+
+            <div class="result-card" style="padding: 24px;">
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div style="width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--orange) 0%, var(--green) 100%); margin: 0 auto 12px;"></div>
+                    <h3 style="margin-bottom: 4px;">Анна Сидорова</h3>
+                    <div style="font-size: 14px; color: #999;">Premium План</div>
+                </div>
+
+                <div class="result-row">
+                    <span class="result-label">Email</span>
+                    <span class="result-value" style="font-size: 13px;">anna@company.com</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Телефон</span>
+                    <span class="result-value" style="font-size: 13px;">+7 (916) 161-61-93</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Компания</span>
+                    <span class="result-value" style="font-size: 13px;">ООО Производство</span>
+                </div>
+            </div>
+
+            <button class="btn-action btn-secondary" style="margin-top: 24px;">
+                🔐 Изменить пароль
+            </button>
+            <button class="btn-action btn-secondary" style="margin-top: 8px;">
+                🚪 Выход
+            </button>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="app-nav">
+        <a class="nav-item active" onclick="showPage('dashboard')">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+            </svg>
+            <span>Главная</span>
+        </a>
+        <a class="nav-item" onclick="showPage('calculator')">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+            </svg>
+            <span>Калькулятор</span>
+        </a>
+        <a class="nav-item" onclick="showPage('history')">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+            </svg>
+            <span>История</span>
+        </a>
+        <a class="nav-item" onclick="showPage('analytics')">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.96-3.83c-.3-.39-.97-.39-1.25 0-.31.39-.31 1.02 0 1.41l3.69 4.72c.3.39.9.39 1.25.03l3.71-4.46c.25-.28.26-.73.02-1.01-.23-.28-.77-.29-1.01-.02z"/>
+            </svg>
+            <span>Аналитика</span>
+        </a>
+        <a class="nav-item" onclick="showPage('profile')">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            <span>Профиль</span>
+        </a>
+    </div>
+</div>
+
+<script>
+    function showPage(pageName) {
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+        });
+
+        // Show selected page
+        document.getElementById('page-' + pageName).classList.add('active');
+
+        // Update nav
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        event.target.closest('.nav-item').classList.add('active');
+    }
+
+    function selectType(type) {
+        document.querySelectorAll('.material-btn').forEach(btn => {
+            btn.classList.remove('active', 'plastic', 'furniture', 'metal');
+        });
+        document.querySelector('.material-btn.' + type).classList.add('active', type);
+
+        document.getElementById('plastic-inputs').style.display = type === 'plastic' ? 'block' : 'none';
+        document.getElementById('furniture-inputs').style.display = type === 'furniture' ? 'block' : 'none';
+        document.getElementById('metal-inputs').style.display = type === 'metal' ? 'block' : 'none';
+
+        calculatePrice();
+    }
+
+    function calculatePrice() {
+        // Simple calculation demo
+        const basePrice = Math.random() * 20000 + 5000;
+        document.getElementById('total-price').textContent = Math.round(basePrice).toLocaleString('ru-RU') + ' ₽';
+    }
+
+    function saveCalculation() {
+        alert('✅ Расчёт сохранён!');
+    }
+</script>
+
+</body>
+</html>
