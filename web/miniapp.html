@@ -96,30 +96,53 @@
 
         .input-group {
             margin-bottom: 16px;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(0, 102, 204, 0.05) 100%);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(46, 107, 242, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .input-group:focus-within {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.12) 0%, rgba(0, 102, 204, 0.10) 100%);
+            border-color: rgba(46, 107, 242, 0.5);
         }
 
         .input-group label {
             display: block;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 700;
             margin-bottom: 8px;
-            color: var(--text-0);
+            color: #aab2c5;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         .input-group input,
         .input-group select {
             width: 100%;
             padding: 10px 12px;
-            background: rgba(46, 107, 242, 0.1);
-            border: 1px solid rgba(46, 107, 242, 0.3);
+            background: rgba(15, 25, 50, 0.6);
+            border: 1px solid rgba(46, 107, 242, 0.2);
             border-radius: 6px;
             color: var(--text-0);
-            font-size: 13px;
+            font-size: 14px;
+            font-weight: 500;
             font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            background: rgba(15, 25, 50, 0.8);
+            border-color: rgba(46, 107, 242, 0.6);
+            box-shadow: 0 0 0 3px rgba(46, 107, 242, 0.1);
         }
 
         .input-group input::placeholder {
             color: var(--text-1);
+            opacity: 0.7;
         }
 
         .input-row {
@@ -368,27 +391,37 @@
             <!-- PAGE: CALCULATOR -->
             <div id="page-calculator" class="page" style="display: none;">
                 <div class="section">
-                    <div class="stat-card">
-                        <div class="amount" id="total-price">0 ₽</div>
-                        <div class="label">Примерная стоимость</div>
+                    <!-- HEADER STATS -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+                        <div style="background: linear-gradient(135deg, #FF6B35 0%, #FF8A5B 100%); border-radius: 12px; padding: 16px; color: white;">
+                            <div style="font-size: 12px; opacity: 0.9; margin-bottom: 4px;">Итого</div>
+                            <div style="font-size: 28px; font-weight: 700;" id="total-price">0 ₽</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #0066CC 0%, #0088FF 100%); border-radius: 12px; padding: 16px; color: white;">
+                            <div style="font-size: 12px; opacity: 0.9; margin-bottom: 4px;">Срок</div>
+                            <div style="font-size: 16px; font-weight: 700;">5-7 дн</div>
+                        </div>
                     </div>
 
-                    <h3>Выберите производство</h3>
-                    <div class="type-grid">
-                        <div class="type-card active" onclick="selectType('plastic')" style="border-color: #FF6B35; cursor: pointer; padding: 20px; text-align: center;">
-                            <img src="/assets/logo-unitplast.png" style="width: 80px; height: auto; margin: 0 auto 12px; display: block;" alt="UNITPLAST"/>
-                            <div class="type-name">UNITPLAST</div>
-                            <div style="font-size: 11px; color: var(--text-1);">Пластик</div>
-                        </div>
-                        <div class="type-card" onclick="selectType('furniture')" style="cursor: pointer; padding: 20px; text-align: center;">
-                            <img src="/assets/logo-unifurniture.png" style="width: 80px; height: auto; margin: 0 auto 12px; display: block;" alt="UNIFURNITURE"/>
-                            <div class="type-name">UNIFURNITURE</div>
-                            <div style="font-size: 11px; color: var(--text-1);">Мебель</div>
-                        </div>
-                        <div class="type-card" onclick="selectType('metal')" style="cursor: pointer; padding: 20px; text-align: center;">
-                            <img src="/assets/logo-unimetall.png" style="width: 80px; height: auto; margin: 0 auto 12px; display: block;" alt="UNIMETALL"/>
-                            <div class="type-name">UNIMETALL</div>
-                            <div style="font-size: 11px; color: var(--text-1);">Металл</div>
+                    <!-- MATERIAL SELECTOR -->
+                    <div style="margin-bottom: 24px;">
+                        <div style="font-size: 13px; font-weight: 600; color: #666; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">📦 Тип производства</div>
+                        <div class="type-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                            <div class="type-card active" onclick="selectType('plastic')" style="background: white; border: 2px solid #FF6B35; border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.3s;">
+                                <svg class="icon icon-lg text-warning" aria-hidden="true" style="width: 40px; height: 40px; margin: 0 auto 8px;"><use href="/assets/icons-sprite.svg#icon-plastic"/></svg>
+                                <div class="type-name" style="font-weight: 600; font-size: 14px;">Пластик</div>
+                                <div style="font-size: 11px; color: #999;">UNITPLAST</div>
+                            </div>
+                            <div class="type-card" onclick="selectType('furniture')" style="background: #f5f5f5; border: 2px solid transparent; border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.3s;">
+                                <svg class="icon icon-lg text-success" aria-hidden="true" style="width: 40px; height: 40px; margin: 0 auto 8px;"><use href="/assets/icons-sprite.svg#icon-sofa"/></svg>
+                                <div class="type-name" style="font-weight: 600; font-size: 14px;">Мебель</div>
+                                <div style="font-size: 11px; color: #999;">UNIFURNITURE</div>
+                            </div>
+                            <div class="type-card" onclick="selectType('metal')" style="background: #f5f5f5; border: 2px solid transparent; border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.3s;">
+                                <svg class="icon icon-lg text-secondary" aria-hidden="true" style="width: 40px; height: 40px; margin: 0 auto 8px;"><use href="/assets/icons-sprite.svg#icon-wrench"/></svg>
+                                <div class="type-name" style="font-weight: 600; font-size: 14px;">Металл</div>
+                                <div style="font-size: 11px; color: #999;">UNIMETALL</div>
+                            </div>
                         </div>
                     </div>
 
@@ -523,25 +556,46 @@
                     </div>
 
                     <!-- RESULTS -->
-                    <h3 style="margin-top: 24px;">Расчет</h3>
-                    <div id="results" style="margin-bottom: 16px;">
-                        <div class="result-row">
-                            <span class="result-label">Срок изготовления</span>
-                            <span class="result-value">5-7 дней</span>
+                    <div style="background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 100%); border-radius: 16px; padding: 20px; margin-top: 24px; margin-bottom: 24px;">
+                        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #999; margin-bottom: 16px; letter-spacing: 0.5px;">📊 Детальный расчет</div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                            <div style="background: white; border-radius: 8px; padding: 12px;">
+                                <div style="font-size: 11px; color: #999; margin-bottom: 4px;">Производство</div>
+                                <div style="font-size: 16px; font-weight: 700; color: #0066CC;" id="calc-production">5-7 дн</div>
+                            </div>
+                            <div style="background: white; border-radius: 8px; padding: 12px;">
+                                <div style="font-size: 11px; color: #999; margin-bottom: 4px;">Доставка</div>
+                                <div style="font-size: 16px; font-weight: 700; color: #10b981;">2-3 дн</div>
+                            </div>
                         </div>
-                        <div class="result-row">
-                            <span class="result-label">Доставка</span>
-                            <span class="result-value">300-500 ₽</span>
-                        </div>
-                        <div class="result-row">
-                            <span class="result-label">Установка</span>
-                            <span class="result-value">Бесплатно</span>
+
+                        <div id="results" style="background: white; border-radius: 8px; padding: 12px;">
+                            <div class="result-row" style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                                <span class="result-label" style="color: #666;">Материал</span>
+                                <span class="result-value" style="font-weight: 600;">-</span>
+                            </div>
+                            <div class="result-row" style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                                <span class="result-label" style="color: #666;">Кол-во</span>
+                                <span class="result-value" style="font-weight: 600;">-</span>
+                            </div>
+                            <div class="result-row" style="padding: 8px 0;">
+                                <span class="result-label" style="color: #666;">НДС</span>
+                                <span class="result-value" style="font-weight: 600;">Включен</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div style="display: flex; gap: 12px;">
-                        <button class="btn" onclick="saveCalculation()">💾 Сохранить расчет</button>
-                        <button class="btn btn-secondary" onclick="showPage('history')"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg> История</button>
+                    <!-- ACTION BUTTONS -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <button class="btn" onclick="saveCalculation()" style="background: #0066CC; color: white; border: none; border-radius: 8px; padding: 12px; font-weight: 600; font-size: 14px;">
+                            <svg class="icon icon-md" style="width: 16px; height: 16px; display: inline; margin-right: 6px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-save"/></svg>
+                            Сохранить
+                        </button>
+                        <button class="btn btn-secondary" onclick="showPage('history')" style="background: #f5f5f5; color: #333; border: 1px solid #ddd; border-radius: 8px; padding: 12px; font-weight: 600; font-size: 14px;">
+                            <svg class="icon icon-md text-primary" style="width: 16px; height: 16px; display: inline; margin-right: 6px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg>
+                            История
+                        </button>
                     </div>
                 </div>
             </div>
