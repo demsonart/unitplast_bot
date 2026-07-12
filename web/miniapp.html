@@ -3,2625 +3,834 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNITPLAST — Калькулятор расчетов</title>
+    <title>UNITGROUP — Калькулятор производства</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/icons.css">
     <style>
         :root {
-            --bg-0: #04060c;
-            --bg-1: #070b14;
-            --bg-2: #0b1019;
-            --text-0: #f3f5f9;
-            --text-1: #aab2c5;
-            --blue: #2e6bf2;
-            --blue-dark: #2060d0;
+            --orange: #FF6B35;
+            --green: #10b981;
+            --gray: #5A5A5A;
+            --blue: #0066CC;
+            --dark: #1A1A1A;
+            --dark-bg: #04060c;
+            --light: #F8F8F8;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { width: 100%; height: 100%; }
-        body { background: var(--bg-0); color: var(--text-0); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        html, body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            height: 100%;
+        }
 
-        .app-wrapper { display: flex; flex-direction: column; min-height: 100vh; max-width: 500px; margin: 0 auto; background: var(--bg-0); }
+        /* === TYPOGRAPHY === */
+        h1, h2, h3 { font-family: 'IBM Plex Serif', serif; font-weight: 700; }
+        h1 { font-size: 2rem; }
+        h2 { font-size: 1.5rem; }
+        h3 { font-size: 1.1rem; }
+
+        /* === LAYOUT === */
+        .app-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--dark-bg);
+        }
 
         .app-header {
-            background: linear-gradient(135deg, rgba(46, 107, 242, 0.15), rgba(139, 109, 242, 0.08));
-            padding: 12px 16px;
+            background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(16,185,129,0.05) 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 20px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid rgba(46, 107, 242, 0.1);
-            gap: 12px;
         }
 
-        .app-header button { background: none; border: none; color: var(--text-0); cursor: pointer; font-size: 20px; }
-        .app-header h2 { flex: 1; text-align: center; font-size: 16px; font-weight: 600; }
-
-        .app-content { flex: 1; overflow-y: auto; padding-bottom: 70px; }
-
-        .section { padding: 20px 16px; border-bottom: 1px solid rgba(46, 107, 242, 0.05); }
-        .section h3 { font-size: 18px; margin-bottom: 16px; font-weight: 700; }
-
-        .stat-card {
-            background: linear-gradient(135deg, rgba(46, 107, 242, 0.1), rgba(139, 109, 242, 0.05));
-            border: 1px solid rgba(46, 107, 242, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 16px;
-            text-align: center;
+        .app-header-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #fff;
         }
 
-        .stat-card .amount {
-            font-size: 32px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #f3f5f9, #aab2c5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
+        .app-header-logo svg {
+            width: 28px;
+            height: 28px;
         }
 
-        .stat-card .label { color: var(--text-1); font-size: 13px; }
+        .app-header-logo h1 {
+            font-size: 1rem;
+            margin: 0;
+        }
 
-        .type-grid {
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 16px;
+        }
+
+        .app-nav {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .type-card {
-            background: rgba(46, 107, 242, 0.08);
-            border: 2px solid rgba(46, 107, 242, 0.15);
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .type-card.active {
-            border-color: var(--blue);
-            background: rgba(46, 107, 242, 0.15);
-        }
-
-        .type-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--blue);
-        }
-
-        .type-icon { font-size: 32px; margin-bottom: 8px; }
-        .type-name { font-size: 13px; font-weight: 700; }
-
-        .input-group {
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(0, 102, 204, 0.05) 100%);
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid rgba(46, 107, 242, 0.15);
-            transition: all 0.3s ease;
-        }
-
-        .input-group:focus-within {
-            background: linear-gradient(135deg, rgba(255, 107, 53, 0.12) 0%, rgba(0, 102, 204, 0.10) 100%);
-            border-color: rgba(46, 107, 242, 0.5);
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #aab2c5;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 10px 12px;
-            background: rgba(15, 25, 50, 0.6);
-            border: 1px solid rgba(46, 107, 242, 0.2);
-            border-radius: 6px;
-            color: var(--text-0);
-            font-size: 14px;
-            font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.2s ease;
-        }
-
-        .input-group input:focus,
-        .input-group select:focus {
-            outline: none;
-            background: rgba(15, 25, 50, 0.8);
-            border-color: rgba(46, 107, 242, 0.6);
-            box-shadow: 0 0 0 3px rgba(46, 107, 242, 0.1);
-        }
-
-        .input-group input::placeholder {
-            color: var(--text-1);
-            opacity: 0.7;
-        }
-
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .product-card {
-            background: rgba(46, 107, 242, 0.08);
-            border: 1px solid rgba(46, 107, 242, 0.15);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .product-card:hover {
-            border-color: var(--blue);
-            background: rgba(46, 107, 242, 0.12);
-            transform: translateY(-2px);
-        }
-
-        .product-icon { font-size: 32px; margin-bottom: 8px; }
-        .product-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-        .product-desc { font-size: 11px; color: var(--text-1); margin-bottom: 8px; line-height: 1.4; }
-        .product-price { font-size: 14px; font-weight: 700; color: var(--blue); }
-
-        .btn {
-            width: 100%;
-            padding: 14px 16px;
-            background: var(--blue);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover { background: var(--blue-dark); transform: scale(1.02); }
-        .btn-secondary { background: rgba(46, 107, 242, 0.1); color: var(--blue); border: 2px solid var(--blue); }
-        .btn-secondary:hover { background: rgba(46, 107, 242, 0.15); }
-
-        .app-footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            max-width: 500px;
-            margin: 0 auto;
-            background: var(--bg-1);
-            border-top: 1px solid rgba(46, 107, 242, 0.1);
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            height: 60px;
-            z-index: 100;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            padding: 12px 16px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.3);
         }
 
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 4px;
+            gap: 6px;
+            padding: 8px;
+            border-radius: 8px;
             cursor: pointer;
-            color: var(--text-1);
+            text-align: center;
+            font-size: 11px;
+            color: #999;
             transition: all 0.3s ease;
             text-decoration: none;
         }
 
-        .nav-item:hover, .nav-item.active { color: var(--blue); }
-        .nav-icon { font-size: 20px; }
-        .nav-label { font-size: 10px; font-weight: 500; }
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--orange);
+            background: rgba(255,107,53,0.1);
+        }
 
-        .mt-16 { margin-top: 16px; }
-        .mb-16 { margin-bottom: 16px; }
-        .text-center { text-align: center; }
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* === PAGES === */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* === CARDS === */
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,107,53,0.15) 0%, rgba(16,185,129,0.1) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card .amount {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'IBM Plex Serif', serif;
+            background: linear-gradient(90deg, var(--orange) 0%, var(--green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* === MATERIAL SELECTOR === */
+        .material-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .material-btn {
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .material-btn svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .material-btn.plastic {
+            border-color: var(--orange);
+            background: rgba(255,107,53,0.1);
+        }
+
+        .material-btn.furniture {
+            border-color: var(--green);
+            background: rgba(16,185,129,0.1);
+        }
+
+        .material-btn.metal {
+            border-color: var(--gray);
+            background: rgba(90,90,90,0.1);
+        }
+
+        .material-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255,107,53,0.2);
+        }
+
+        .material-name {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .material-type {
+            font-size: 10px;
+            color: #999;
+        }
+
+        /* === FORM CONTROLS === */
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #aaa;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input::placeholder,
+        .form-select > option {
+            color: #666;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--orange);
+            background: rgba(255,107,53,0.05);
+            box-shadow: 0 0 0 3px rgba(255,107,53,0.1);
+        }
+
+        /* === RESULTS === */
+        .result-card {
+            background: rgba(0,102,204,0.05);
+            border: 1px solid rgba(0,102,204,0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+        }
 
         .result-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: rgba(46, 107, 242, 0.05);
-            border-radius: 6px;
-            margin-bottom: 8px;
-            font-size: 13px;
+            padding: 8px 0;
+            font-size: 14px;
         }
 
-        .result-label { color: var(--text-1); }
-        .result-value { font-weight: 700; color: var(--blue); }
+        .result-label {
+            color: #999;
+        }
 
-        .history-item {
-            background: rgba(46, 107, 242, 0.08);
-            border: 1px solid rgba(46, 107, 242, 0.15);
-            border-radius: 8px;
+        .result-value {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* === BUTTONS === */
+        .btn-action {
+            width: 100%;
             padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .btn-primary:hover {
+            background: #0044aa;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,102,204,0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            color: #aaa;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        /* === HISTORY === */
+        .history-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px;
             margin-bottom: 12px;
         }
 
         .history-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
+            align-items: start;
+            margin-bottom: 12px;
         }
 
-        .history-name { font-weight: 600; font-size: 13px; }
-        .history-date { font-size: 11px; color: var(--text-1); }
-        .history-price { font-weight: 700; color: var(--blue); }
-
-        .menu-modal {
-            display: none;
-            position: fixed;
-            bottom: 60px;
-            left: 0;
-            right: 0;
-            max-width: 500px;
-            margin: 0 auto;
-            background: var(--bg-1);
-            border-top: 1px solid rgba(46, 107, 242, 0.2);
-            border-radius: 12px 12px 0 0;
-            padding: 16px;
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 99;
+        .history-name {
+            font-weight: 600;
+            font-size: 14px;
         }
 
-        .menu-modal.open {
-            display: block;
-            animation: slideUp 0.3s ease;
+        .history-date {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .history-price {
+            text-align: right;
+            font-size: 16px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--orange) 0%, var(--green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .menu-item {
-            padding: 12px;
-            background: rgba(46, 107, 242, 0.08);
-            border: 1px solid rgba(46, 107, 242, 0.15);
-            border-radius: 8px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--text-0);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .menu-item:hover {
-            background: rgba(46, 107, 242, 0.15);
-            border-color: var(--blue);
-        }
-
-        .menu-icon { font-size: 20px; min-width: 20px; }
-
+        /* === RESPONSIVE === */
         @media (max-width: 600px) {
-            .app-wrapper { max-width: 100%; height: 100vh; }
+            .app-wrapper {
+                max-width: 100%;
+                border-radius: 0;
+            }
+
+            h1 { font-size: 1.5rem; }
+            h2 { font-size: 1.25rem; }
         }
     </style>
 </head>
 <body>
-    <div class="app-wrapper">
-        <!-- HEADER -->
-        <div class="app-header">
-            <button onclick="window.history.back()">←</button>
-            <h2 id="page-title">Расчет стоимости</h2>
-            <button onclick="alert('Меню')"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️</button>
+
+<div class="app-wrapper">
+    <!-- HEADER -->
+    <div class="app-header">
+        <a class="app-header-logo" href="landing.html">
+            <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+                <g><path d="M 30 35 L 42 28 L 54 35 L 54 50 L 42 57 L 30 50 Z" fill="none" stroke="#5A5A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+                <g><path d="M 90 35 L 102 28 L 114 35 L 114 50 L 102 57 L 90 50 Z" fill="none" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+                <g><path d="M 150 35 L 162 28 L 174 35 L 174 50 L 162 57 L 150 50 Z" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+            </svg>
+            <h1>UNITGROUP</h1>
+        </a>
+        <button onclick="alert('⚙️ Настройки')" style="background: rgba(255,107,53,0.1); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--orange);">
+            ⚙️
+        </button>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="app-content">
+        <!-- DASHBOARD PAGE -->
+        <div id="page-dashboard" class="page active">
+            <h2 style="margin-bottom: 24px;">Добро пожаловать</h2>
+
+            <div class="stat-card">
+                <div class="amount" id="dashboard-total">0 ₽</div>
+                <div class="label">Сумма всех расчётов</div>
+            </div>
+
+            <h3 style="margin-bottom: 16px; margin-top: 32px; font-size: 14px;">Ваши последние расчёты</h3>
+
+            <div class="history-item">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">📦 Пластиковый контейнер</div>
+                        <div class="history-date">Сегодня, 14:32</div>
+                    </div>
+                    <div class="history-price">12 490 ₽</div>
+                </div>
+                <div style="font-size: 12px; color: #999;">800x600x400 мм, ABS пластик, 100 шт</div>
+            </div>
+
+            <div class="history-item">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">🪑 Офисный стул</div>
+                        <div class="history-date">Вчера, 10:15</div>
+                    </div>
+                    <div class="history-price">8 500 ₽</div>
+                </div>
+                <div style="font-size: 12px; color: #999;">МДФ, стандартная отделка, 10 шт</div>
+            </div>
+
+            <div class="history-item">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">🔧 Металлический каркас</div>
+                        <div class="history-date">2 дня назад</div>
+                    </div>
+                    <div class="history-price">25 000 ₽</div>
+                </div>
+                <div style="font-size: 12px; color: #999;">Чёрная сталь, 50 кг, 5 шт</div>
+            </div>
+
+            <button onclick="showPage('calculator')" class="btn-action btn-primary" style="margin-top: 24px;">
+                <span>➕ Новый расчёт</span>
+            </button>
         </div>
 
-        <!-- CONTENT -->
-        <div class="app-content">
-            <!-- PAGE: DASHBOARD -->
-            <div id="page-dashboard" class="page" style="display: block;">
-                <div class="section">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h3>UNITPLAST AI</h3>
-                        <div style="font-size: 12px; background: var(--blue); color: white; padding: 4px 8px; border-radius: 4px;">Pro</div>
-                    </div>
+        <!-- CALCULATOR PAGE -->
+        <div id="page-calculator" class="page">
+            <h2 style="margin-bottom: 24px;">Калькулятор производства</h2>
 
-                    <div class="stat-card" style="margin-bottom: 16px; cursor: pointer;" onclick="updateDashboardData()">
-                        <div class="label"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Расчеты за месяц (нажми для обновления)</div>
-                        <div class="amount" id="dashboard-calculations">24</div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">⟳ Последнее обновление: только что</div>
-                    </div>
+            <div class="stat-card">
+                <div class="amount" id="total-price">0 ₽</div>
+                <div class="label">Примерная стоимость</div>
+            </div>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> KPI (обновляется каждые 5 сек)</h3>
-                    <div class="product-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-                        <div class="product-card">
-                            <div style="font-size: 20px; font-weight: 700; color: var(--blue);" id="kpi-active">7</div>
-                            <div style="font-size: 11px; color: var(--text-1);">Активные</div>
-                            <div style="font-size: 9px; color: #10b981; margin-top: 4px;">↑ +2 сегодня</div>
-                        </div>
-                        <div class="product-card">
-                            <div style="font-size: 20px; font-weight: 700; color: #10b981;" id="kpi-progress">3</div>
-                            <div style="font-size: 11px; color: var(--text-1);">В работе</div>
-                            <div style="font-size: 9px; color: #f59e0b; margin-top: 4px;">⏳ -1 готово</div>
-                        </div>
-                        <div class="product-card">
-                            <div style="font-size: 20px; font-weight: 700; color: #f59e0b;" id="kpi-time">12</div>
-                            <div style="font-size: 11px; color: var(--text-1);">Средн. время (ч)</div>
-                            <div style="font-size: 9px; color: #10b981; margin-top: 4px;">↓ -2ч от вчера</div>
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⚡ Быстрые действия</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(46, 107, 242, 0.8);" onclick="showPage('calculator')">➕ Расчет</button>
-                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(16, 185, 129, 0.8);" onclick="showPage('new-order')">📝 Заказ</button>
-                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(245, 158, 11, 0.8);" onclick="showPage('notifications')">🔔 Уведомления</button>
-                        <button class="btn" style="font-size: 12px; padding: 8px; background: rgba(139, 109, 242, 0.8);" onclick="showPage('team')">👥 Команда</button>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg> Недавние заказы</h3>
-                    <div class="history-item" onclick="showPage('order-detail')" style="cursor: pointer;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">#2506 - Контейнер</div>
-                                <div class="history-date">В работе</div>
-                            </div>
-                            <div class="history-price">60%</div>
-                        </div>
-                    </div>
-
-                    <div class="history-item" onclick="showPage('order-detail')" style="cursor: pointer;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">#2505 - Шкаф</div>
-                                <div class="history-date">Готово</div>
-                            </div>
-                            <div class="history-price"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg></div>
-                        </div>
-                    </div>
+            <div style="margin-bottom: 24px;">
+                <div class="input-label">Выберите материал</div>
+                <div class="material-selector">
+                    <button class="material-btn plastic active" onclick="selectType('plastic')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M6 3h12v18H6z" stroke-linecap="round"/><path d="M9 6h6M9 10h6M9 14h6"/><circle cx="12" cy="19" r="1" fill="currentColor"/>
+                        </svg>
+                        <div class="material-name">Пластик</div>
+                        <div class="material-type">UNITPLAST</div>
+                    </button>
+                    <button class="material-btn furniture" onclick="selectType('furniture')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5M3 5h18M8 8v7M12 8v7M16 8v7" stroke-linecap="round"/>
+                        </svg>
+                        <div class="material-name">Мебель</div>
+                        <div class="material-type">UNIFURNITURE</div>
+                    </button>
+                    <button class="material-btn metal" onclick="selectType('metal')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 12h18M5 5l2 14h10l2-14M9 5v14M15 5v14M8 9h8" stroke-linecap="round"/>
+                        </svg>
+                        <div class="material-name">Металл</div>
+                        <div class="material-type">UNIMETALL</div>
+                    </button>
                 </div>
             </div>
 
-            <!-- PAGE: CALCULATOR -->
-            <div id="page-calculator" class="page" style="display: none;">
-                <div class="section">
-                    <!-- HEADER STATS -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
-                        <div style="background: linear-gradient(135deg, #FF6B35 0%, #FF8A5B 100%); border-radius: 12px; padding: 16px; color: white;">
-                            <div style="font-size: 12px; opacity: 0.9; margin-bottom: 4px;">Итого</div>
-                            <div style="font-size: 28px; font-weight: 700;" id="total-price">0 ₽</div>
-                        </div>
-                        <div style="background: linear-gradient(135deg, #0066CC 0%, #0088FF 100%); border-radius: 12px; padding: 16px; color: white;">
-                            <div style="font-size: 12px; opacity: 0.9; margin-bottom: 4px;">Срок</div>
-                            <div style="font-size: 16px; font-weight: 700;">5-7 дн</div>
-                        </div>
-                    </div>
-
-                    <!-- MATERIAL SELECTOR -->
-                    <div style="margin-bottom: 24px;">
-                        <div style="font-size: 13px; font-weight: 600; color: #666; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">📦 Тип производства</div>
-                        <div class="type-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
-                            <div class="type-card active" onclick="selectType('plastic')" style="background: white; border: 2px solid #FF6B35; border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.3s;">
-                                <svg class="icon icon-lg text-warning" aria-hidden="true" style="width: 40px; height: 40px; margin: 0 auto 8px;"><use href="/assets/icons-sprite.svg#icon-plastic"/></svg>
-                                <div class="type-name" style="font-weight: 600; font-size: 14px;">Пластик</div>
-                                <div style="font-size: 11px; color: #999;">UNITPLAST</div>
-                            </div>
-                            <div class="type-card" onclick="selectType('furniture')" style="background: #f5f5f5; border: 2px solid transparent; border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.3s;">
-                                <svg class="icon icon-lg text-success" aria-hidden="true" style="width: 40px; height: 40px; margin: 0 auto 8px;"><use href="/assets/icons-sprite.svg#icon-sofa"/></svg>
-                                <div class="type-name" style="font-weight: 600; font-size: 14px;">Мебель</div>
-                                <div style="font-size: 11px; color: #999;">UNIFURNITURE</div>
-                            </div>
-                            <div class="type-card" onclick="selectType('metal')" style="background: #f5f5f5; border: 2px solid transparent; border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.3s;">
-                                <svg class="icon icon-lg text-secondary" aria-hidden="true" style="width: 40px; height: 40px; margin: 0 auto 8px;"><use href="/assets/icons-sprite.svg#icon-wrench"/></svg>
-                                <div class="type-name" style="font-weight: 600; font-size: 14px;">Металл</div>
-                                <div style="font-size: 11px; color: #999;">UNIMETALL</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- PLASTIC INPUTS -->
-                    <div id="plastic-inputs" style="display: block;">
-                        <h3>Параметры изделия</h3>
-
-                        <div class="input-group">
-                            <label>Материал</label>
-                            <select onchange="calculatePrice()">
-                                <option>ABS пластик (350-500 ₽/кг)</option>
-                                <option>PP пластик (200-350 ₽/кг)</option>
-                                <option>PVC пластик (250-400 ₽/кг)</option>
-                                <option>PC пластик (800-1200 ₽/кг)</option>
-                            </select>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label>Высота (мм)</label>
-                                <input type="number" value="800" onchange="calculatePrice()">
-                            </div>
-                            <div class="input-group">
-                                <label>Ширина (мм)</label>
-                                <input type="number" value="600" onchange="calculatePrice()">
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label>Глубина (мм)</label>
-                            <input type="number" value="400" onchange="calculatePrice()">
-                        </div>
-
-                        <div class="input-group">
-                            <label>Толщина стенки (мм)</label>
-                            <input type="number" value="2" onchange="calculatePrice()">
-                        </div>
-
-                        <div class="input-group">
-                            <label>Количество (шт)</label>
-                            <input type="number" value="100" onchange="calculatePrice()">
-                        </div>
-                    </div>
-
-                    <!-- FURNITURE INPUTS -->
-                    <div id="furniture-inputs" style="display: none;">
-                        <h3>Параметры мебели</h3>
-
-                        <div class="input-group">
-                            <label>Тип мебели</label>
-                            <select onchange="calculatePrice()">
-                                <option>Шкаф (1500-3000 ₽)</option>
-                                <option>Стол (1000-2500 ₽)</option>
-                                <option>Стул (300-800 ₽)</option>
-                                <option>Полка (500-1500 ₽)</option>
-                                <option>Комод (2000-4000 ₽)</option>
-                            </select>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label>Высота (см)</label>
-                                <input type="number" value="180" onchange="calculatePrice()">
-                            </div>
-                            <div class="input-group">
-                                <label>Ширина (см)</label>
-                                <input type="number" value="80" onchange="calculatePrice()">
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label>Материал</label>
-                            <select onchange="calculatePrice()">
-                                <option>ДСП (бюджет)</option>
-                                <option>МДФ (стандарт)</option>
-                                <option>Массив дерева (премиум)</option>
-                                <option>Пластик + дерево (комбо)</option>
-                            </select>
-                        </div>
-
-                        <div class="input-group">
-                            <label>Количество (шт)</label>
-                            <input type="number" value="10" onchange="calculatePrice()">
-                        </div>
-                    </div>
-
-                    <!-- METAL INPUTS -->
-                    <div id="metal-inputs" style="display: none;">
-                        <h3>Параметры металлоконструкции</h3>
-
-                        <div class="input-group">
-                            <label>Тип конструкции</label>
-                            <select onchange="calculatePrice()">
-                                <option>Рама (1000-2000 ₽)</option>
-                                <option>Каркас (2000-4000 ₽)</option>
-                                <option>Стеллаж (1500-3000 ₽)</option>
-                                <option>Ограда (800-1500 ₽)</option>
-                                <option>Лестница (3000-6000 ₽)</option>
-                            </select>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label>Высота (см)</label>
-                                <input type="number" value="200" onchange="calculatePrice()">
-                            </div>
-                            <div class="input-group">
-                                <label>Ширина (см)</label>
-                                <input type="number" value="100" onchange="calculatePrice()">
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label>Материал</label>
-                            <select onchange="calculatePrice()">
-                                <option>Черная сталь (400-600 ₽/кг)</option>
-                                <option>Нержавейка (800-1200 ₽/кг)</option>
-                                <option>Алюминий (600-900 ₽/кг)</option>
-                                <option>Оцинкованная сталь (500-700 ₽/кг)</option>
-                            </select>
-                        </div>
-
-                        <div class="input-group">
-                            <label>Вес (кг)</label>
-                            <input type="number" value="50" onchange="calculatePrice()">
-                        </div>
-
-                        <div class="input-group">
-                            <label>Количество (шт)</label>
-                            <input type="number" value="5" onchange="calculatePrice()">
-                        </div>
-                    </div>
-
-                    <!-- RESULTS -->
-                    <div style="background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 100%); border-radius: 16px; padding: 20px; margin-top: 24px; margin-bottom: 24px;">
-                        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #999; margin-bottom: 16px; letter-spacing: 0.5px;">📊 Детальный расчет</div>
-
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                            <div style="background: white; border-radius: 8px; padding: 12px;">
-                                <div style="font-size: 11px; color: #999; margin-bottom: 4px;">Производство</div>
-                                <div style="font-size: 16px; font-weight: 700; color: #0066CC;" id="calc-production">5-7 дн</div>
-                            </div>
-                            <div style="background: white; border-radius: 8px; padding: 12px;">
-                                <div style="font-size: 11px; color: #999; margin-bottom: 4px;">Доставка</div>
-                                <div style="font-size: 16px; font-weight: 700; color: #10b981;">2-3 дн</div>
-                            </div>
-                        </div>
-
-                        <div id="results" style="background: white; border-radius: 8px; padding: 12px;">
-                            <div class="result-row" style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
-                                <span class="result-label" style="color: #666;">Материал</span>
-                                <span class="result-value" style="font-weight: 600;">-</span>
-                            </div>
-                            <div class="result-row" style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
-                                <span class="result-label" style="color: #666;">Кол-во</span>
-                                <span class="result-value" style="font-weight: 600;">-</span>
-                            </div>
-                            <div class="result-row" style="padding: 8px 0;">
-                                <span class="result-label" style="color: #666;">НДС</span>
-                                <span class="result-value" style="font-weight: 600;">Включен</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ACTION BUTTONS -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <button class="btn" onclick="saveCalculation()" style="background: #0066CC; color: white; border: none; border-radius: 8px; padding: 12px; font-weight: 600; font-size: 14px;">
-                            <svg class="icon icon-md" style="width: 16px; height: 16px; display: inline; margin-right: 6px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-save"/></svg>
-                            Сохранить
-                        </button>
-                        <button class="btn btn-secondary" onclick="showPage('history')" style="background: #f5f5f5; color: #333; border: 1px solid #ddd; border-radius: 8px; padding: 12px; font-weight: 600; font-size: 14px;">
-                            <svg class="icon icon-md text-primary" style="width: 16px; height: 16px; display: inline; margin-right: 6px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg>
-                            История
-                        </button>
-                    </div>
+            <!-- PLASTIC INPUTS -->
+            <div id="plastic-inputs">
+                <div class="input-group">
+                    <label class="input-label">Материал</label>
+                    <select class="form-select" onchange="calculatePrice()">
+                        <option>ABS пластик (425 ₽/кг)</option>
+                        <option>PP пластик (275 ₽/кг)</option>
+                        <option>PVC пластик (325 ₽/кг)</option>
+                        <option>PC пластик (1000 ₽/кг)</option>
+                        <option>PE пластик (150 ₽/кг)</option>
+                    </select>
                 </div>
-            </div>
 
-            <!-- PAGE: HISTORY -->
-            <div id="page-history" class="page" style="display: none;">
-                <div class="section">
-                    <h3>История расчетов</h3>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">♻️ Пластиковый контейнер</div>
-                                <div class="history-date">07.07.2026 15:32</div>
-                            </div>
-                            <div class="history-price">12 450 ₽</div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
-                            800x600x400 мм, ABS, 100 шт
-                        </div>
-                        <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px;" onclick="loadFromHistory()">Восстановить</button>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">🪑 Офисный стул</div>
-                                <div class="history-date">06.07.2026 10:15</div>
-                            </div>
-                            <div class="history-price">8 500 ₽</div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
-                            МДФ, черный, 10 шт
-                        </div>
-                        <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px;" onclick="loadFromHistory()">Восстановить</button>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Стальной каркас</div>
-                                <div class="history-date">05.07.2026 14:20</div>
-                            </div>
-                            <div class="history-price">25 000 ₽</div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
-                            Черная сталь, 50 кг, 5 шт
-                        </div>
-                        <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px;" onclick="loadFromHistory()">Восстановить</button>
-                    </div>
-
-                    <button class="btn mt-16" onclick="showPage('calculator')">← Назад</button>
-                </div>
-            </div>
-
-            <!-- PAGE: FILES -->
-            <div id="page-files" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Файлы и документы</h3>
-
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <button class="btn" style="flex: 1; font-size: 13px; padding: 8px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-send"/></svg> Загрузить файл</button>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px;">Недавние файлы</h3>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Расчет_2506.xlsx</div>
-                                <div class="history-date">Сегодня, 15:32</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
-                            Размер: 245 KB | EXCEL
-                        </div>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-inbox"/></svg> Скачать</button>
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">🔗 Поделиться</button>
-                        </div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">📐 КП_UNITPLAST_2506.pdf</div>
-                                <div class="history-date">Вчера, 10:15</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
-                            Размер: 1.2 MB | PDF
-                        </div>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-inbox"/></svg> Скачать</button>
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">🔗 Поделиться</button>
-                        </div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-wrench"/></svg> 3D_Model.step</div>
-                                <div class="history-date">2 дня назад, 14:20</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
-                            Размер: 3.8 MB | STEP
-                        </div>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-inbox"/></svg> Скачать</button>
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">🔗 Поделиться</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAGE: ANALYTICS -->
-            <div id="page-analytics" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Аналитика и статистика</h3>
-
-                    <div class="stat-card" style="cursor: pointer;" onclick="updateAnalyticsData()">
-                        <div class="label"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Расчеты за месяц (нажми для обновления)</div>
-                        <div class="amount" id="analytics-calculations">24</div>
-                        <div style="font-size: 11px; color: #10b981; margin-top: 8px;">↑ +5 от прошлой недели</div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">Ключевые показатели (реальные данные)</h3>
-
-                    <div class="result-row">
-                        <span class="result-label">Активные заказы</span>
-                        <span class="result-value" id="analytics-active">7</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">В работе</span>
-                        <span class="result-value" id="analytics-progress">3</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Готово к отправке</span>
-                        <span class="result-value" id="analytics-ready">2</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Среднее время расчета</span>
-                        <span class="result-value"><span id="analytics-time">12</span> мин</span>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">По типам производства</h3>
-
-                    <div class="product-grid">
-                        <div class="product-card">
-                            <div class="product-name">Пластик</div>
-                            <div style="font-size: 24px; font-weight: 700; color: var(--blue); margin: 12px 0;">8</div>
-                            <div class="product-desc">расчетов</div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-name">Мебель</div>
-                            <div style="font-size: 24px; font-weight: 700; color: #10b981; margin: 12px 0;">9</div>
-                            <div class="product-desc">расчетов</div>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-name">Металл</div>
-                            <div style="font-size: 24px; font-weight: 700; color: #6b7280; margin: 12px 0;">7</div>
-                            <div class="product-desc">расчетов</div>
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px;">Итоговая сумма</h3>
-                    <div class="stat-card">
-                        <div class="label">💰 Сумма всех расчетов (обновляется)</div>
-                        <div class="amount" id="analytics-total">2 030 000</div>
-                        <div style="font-size: 13px;">₽</div>
-                        <div style="font-size: 11px; color: #10b981; margin-top: 8px;">↑ +150 000 от вчера</div>
-                    </div>
-
-                    <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);" onclick="showPage('advanced-analytics')"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Расширенная аналитика →</button>
-                </div>
-            </div>
-
-            <!-- PAGE: PROFILE -->
-            <div id="page-profile" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Профиль компании</h3>
-
-                    <div class="stat-card">
-                        <div class="label">💳 Баланс бонусов</div>
-                        <div class="amount" id="profile-balance">16 350</div>
-                        <div style="font-size: 13px;">₽</div>
-                    </div>
-
-                    <div class="product-card" style="text-align: center; margin-bottom: 16px;">
-                        <div style="font-size: 48px; margin-bottom: 12px;">👔</div>
-                        <div class="product-name">ООО "КОМПАНИЯ"</div>
-                        <div class="product-desc">Регистрация: 2020 • Сотрудников: 4</div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px;">Основная информация</h3>
-
-                    <div class="result-row">
-                        <span class="result-label">ИНН</span>
-                        <span class="result-value">7701234567</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">КПП</span>
-                        <span class="result-value">770101001</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Телефон</span>
-                        <span class="result-value">+7 (495) 123-45-67</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Email</span>
-                        <span class="result-value">info@company.ru</span>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px;">Подписка</h3>
-
-                    <div class="product-card" style="margin-bottom: 16px;">
-                        <div class="product-name">Тариф Pro</div>
-                        <div style="font-size: 13px; color: var(--text-1); margin: 8px 0;">
-                            <svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Все возможности платформы<br/>
-                            <svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Приоритетная поддержка<br/>
-                            <svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Интеграция 1С
-                        </div>
-                        <div style="font-size: 12px; color: var(--blue); margin-top: 8px;">
-                            <svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg> Продление: 30 дней
-                        </div>
-                    </div>
-
-                    <button class="btn btn-secondary mt-16">Управление подпиской</button>
-                    <button class="btn btn-secondary mt-16">Выход</button>
-                </div>
-            </div>
-
-            <!-- PAGE: TEAM MANAGEMENT -->
-            <div id="page-team" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Команда и доступы</h3>
-
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <button class="btn" style="flex: 1; font-size: 12px; padding: 8px;">➕ Добавить пользователя</button>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">👥 Сотрудники (4)</h3>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">👨‍💼 Игорь К.</div>
-                                <div class="history-date">Администратор</div>
-                            </div>
-                            <div style="font-size: 12px; color: var(--blue);">✓ Активен</div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">Все права • Создание и удаление • Настройки</div>
-                        <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px;">Редактировать</button>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">👩‍💻 Анна С.</div>
-                                <div class="history-date">Менеджер</div>
-                            </div>
-                            <div style="font-size: 12px; color: #10b981;">✓ Активен</div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">Расчеты • Заказы • Аналитика</div>
-                        <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px;">Редактировать</button>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">👨‍<svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-wrench"/></svg> Дмитрий П.</div>
-                                <div class="history-date">Оператор</div>
-                            </div>
-                            <div style="font-size: 12px; color: #f59e0b;">⏸ Отключен</div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">Только чтение • Расчеты</div>
-                        <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px;">Редактировать</button>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">🔐 Роли и разрешения</h3>
-                    <div class="product-card">
-                        <div class="product-name">Администратор</div>
-                        <div style="font-size: 11px; color: var(--text-1);">✓ Все права</div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Менеджер</div>
-                        <div style="font-size: 11px; color: var(--text-1);">✓ Расчеты, Заказы, Аналитика</div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-name">Оператор</div>
-                        <div style="font-size: 11px; color: var(--text-1);">✓ Только расчеты (чтение)</div>
-                    </div>
-
-                    <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);" onclick="showPage('team-advanced')">👥 Расширенное управление →</button>
-                </div>
-            </div>
-
-            <!-- PAGE: 1C INTEGRATION -->
-            <div id="page-1c" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Интеграция с 1С</h3>
-
-                    <div class="product-card" style="background: rgba(16, 185, 129, 0.1); border-color: #10b981; margin-bottom: 16px;">
-                        <div style="color: #10b981; font-weight: 700; margin-bottom: 8px;">✓ Подключено</div>
-                        <div style="font-size: 13px; color: var(--text-0);">1С Предприятие 8.3 (Enterprise)</div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">Последняя синхронизация: 2 часа назад</div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Параметры синхронизации</h3>
-
-                    <div class="result-row">
-                        <span class="result-label">Справочник материалов</span>
-                        <span class="result-value" style="color: #10b981;">✓</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Остатки на складе</span>
-                        <span class="result-value" style="color: #10b981;">✓</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Цены и тарифы</span>
-                        <span class="result-value" style="color: #10b981;">✓</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Документы (КП)</span>
-                        <span class="result-value" style="color: #10b981;">✓</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">История заказов</span>
-                        <span class="result-value" style="color: #f59e0b;">⏸</span>
-                    </div>
-
-                    <button class="btn mt-16"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg> Синхронизировать сейчас</button>
-                    <button class="btn btn-secondary mt-16"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Расширенные настройки</button>
-                </div>
-            </div>
-
-            <!-- PAGE: PRODUCTION CONTROL -->
-            <div id="page-production" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Контроль производства</h3>
-
-                    <div class="stat-card">
-                        <div class="amount">87%</div>
-                        <div class="label">Загруженность производства</div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">🏭 Станки и линии</h3>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Линия 1 (Пластик)</div>
-                                <div class="history-date">Работает</div>
-                            </div>
-                            <div style="color: #10b981;">✓</div>
-                        </div>
-                        <div style="width: 100%; height: 4px; background: rgba(46, 107, 242, 0.1); border-radius: 2px; margin: 8px 0; overflow: hidden;">
-                            <div style="width: 95%; height: 100%; background: #10b981;"></div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1);">Выполнено: 95% • Осталось: 2 часа</div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Линия 2 (Мебель)</div>
-                                <div class="history-date">На обслуживании</div>
-                            </div>
-                            <div style="color: #f59e0b;">⏸</div>
-                        </div>
-                        <div style="width: 100%; height: 4px; background: rgba(46, 107, 242, 0.1); border-radius: 2px; margin: 8px 0; overflow: hidden;">
-                            <div style="width: 60%; height: 100%; background: #f59e0b;"></div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1);">Осталось: 4 часа обслуживания</div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Линия 3 (Металл)</div>
-                                <div class="history-date">Ожидает</div>
-                            </div>
-                            <div style="color: #6b7280;">○</div>
-                        </div>
-                        <div style="width: 100%; height: 4px; background: rgba(46, 107, 242, 0.1); border-radius: 2px; margin: 8px 0; overflow: hidden;">
-                            <div style="width: 0%; height: 100%; background: #6b7280;"></div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1);">Готово к запуску</div>
-                    </div>
-
-                    <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);" onclick="showPage('production-advanced')">🏭 Управление производством →</button>
-                </div>
-            </div>
-
-            <!-- PAGE: MATERIALS CATALOG -->
-            <div id="page-materials" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Справочник материалов</h3>
-
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <input type="text" placeholder="Поиск материала..." style="flex: 1; padding: 8px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid var(--blue); border-radius: 6px; color: var(--text-0); font-size: 13px;">
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">♻️ Пластик</h3>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">ABS пластик</div>
-                                <div class="history-date">350-500 ₽/кг</div>
-                            </div>
-                            <div style="color: #10b981;">📦 35 кг</div>
-                        </div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">PP пластик</div>
-                                <div class="history-date">200-350 ₽/кг</div>
-                            </div>
-                            <div style="color: #10b981;">📦 120 кг</div>
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Металл</h3>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Черная сталь</div>
-                                <div class="history-date">400-600 ₽/кг</div>
-                            </div>
-                            <div style="color: #10b981;">📦 500 кг</div>
-                        </div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Алюминий</div>
-                                <div class="history-date">600-900 ₽/кг</div>
-                            </div>
-                            <div style="color: #f59e0b;">📦 80 кг (мало)</div>
-                        </div>
-                    </div>
-
-                    <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);" onclick="showPage('materials-advanced')">📚 Управление материалами →</button>
-                </div>
-            </div>
-
-            <!-- PAGE: SUPPORT -->
-            <div id="page-support" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Справка и поддержка</h3>
-
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <button class="btn btn-secondary" style="flex: 1; font-size: 12px; padding: 8px;" onclick="alert('<svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-phone"/></svg> +7 (495) 123-45-67')"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-phone"/></svg> Позвонить</button>
-                        <button class="btn btn-secondary" style="flex: 1; font-size: 12px; padding: 8px;" onclick="alert('<svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-notification"/></svg> support@unitplast.ru')"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-notification"/></svg> Chat</button>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">❓ Частые вопросы</h3>
-
-                    <div class="product-card" style="cursor: pointer; margin-bottom: 8px;">
-                        <div class="product-name">Как добавить пользователя?</div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 4px;">Перейдите в Команда и доступы → Добавить пользователя</div>
-                    </div>
-
-                    <div class="product-card" style="cursor: pointer; margin-bottom: 8px;">
-                        <div class="product-name">Как синхронизировать 1С?</div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 4px;">Перейдите в Интеграция с 1С → Синхронизировать сейчас</div>
-                    </div>
-
-                    <div class="product-card" style="cursor: pointer; margin-bottom: 8px;">
-                        <div class="product-name">Где найти расчеты?</div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 4px;">В меню История → Все расчеты отсортированы по дате</div>
-                    </div>
-
-                    <button class="btn mt-16" style="background: rgba(139, 109, 242, 0.8);">📚 Открыть документацию</button>
-                    <button class="btn btn-secondary mt-16">📧 Отправить запрос</button>
-                </div>
-            </div>
-
-            <!-- PAGE: CALCULATOR DETAIL -->
-            <div id="page-calc-detail" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Пошаговый расчет</h3>
-
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <button style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;" onclick="showPage('calculator')">← Назад</button>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg> Шаги расчета (3/3)</h3>
-
-                    <div class="history-item">
-                        <div style="margin-bottom: 8px;">
-                            <div style="font-weight: 600; margin-bottom: 4px;">1️⃣ Параметры изделия</div>
-                            <div style="font-size: 11px; color: var(--text-1);">✓ Выбран: ABS пластик, размер 800x600x400мм</div>
-                        </div>
-                    </div>
-
-                    <div class="history-item">
-                        <div style="margin-bottom: 8px;">
-                            <div style="font-weight: 600; margin-bottom: 4px;">2️⃣ Расчет стоимости</div>
-                            <div style="font-size: 11px; color: var(--text-1);">✓ Базовая цена: 2 450 ₽</div>
-                            <div style="font-size: 11px; color: var(--text-1);">  Кол-во: 100 шт = 245 000 ₽</div>
-                        </div>
-                    </div>
-
-                    <div class="history-item">
-                        <div style="margin-bottom: 8px;">
-                            <div style="font-weight: 600; margin-bottom: 4px;">3️⃣ Итого и доставка</div>
-                            <div style="font-size: 11px; color: var(--text-1);">✓ Стоимость: 245 000 ₽</div>
-                            <div style="font-size: 11px; color: var(--text-1);">  Доставка: 2 500 ₽</div>
-                            <div style="font-size: 11px; color: var(--blue); margin-top: 8px; font-weight: 600;">Итого: 247 500 ₽</div>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="label">⏱️ Срок изготовления</div>
-                        <div class="amount">5-7</div>
-                        <div style="font-size: 13px;">дней</div>
-                    </div>
-
-                    <button class="btn mt-16" style="background: rgba(16, 185, 129, 0.8);">✓ Подтвердить и создать заказ</button>
-                </div>
-            </div>
-
-            <!-- PAGE: NEW ORDER -->
-            <div id="page-new-order" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Новый заказ</h3>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">📝 Быстрое создание</h3>
-
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <div class="input-group">
-                        <label>Номер расчета</label>
-                        <select style="width: 100%; padding: 10px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 6px; color: var(--text-0); font-size: 13px;">
-                            <option>#2506 - Контейнер (245 000 ₽)</option>
-                            <option>#2507 - Шкаф (85 000 ₽)</option>
-                            <option>#2508 - Каркас (125 000 ₽)</option>
-                        </select>
+                        <label class="input-label">Высота (мм)</label>
+                        <input type="number" class="form-input" value="800" onchange="calculatePrice()">
                     </div>
-
                     <div class="input-group">
-                        <label>Кол-во</label>
-                        <input type="number" value="1" style="width: 100%; padding: 10px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 6px; color: var(--text-0);">
+                        <label class="input-label">Ширина (мм)</label>
+                        <input type="number" class="form-input" value="600" onchange="calculatePrice()">
                     </div>
+                </div>
 
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <div class="input-group">
-                        <label>Примечание</label>
-                        <input type="text" placeholder="Срочно, красный цвет..." style="width: 100%; padding: 10px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 6px; color: var(--text-0);">
+                        <label class="input-label">Глубина (мм)</label>
+                        <input type="number" class="form-input" value="400" onchange="calculatePrice()">
                     </div>
-
-                    <div class="stat-card">
-                        <div class="label">Стоимость</div>
-                        <div class="amount">245 000</div>
-                        <div style="font-size: 13px;">₽</div>
-                    </div>
-
-                    <button class="btn mt-16" style="background: rgba(16, 185, 129, 0.8);" onclick="alert('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Заказ #2509 создан!')">✓ Создать заказ</button>
-                    <button class="btn btn-secondary mt-16" onclick="showPage('dashboard')">← Отмена</button>
-                </div>
-            </div>
-
-            <!-- PAGE: ORDER DETAIL -->
-            <div id="page-order-detail" class="page" style="display: none;">
-                <div class="section">
-                    <h3>#2506 - Контейнер</h3>
-
-                    <div class="stat-card">
-                        <div class="amount">60%</div>
-                        <div class="label">Выполнено</div>
-                    </div>
-
-                    <div style="width: 100%; height: 8px; background: rgba(46, 107, 242, 0.1); border-radius: 4px; margin-bottom: 16px; overflow: hidden;">
-                        <div style="width: 60%; height: 100%; background: linear-gradient(90deg, var(--blue), #10b981);"></div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Информация</h3>
-
-                    <div class="result-row">
-                        <span class="result-label">Статус</span>
-                        <span class="result-value" style="color: #10b981;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ В работе</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Стоимость</span>
-                        <span class="result-value">245 000 ₽</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Кол-во</span>
-                        <span class="result-value">100 шт</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Начало</span>
-                        <span class="result-value">07.07.2026</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Завершение</span>
-                        <span class="result-value">12.07.2026</span>
-                    </div>
-
-                    <button class="btn mt-16"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-phone"/></svg> Связаться</button>
-                    <button class="btn btn-secondary mt-16" onclick="showPage('orders')">← Назад</button>
-                </div>
-            </div>
-
-            <!-- PAGE: NOTIFICATIONS -->
-            <div id="page-notifications" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Уведомления</h3>
-
-                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Заказ готов!</div>
-                                <div class="history-date">10 минут назад</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1);">Заказ #2505 готов к отправке</div>
-                    </div>
-
-                    <div class="history-item" style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-alert-triangle"/></svg>️ Внимание!</div>
-                                <div class="history-date">1 час назад</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1);">Остаток материала ABS менее 50 кг</div>
-                    </div>
-
-                    <div class="history-item" style="background: rgba(46, 107, 242, 0.1); border-left: 3px solid var(--blue);">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg> Синхронизация</div>
-                                <div class="history-date">3 часа назад</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1);">Данные синхронизированы с 1С</div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Ежедневный отчет</div>
-                                <div class="history-date">Вчера, 18:00</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1);">24 расчета, 7 активных заказов</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAGE: SETTINGS -->
-            <div id="page-settings" class="page" style="display: none;">
-                <div class="section">
-                    <h3>Настройки</h3>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;">🌙 Внешний вид</h3>
-
-                    <div class="result-row">
-                        <span class="result-label">Тёмная тема</span>
-                        <span style="cursor: pointer; font-size: 20px;">✓</span>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;">🔔 Уведомления</h3>
-
-                    <div class="result-row">
-                        <span class="result-label">Новые заказы</span>
-                        <span style="cursor: pointer; font-size: 20px;">✓</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Завершение расчетов</span>
-                        <span style="cursor: pointer; font-size: 20px;">✓</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Ошибки синхронизации</span>
-                        <span style="cursor: pointer; font-size: 20px;">✓</span>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Экспорт</h3>
-
-                    <button class="btn btn-secondary mt-16">💾 Скачать резервную копию</button>
-                    <button class="btn btn-secondary mt-16"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-send"/></svg> Экспортировать в CSV</button>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px; margin-top: 20px;"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-alert-triangle"/></svg>️ Опасные действия</h3>
-
-                    <button class="btn btn-secondary mt-16" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">🗑️ Очистить кэш</button>
-                </div>
-            </div>
-
-            <!-- PAGE: ADVANCED ANALYTICS -->
-            <div id="page-advanced-analytics" class="page" style="display: none;">
-                <div class="section">
-                    <h3><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Расширенная аналитика</h3>
-
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <button onclick="showPage('analytics')" style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">← Назад</button>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Тренды по типам</h3>
-
-                    <div class="stat-card">
-                        <div class="label">UP (Пластик)</div>
-                        <div class="amount">156</div>
-                        <div style="font-size: 11px; color: #10b981;">↑ +15% от последней недели</div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="label">UF (Мебель)</div>
-                        <div class="amount">89</div>
-                        <div style="font-size: 11px; color: #f59e0b;">→ 0% изменений</div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="label">UM (Металл)</div>
-                        <div class="amount">62</div>
-                        <div style="font-size: 11px; color: #ef4444;">↓ -8% от последней недели</div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">💰 Выручка (месяц)</h3>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <div class="stat-card">
-                            <div class="label">Всего</div>
-                            <div class="amount">2.4M</div>
-                            <div style="font-size: 11px;">₽</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="label">Средн. заказ</div>
-                            <div class="amount">34K</div>
-                            <div style="font-size: 11px;">₽</div>
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⏱️ Скорость обработки</h3>
-
-                    <div class="result-row">
-                        <span class="result-label">Макс время</span>
-                        <span class="result-value">14 дней</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Мин время</span>
-                        <span class="result-value">2 дня</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Средн время</span>
-                        <span class="result-value">6 дней</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAGE: PRODUCTION ADVANCED -->
-            <div id="page-production-advanced" class="page" style="display: none;">
-                <div class="section">
-                    <h3>🏭 Управление производством</h3>
-
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <button onclick="showPage('production')" style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">← Назад</button>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-wrench"/></svg> Линии производства (3)</h3>
-
-                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Линия A - Пластик</div>
-                                <div class="history-date"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Работает</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-size: 18px; font-weight: 700;">87%</div>
-                                <div style="font-size: 10px;">загрузка</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
-                            Текущий заказ: #2506 (60% готово)
-                        </div>
-                    </div>
-
-                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Линия B - Мебель</div>
-                                <div class="history-date"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Работает</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-size: 18px; font-weight: 700;">65%</div>
-                                <div style="font-size: 10px;">загрузка</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
-                            Текущий заказ: #2507 (45% готово)
-                        </div>
-                    </div>
-
-                    <div class="history-item" style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Линия C - Металл</div>
-                                <div class="history-date"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-alert-triangle"/></svg>️ Техническое обслуживание</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-size: 18px; font-weight: 700;">0%</div>
-                                <div style="font-size: 10px;">загрузка</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
-                            Предполагаемое время: 2 часа
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">⚡ Скорость работы</h3>
-
-                    <div class="result-row">
-                        <span class="result-label">Шт/час (среднее)</span>
-                        <span class="result-value">125 шт</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Общая производительность</span>
-                        <span class="result-value">76%</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAGE: TEAM ADVANCED -->
-            <div id="page-team-advanced" class="page" style="display: none;">
-                <div class="section">
-                    <h3>👥 Расширенное управление командой</h3>
-
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <button onclick="showPage('team')" style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">← Назад</button>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">👤 Сотрудники (12)</h3>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Иван Петров</div>
-                                <div class="history-date">Менеджер</div>
-                            </div>
-                            <div style="text-align: right;">⭐</div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1);">Опыт: 5 лет, Заказы обработано: 234</div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Мария Сидорова</div>
-                                <div class="history-date">Оператор</div>
-                            </div>
-                            <div style="text-align: right;">⭐⭐</div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1);">Опыт: 3 года, Заказы обработано: 156</div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Алексей Козлов</div>
-                                <div class="history-date">Инженер</div>
-                            </div>
-                            <div style="text-align: right;">⭐⭐⭐</div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1);">Опыт: 8 лет, Специалист: Металл</div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Статистика</h3>
-
-                    <div class="result-row">
-                        <span class="result-label">Активных сотрудников</span>
-                        <span class="result-value">10</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">В отпуске</span>
-                        <span class="result-value">2</span>
-                    </div>
-
-                    <button class="btn mt-16">➕ Добавить сотрудника</button>
-                </div>
-            </div>
-
-            <!-- PAGE: MATERIALS ADVANCED -->
-            <div id="page-materials-advanced" class="page" style="display: none;">
-                <div class="section">
-                    <h3>📚 Управление материалами</h3>
-
-                    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                        <button onclick="showPage('materials')" style="flex: 1; padding: 8px; background: rgba(46, 107, 242, 0.8); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">← Назад</button>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">🏭 Пластик (UP)</h3>
-
-                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">ABS пластик</div>
-                                <div class="history-date"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> В норме</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-size: 18px; font-weight: 700;">450 кг</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="history-item" style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">PP пластик</div>
-                                <div class="history-date"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-alert-triangle"/></svg>️ Низкий запас</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-size: 18px; font-weight: 700;">35 кг</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">🪑 Мебель (UF)</h3>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Фанера (18мм)</div>
-                                <div class="history-date"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> 820 листов</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">ЛДСП цветная</div>
-                                <div class="history-date"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> 125 листов</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Металл (UM)</h3>
-
-                    <div class="history-item" style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Стальной профиль</div>
-                                <div class="history-date">🔴 Критично</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-size: 18px; font-weight: 700;">8 т</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="btn mt-16" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-alert-triangle"/></svg>️ Заказать материалы</button>
-                </div>
-            </div>
-
-            <!-- PAGE: SYNC STATUS -->
-            <div id="page-sync-status" class="page" style="display: none;">
-                <div class="section">
-                    <h3><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg> Статус синхронизации</h3>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Последние синхронизации</h3>
-
-                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> 1С Бухгалтерия 8.3</div>
-                                <div class="history-date">Синхронизировано</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
-                            Последнее обновление: 5 минут назад<br/>
-                            Синхронизировано: 156 документов
-                        </div>
-                    </div>
-
-                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Google Sheets</div>
-                                <div class="history-date">Синхронизировано</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
-                            Последнее обновление: 3 часа назад<br/>
-                            Экспортировано: 12 таблиц
-                        </div>
-                    </div>
-
-                    <div class="history-item" style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name"><svg class="icon icon-md text-warning" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-alert-triangle"/></svg>️ Telegram API</div>
-                                <div class="history-date">Подготовка...</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
-                            Статус: В разработке
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Параметры синхронизации</h3>
-
-                    <div class="result-row">
-                        <span class="result-label">Интервал автосинхронизации</span>
-                        <span class="result-value">5 мин</span>
-                    </div>
-
-                    <div class="result-row">
-                        <span class="result-label">Последняя ошибка</span>
-                        <span class="result-value">Нет</span>
-                    </div>
-
-                    <button class="btn mt-16"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg> Синхронизировать сейчас</button>
-                </div>
-            </div>
-
-            <!-- PAGE: EXPORT ORDERS -->
-            <div id="page-export-orders" class="page" style="display: none;">
-                <div class="section">
-                    <h3><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-send"/></svg> Экспорт заказов</h3>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">🔍 Выбор данных</h3>
-
                     <div class="input-group">
-                        <label>Период</label>
-                        <select style="width: 100%; padding: 10px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 6px; color: var(--text-0); font-size: 13px;">
-                            <option>Все заказы</option>
-                            <option>Последние 7 дней</option>
-                            <option>Последние 30 дней</option>
-                            <option>Этот месяц</option>
-                            <option>Выбрать диапазон</option>
-                        </select>
+                        <label class="input-label">Толщина (мм)</label>
+                        <input type="number" class="form-input" value="2" onchange="calculatePrice()">
                     </div>
+                </div>
 
+                <div class="input-group">
+                    <label class="input-label">Количество (шт)</label>
+                    <input type="number" class="form-input" value="100" onchange="calculatePrice()">
+                </div>
+            </div>
+
+            <!-- FURNITURE INPUTS -->
+            <div id="furniture-inputs" style="display: none;">
+                <div class="input-group">
+                    <label class="input-label">Тип мебели</label>
+                    <select class="form-select" onchange="calculatePrice()">
+                        <option>Шкаф</option>
+                        <option>Стол</option>
+                        <option>Стул</option>
+                        <option>Полка</option>
+                        <option>Комод</option>
+                        <option>Кровать</option>
+                        <option>Диван</option>
+                    </select>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <div class="input-group">
-                        <label>Статус</label>
-                        <select style="width: 100%; padding: 10px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 6px; color: var(--text-0); font-size: 13px;">
-                            <option>Все статусы</option>
-                            <option>В работе</option>
-                            <option>Готово</option>
-                            <option>Доставляется</option>
-                            <option>Завершено</option>
-                        </select>
+                        <label class="input-label">Высота (см)</label>
+                        <input type="number" class="form-input" value="180" onchange="calculatePrice()">
                     </div>
+                    <div class="input-group">
+                        <label class="input-label">Ширина (см)</label>
+                        <input type="number" class="form-input" value="80" onchange="calculatePrice()">
+                    </div>
+                </div>
 
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Формат экспорта</h3>
+                <div class="input-group">
+                    <label class="input-label">Материал</label>
+                    <select class="form-select" onchange="calculatePrice()">
+                        <option>ДСП (бюджет)</option>
+                        <option>МДФ (стандарт)</option>
+                        <option>Массив дерева (премиум)</option>
+                    </select>
+                </div>
 
+                <div class="input-group">
+                    <label class="input-label">Количество (шт)</label>
+                    <input type="number" class="form-input" value="10" onchange="calculatePrice()">
+                </div>
+            </div>
+
+            <!-- METAL INPUTS -->
+            <div id="metal-inputs" style="display: none;">
+                <div class="input-group">
+                    <label class="input-label">Тип конструкции</label>
+                    <select class="form-select" onchange="calculatePrice()">
+                        <option>Рама</option>
+                        <option>Каркас</option>
+                        <option>Стеллаж</option>
+                        <option>Ограда</option>
+                        <option>Лестница</option>
+                        <option>Навес</option>
+                    </select>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="input-group">
+                        <label class="input-label">Высота (см)</label>
+                        <input type="number" class="form-input" value="200" onchange="calculatePrice()">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Ширина (см)</label>
+                        <input type="number" class="form-input" value="100" onchange="calculatePrice()">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Материал</label>
+                    <select class="form-select" onchange="calculatePrice()">
+                        <option>Чёрная сталь</option>
+                        <option>Нержавейка</option>
+                        <option>Алюминий</option>
+                        <option>Оцинкованная сталь</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Вес (кг)</label>
+                    <input type="number" class="form-input" value="50" onchange="calculatePrice()">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Количество (шт)</label>
+                    <input type="number" class="form-input" value="5" onchange="calculatePrice()">
+                </div>
+            </div>
+
+            <!-- RESULTS -->
+            <div style="margin-top: 24px;">
+                <div class="input-label">Детальный расчёт</div>
+                <div class="result-card">
                     <div class="result-row">
-                        <span class="result-label">Всего записей</span>
-                        <span class="result-value">24 заказа</span>
+                        <span class="result-label">Стоимость материала</span>
+                        <span class="result-value">5 400 ₽</span>
                     </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;">
-                        <button class="btn" style="background: rgba(16, 185, 129, 0.8);"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Excel (.xlsx)</button>
-                        <button class="btn" style="background: rgba(16, 185, 129, 0.8);"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg> CSV (.csv)</button>
-                        <button class="btn" style="background: rgba(46, 107, 242, 0.8);">📄 PDF</button>
-                        <button class="btn" style="background: rgba(46, 107, 242, 0.8);">🔗 1C XML</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PAGE: BILLING -->
-            <div id="page-billing" class="page" style="display: none;">
-                <div class="section">
-                    <h3>💳 Биллинг и платежи</h3>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">💰 Баланс счета</h3>
-
-                    <div class="stat-card">
-                        <div class="label">Текущий баланс</div>
-                        <div class="amount">156 450</div>
-                        <div style="font-size: 11px;">₽</div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg> Последние платежи</h3>
-
-                    <div class="history-item" style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Зачисление на счет</div>
-                                <div class="history-date">Вчера, 14:30</div>
-                            </div>
-                            <div class="history-price" style="color: #10b981;">+50 000 ₽</div>
-                        </div>
-                    </div>
-
-                    <div class="history-item" style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444;">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Оплата за услугу</div>
-                                <div class="history-date">Позавчера, 10:15</div>
-                            </div>
-                            <div class="history-price" style="color: #ef4444;">-25 000 ₽</div>
-                        </div>
-                    </div>
-
-                    <div class="history-item" style="background: rgba(46, 107, 242, 0.1); border-left: 3px solid var(--blue);">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">Комиссия за перевод</div>
-                                <div class="history-date">3 дня назад</div>
-                            </div>
-                            <div class="history-price">-1 500 ₽</div>
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">💳 Способы оплаты</h3>
-
-                    <button class="btn mt-16">➕ Добавить карту</button>
-                    <button class="btn btn-secondary mt-16">🏦 Реквизиты счета</button>
-                </div>
-            </div>
-
-            <!-- PAGE: REPORTS -->
-            <div id="page-reports" class="page" style="display: none;">
-                <div class="section">
-                    <h3><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Конструктор отчетов</h3>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">📅 Шаблоны отчетов</h3>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Ежемесячный отчет</div>
-                                <div class="history-date">Автоматический</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1);">Генерируется каждый 1 число</div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Анализ продаж</div>
-                                <div class="history-date">Еженедельный</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1);">Генерируется каждый понедельник</div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">👥 Активность команды</div>
-                                <div class="history-date">По запросу</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-wrench"/></svg> Создать новый</h3>
-
-                    <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);">➕ Новый отчет</button>
-                </div>
-            </div>
-
-            <!-- PAGE: QUICK CALC UP (PLASTIC) -->
-            <div id="page-quick-calc-up" class="page" style="display: none;">
-                <div class="section">
-                    <h3>🔵 UNITPLAST Быстрый расчет</h3>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">♻️ Популярные материалы</h3>
-
-                    <div class="product-grid">
-                        <div class="product-card" onclick="alert('ABS: 400-500 ₽/кг')">
-                            <div class="product-name">ABS</div>
-                            <div style="font-size: 20px; color: var(--blue); font-weight: 700;">450₽</div>
-                            <div class="product-desc">за кг</div>
-                        </div>
-                        <div class="product-card" onclick="alert('PP: 250-350 ₽/кг')">
-                            <div class="product-name">PP</div>
-                            <div style="font-size: 20px; color: var(--blue); font-weight: 700;">300₽</div>
-                            <div class="product-desc">за кг</div>
-                        </div>
-                        <div class="product-card" onclick="alert('PVC: 300-450 ₽/кг')">
-                            <div class="product-name">PVC</div>
-                            <div style="font-size: 20px; color: var(--blue); font-weight: 700;">375₽</div>
-                            <div class="product-desc">за кг</div>
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">📐 Быстрая формула</h3>
-
-                    <div class="input-group">
-                        <label>Объем (м³)</label>
-                        <input type="number" value="0.5" style="width: 100%; padding: 10px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 6px; color: var(--text-0);">
-                    </div>
-
-                    <div class="input-group">
-                        <label>Толщина стенки (мм)</label>
-                        <input type="number" value="2" style="width: 100%; padding: 10px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 6px; color: var(--text-0);">
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="label">💰 Примерная цена</div>
-                        <div class="amount">67 500</div>
-                        <div style="font-size: 11px;">₽ за партию</div>
-                    </div>
-
-                    <button class="btn mt-16" style="background: rgba(16, 185, 129, 0.8);" onclick="showPage('calculator')">→ Полный расчет</button>
-                </div>
-            </div>
-
-            <!-- PAGE: QUICK CALC UF (FURNITURE) -->
-            <div id="page-quick-calc-uf" class="page" style="display: none;">
-                <div class="section">
-                    <h3>🟢 UNIFURNITURE Быстрый расчет</h3>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">🪑 Популярные типы</h3>
-
-                    <div class="product-grid">
-                        <div class="product-card" onclick="alert('Шкаф: 1500-3000 ₽')">
-                            <div class="product-name">Шкаф</div>
-                            <div style="font-size: 20px; color: #10b981; font-weight: 700;">2250₽</div>
-                            <div class="product-desc">за шт</div>
-                        </div>
-                        <div class="product-card" onclick="alert('Стол: 1000-2500 ₽')">
-                            <div class="product-name">Стол</div>
-                            <div style="font-size: 20px; color: #10b981; font-weight: 700;">1750₽</div>
-                            <div class="product-desc">за шт</div>
-                        </div>
-                        <div class="product-card" onclick="alert('Стул: 300-800 ₽')">
-                            <div class="product-name">Стул</div>
-                            <div style="font-size: 20px; color: #10b981; font-weight: 700;">550₽</div>
-                            <div class="product-desc">за шт</div>
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">📐 Параметры</h3>
-
-                    <div class="input-group">
-                        <label>Тип (высота x ширина)</label>
-                        <select style="width: 100%; padding: 10px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 6px; color: var(--text-0); font-size: 13px;">
-                            <option>Стандарт 180x80 см</option>
-                            <option>Компакт 120x60 см</option>
-                            <option>Большой 200x100 см</option>
-                        </select>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="label">💰 Примерная цена</div>
-                        <div class="amount">15 750</div>
-                        <div style="font-size: 11px;">₽ за единицу</div>
-                    </div>
-
-                    <button class="btn mt-16" style="background: rgba(16, 185, 129, 0.8);" onclick="showPage('calculator')">→ Полный расчет</button>
-                </div>
-            </div>
-
-            <!-- PAGE: QUICK CALC UM (METAL) -->
-            <div id="page-quick-calc-um" class="page" style="display: none;">
-                <div class="section">
-                    <h3>⚫ UNIMETALL Быстрый расчет</h3>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️ Популярные профили</h3>
-
-                    <div class="product-grid">
-                        <div class="product-card" onclick="alert('Швеллер: 400-600 ₽/кг')">
-                            <div class="product-name">Швеллер</div>
-                            <div style="font-size: 20px; color: #6b7280; font-weight: 700;">500₽</div>
-                            <div class="product-desc">за кг</div>
-                        </div>
-                        <div class="product-card" onclick="alert('Двутавр: 500-700 ₽/кг')">
-                            <div class="product-name">Двутавр</div>
-                            <div style="font-size: 20px; color: #6b7280; font-weight: 700;">600₽</div>
-                            <div class="product-desc">за кг</div>
-                        </div>
-                        <div class="product-card" onclick="alert('Уголок: 300-500 ₽/кг')">
-                            <div class="product-name">Уголок</div>
-                            <div style="font-size: 20px; color: #6b7280; font-weight: 700;">400₽</div>
-                            <div class="product-desc">за кг</div>
-                        </div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">📐 Параметры</h3>
-
-                    <div class="input-group">
-                        <label>Вес заказа (тонны)</label>
-                        <input type="number" value="1" step="0.1" style="width: 100%; padding: 10px 12px; background: rgba(46, 107, 242, 0.1); border: 1px solid rgba(46, 107, 242, 0.3); border-radius: 6px; color: var(--text-0);">
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="label">💰 Примерная цена</div>
-                        <div class="amount">500 000</div>
-                        <div style="font-size: 11px;">₽ за тонну</div>
-                    </div>
-
-                    <button class="btn mt-16" style="background: rgba(16, 185, 129, 0.8);" onclick="showPage('calculator')">→ Полный расчет</button>
-                </div>
-            </div>
-
-            <!-- PAGE: BATCH OPERATIONS -->
-            <div id="page-batch-operations" class="page" style="display: none;">
-                <div class="section">
-                    <h3>⚡ Пакетные операции</h3>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg> Загрузить заказы</h3>
-
-                    <div style="background: rgba(46, 107, 242, 0.1); border: 2px dashed rgba(46, 107, 242, 0.5); border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 16px; cursor: pointer;">
-                        <div style="font-size: 24px; margin-bottom: 8px;">📁</div>
-                        <div style="font-size: 13px; color: var(--text-1);">Перетащите файл сюда или нажмите</div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 4px;">Поддерживаются: CSV, Excel, XML</div>
-                    </div>
-
-                    <h3 style="font-size: 14px; margin-bottom: 12px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Действия над выбранным</h3>
-
                     <div class="result-row">
-                        <span class="result-label">Выбрано заказов</span>
-                        <span class="result-value">0</span>
+                        <span class="result-label">Трудозатраты</span>
+                        <span class="result-value">1 890 ₽</span>
                     </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;">
-                        <button class="btn btn-secondary">✏️ Редактировать</button>
-                        <button class="btn btn-secondary">🗑️ Удалить</button>
-                        <button class="btn btn-secondary"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-send"/></svg> Экспортировать</button>
-                        <button class="btn btn-secondary"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg> Изменить статус</button>
+                    <div class="result-row">
+                        <span class="result-label">Маржа</span>
+                        <span class="result-value">1 800 ₽</span>
                     </div>
-
-                    <button class="btn mt-16" style="background: rgba(16, 185, 129, 0.8);">✓ Применить операцию</button>
+                </div>
+                <div class="result-card" style="background: rgba(16,185,129,0.05); border-color: rgba(16,185,129,0.2); margin-top: 12px;">
+                    <div class="result-row">
+                        <span class="result-label" style="font-weight: 600;">ИТОГО</span>
+                        <span class="result-value" style="font-size: 18px;">9 090 ₽</span>
+                    </div>
+                    <div class="result-row" style="margin-top: 8px; font-size: 12px;">
+                        <span class="result-label">Срок</span>
+                        <span class="result-value">5-7 дней</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- PAGE: API DOCS -->
-            <div id="page-api-docs" class="page" style="display: none;">
-                <div class="section">
-                    <h3>🔌 API Документация</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 24px;">
+                <button onclick="showPage('dashboard')" class="btn-action btn-secondary">
+                    ← Назад
+                </button>
+                <button onclick="saveCalculation()" class="btn-action btn-primary">
+                    💾 Сохранить
+                </button>
+            </div>
+        </div>
 
-                    <h3 style="font-size: 14px; margin-bottom: 12px;">🔑 API Ключ</h3>
+        <!-- HISTORY PAGE -->
+        <div id="page-history" class="page">
+            <h2 style="margin-bottom: 24px;">История расчётов</h2>
 
-                    <div class="history-item" style="background: rgba(46, 107, 242, 0.1); border-left: 3px solid var(--blue);">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name" style="word-break: break-all;">sk_live_51234567890abcdef</div>
-                                <div class="history-date">Активный</div>
-                            </div>
-                            <div style="cursor: pointer; font-size: 16px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg></div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-top: 8px;">
-                            Создан: 07.07.2026 • Последний запрос: 1 мин назад
-                        </div>
+            <div class="history-item">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">📦 Пластиковый контейнер</div>
+                        <div class="history-date">07.07.2026 15:32</div>
                     </div>
+                    <div class="history-price">12 450 ₽</div>
+                </div>
+                <div style="font-size: 12px; color: #999;">800x600x400 мм, ABS, 100 шт</div>
+                <button class="btn-action btn-secondary" style="margin-top: 12px; font-size: 12px;">Восстановить</button>
+            </div>
 
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">📚 Ресурсы API</h3>
-
-                    <div class="product-card">
-                        <div class="product-name">/api/v1/calculations</div>
-                        <div style="font-size: 11px; color: var(--text-1);">POST/GET расчеты</div>
+            <div class="history-item">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">🪑 Офисный стул</div>
+                        <div class="history-date">06.07.2026 10:15</div>
                     </div>
+                    <div class="history-price">8 500 ₽</div>
+                </div>
+                <div style="font-size: 12px; color: #999;">МДФ, стандарт, 10 шт</div>
+                <button class="btn-action btn-secondary" style="margin-top: 12px; font-size: 12px;">Восстановить</button>
+            </div>
 
-                    <div class="product-card">
-                        <div class="product-name">/api/v1/orders</div>
-                        <div style="font-size: 11px; color: var(--text-1);">POST/GET/PUT заказы</div>
+            <div class="history-item">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">🔧 Стальной каркас</div>
+                        <div class="history-date">05.07.2026 14:20</div>
                     </div>
+                    <div class="history-price">25 000 ₽</div>
+                </div>
+                <div style="font-size: 12px; color: #999;">Чёрная сталь, 50 кг, 5 шт</div>
+                <button class="btn-action btn-secondary" style="margin-top: 12px; font-size: 12px;">Восстановить</button>
+            </div>
+        </div>
 
-                    <div class="product-card">
-                        <div class="product-name">/api/v1/webhooks</div>
-                        <div style="font-size: 11px; color: var(--text-1);">Управление вебхуками</div>
-                    </div>
+        <!-- ANALYTICS PAGE -->
+        <div id="page-analytics" class="page">
+            <h2 style="margin-bottom: 24px;">Аналитика</h2>
 
-                    <button class="btn mt-16" style="background: rgba(46, 107, 242, 0.8);">📖 Полная документация</button>
+            <div class="stat-card">
+                <div class="amount">24</div>
+                <div class="label">Расчётов за месяц</div>
+            </div>
+
+            <div class="result-card" style="margin-top: 16px;">
+                <div class="result-row">
+                    <span class="result-label">Расчёты пластика</span>
+                    <span class="result-value">8</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Расчёты мебели</span>
+                    <span class="result-value">9</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Расчёты металла</span>
+                    <span class="result-value">7</span>
                 </div>
             </div>
 
-            <!-- PAGE: ORDERS -->
-                <div class="section">
-                    <h3>Заказы</h3>
-
-                    <div class="stat-card">
-                        <div class="amount">7</div>
-                        <div class="label">Активные заказы</div>
+            <div style="margin-top: 24px;">
+                <div class="input-label" style="margin-bottom: 12px;">Средний расчёт</div>
+                <div class="result-card">
+                    <div class="result-row">
+                        <span class="result-label">Сумма</span>
+                        <span class="result-value">15 500 ₽</span>
                     </div>
-
-                    <h3 style="font-size: 14px; margin-top: 20px; margin-bottom: 12px;">🔍 Фильтры</h3>
-                    <div style="display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 8px;">
-                        <button class="category-btn active" onclick="filterOrders('all')">Все (7)</button>
-                        <button class="category-btn" onclick="filterOrders('work')">В работе (3)</button>
-                        <button class="category-btn" onclick="filterOrders('ready')">Готово (2)</button>
-                        <button class="category-btn" onclick="filterOrders('delivery')">Доставляется (1)</button>
-                    </div>
-
-                    <h3 style="font-size: 14px;">Текущие заказы</h3>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">#2506 - Пластиковый контейнер</div>
-                                <div class="history-date">Статус: В работе</div>
-                            </div>
-                            <div class="history-price"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg></div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
-                            100 шт × 12 450 ₽ = 1 245 000 ₽<br/>
-                            Завершение: 10.07.2026
-                        </div>
-                        <div style="width: 100%; height: 4px; background: rgba(46, 107, 242, 0.1); border-radius: 2px; overflow: hidden; margin-bottom: 8px;">
-                            <div style="width: 60%; height: 100%; background: var(--blue);"></div>
-                        </div>
-                        <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px;">Детали</button>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">#2505 - Офисный шкаф</div>
-                                <div class="history-date">Статус: Готово</div>
-                            </div>
-                            <div class="history-price"><svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg></div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
-                            10 шт × 8 500 ₽ = 85 000 ₽<br/>
-                            Завершено: 06.07.2026
-                        </div>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">Получить</button>
-                            <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px; flex: 1;">Оценить</button>
-                        </div>
-                    </div>
-
-                    <div class="history-item">
-                        <div class="history-header">
-                            <div>
-                                <div class="history-name">#2504 - Стальной каркас</div>
-                                <div class="history-date">Статус: Доставляется</div>
-                            </div>
-                            <div class="history-price">📦</div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--text-1); margin-bottom: 8px;">
-                            5 шт × 25 000 ₽ = 125 000 ₽<br/>
-                            Ожидаемая доставка: 08.07.2026
-                        </div>
-                        <button class="btn btn-secondary" style="font-size: 11px; padding: 4px 12px;">Отследить</button>
+                    <div class="result-row">
+                        <span class="result-label">Время</span>
+                        <span class="result-value">8 минут</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- MENU MODAL -->
-        <div id="menu-modal" class="menu-modal">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h3 style="font-size: 14px; font-weight: 700;">Меню</h3>
-                <button onclick="toggleMenu()" style="background: none; border: none; color: var(--text-0); cursor: pointer; font-size: 20px;">✕</button>
+        <!-- PROFILE PAGE -->
+        <div id="page-profile" class="page">
+            <h2 style="margin-bottom: 24px;">Профиль</h2>
+
+            <div class="result-card" style="padding: 24px;">
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div style="width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--orange) 0%, var(--green) 100%); margin: 0 auto 12px;"></div>
+                    <h3 style="margin-bottom: 4px;">Анна Сидорова</h3>
+                    <div style="font-size: 14px; color: #999;">Premium План</div>
+                </div>
+
+                <div class="result-row">
+                    <span class="result-label">Email</span>
+                    <span class="result-value" style="font-size: 13px;">anna@company.com</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Телефон</span>
+                    <span class="result-value" style="font-size: 13px;">+7 (916) 161-61-93</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">Компания</span>
+                    <span class="result-value" style="font-size: 13px;">ООО Производство</span>
+                </div>
             </div>
 
-            <div style="margin-bottom: 12px;">
-                <button class="btn" style="width: 100%; background: rgba(16, 185, 129, 0.8); font-size: 12px; padding: 8px;" onclick="showPage('new-order'); toggleMenu();">➕ Новый заказ</button>
-            </div>
-
-            <a class="menu-item" onclick="showPage('notifications'); toggleMenu();">
-                <span class="menu-icon">🔔</span>
-                <span>Уведомления (4)</span>
-            </a>
-            <a class="menu-item" onclick="showPage('calc-detail'); toggleMenu();">
-                <span class="menu-icon"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-document"/></svg></span>
-                <span>Детали расчета</span>
-            </a>
-            <a class="menu-item" onclick="showPage('order-detail'); toggleMenu();">
-                <span class="menu-icon">📦</span>
-                <span>Детали заказа</span>
-            </a>
-
-            <hr style="border: none; border-top: 1px solid rgba(46, 107, 242, 0.1); margin: 12px 0;">
-
-            <a class="menu-item" onclick="showPage('1c'); toggleMenu();">
-                <span class="menu-icon">🔗</span>
-                <span>Интеграция 1С</span>
-            </a>
-            <a class="menu-item" onclick="showPage('production-advanced'); toggleMenu();">
-                <span class="menu-icon">🏭</span>
-                <span>Производство (расш)</span>
-            </a>
-            <a class="menu-item" onclick="showPage('materials-advanced'); toggleMenu();">
-                <span class="menu-icon">📚</span>
-                <span>Материалы (расш)</span>
-            </a>
-            <a class="menu-item" onclick="showPage('advanced-analytics'); toggleMenu();">
-                <span class="menu-icon"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg></span>
-                <span>Аналитика (расш)</span>
-            </a>
-            <a class="menu-item" onclick="showPage('team-advanced'); toggleMenu();">
-                <span class="menu-icon">👥</span>
-                <span>Команда (расш)</span>
-            </a>
-            <a class="menu-item" onclick="showPage('sync-status'); toggleMenu();">
-                <span class="menu-icon"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-rotate-cw"/></svg></span>
-                <span>Синхронизация</span>
-            </a>
-
-            <hr style="border: none; border-top: 1px solid rgba(46, 107, 242, 0.1); margin: 12px 0;">
-
-            <a class="menu-item" onclick="showPage('quick-calc-up'); toggleMenu();">
-                <span class="menu-icon">🔵</span>
-                <span>Быстро: Пластик</span>
-            </a>
-            <a class="menu-item" onclick="showPage('quick-calc-uf'); toggleMenu();">
-                <span class="menu-icon">🟢</span>
-                <span>Быстро: Мебель</span>
-            </a>
-            <a class="menu-item" onclick="showPage('quick-calc-um'); toggleMenu();">
-                <span class="menu-icon">⚫</span>
-                <span>Быстро: Металл</span>
-            </a>
-            <a class="menu-item" onclick="showPage('export-orders'); toggleMenu();">
-                <span class="menu-icon"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-send"/></svg></span>
-                <span>Экспорт</span>
-            </a>
-            <a class="menu-item" onclick="showPage('batch-operations'); toggleMenu();">
-                <span class="menu-icon">⚡</span>
-                <span>Пакет. операции</span>
-            </a>
-            <a class="menu-item" onclick="showPage('reports'); toggleMenu();">
-                <span class="menu-icon"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg></span>
-                <span>Отчеты</span>
-            </a>
-            <a class="menu-item" onclick="showPage('billing'); toggleMenu();">
-                <span class="menu-icon">💳</span>
-                <span>Биллинг</span>
-            </a>
-            <a class="menu-item" onclick="showPage('api-docs'); toggleMenu();">
-                <span class="menu-icon">🔌</span>
-                <span>API</span>
-            </a>
-
-            <hr style="border: none; border-top: 1px solid rgba(46, 107, 242, 0.1); margin: 12px 0;">
-
-            <a class="menu-item" onclick="showPage('files'); toggleMenu();">
-                <span class="menu-icon">📁</span>
-                <span>Файлы</span>
-            </a>
-            <a class="menu-item" onclick="showPage('profile'); toggleMenu();">
-                <span class="menu-icon">👤</span>
-                <span>Профиль</span>
-            </a>
-            <a class="menu-item" onclick="showPage('support'); toggleMenu();">
-                <span class="menu-icon">❓</span>
-                <span>Поддержка</span>
-            </a>
-            <a class="menu-item" onclick="showPage('settings'); toggleMenu();">
-                <span class="menu-icon"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>️</span>
-                <span>Настройки</span>
-            </a>
-        </div>
-
-        <!-- FOOTER NAV -->
-        <div class="app-footer">
-            <a class="nav-item active" onclick="showPage('dashboard')">
-                <div class="nav-icon" style="font-size: 24px;">🏠</div>
-                <div class="nav-label">Главная</div>
-            </a>
-            <a class="nav-item" onclick="showPage('calculator')">
-                <div class="nav-icon" style="font-size: 24px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-calculator"/></svg></div>
-                <div class="nav-label">Расчёты</div>
-            </a>
-            <a class="nav-item" onclick="showPage('orders')">
-                <div class="nav-icon" style="font-size: 24px;">📦</div>
-                <div class="nav-label">Заказы</div>
-            </a>
-            <a class="nav-item" onclick="showPage('analytics')">
-                <div class="nav-icon" style="font-size: 24px;"><svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg></div>
-                <div class="nav-label">Аналитика</div>
-            </a>
-            <a class="nav-item" onclick="showPage('team')">
-                <div class="nav-icon" style="font-size: 24px;">👥</div>
-                <div class="nav-label">Команда</div>
-            </a>
-            <a class="nav-item" onclick="toggleMenu()">
-                <div class="nav-icon" style="font-size: 24px;">☰</div>
-                <div class="nav-label">Меню</div>
-            </a>
+            <button class="btn-action btn-secondary" style="margin-top: 24px;">
+                🔐 Изменить пароль
+            </button>
+            <button class="btn-action btn-secondary" style="margin-top: 8px;">
+                🚪 Выход
+            </button>
         </div>
     </div>
 
-    <script>
-        // <svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> ДАННЫЕ И СОСТОЯНИЕ
-        let currentType = 'plastic';
+    <!-- NAVIGATION -->
+    <div class="app-nav">
+        <a class="nav-item active" onclick="showPage('dashboard')">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+            </svg>
+            <span>Главная</span>
+        </a>
+        <a class="nav-item" onclick="showPage('calculator')">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+            </svg>
+            <span>Калькулятор</span>
+        </a>
+        <a class="nav-item" onclick="showPage('history')">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+            </svg>
+            <span>История</span>
+        </a>
+        <a class="nav-item" onclick="showPage('analytics')">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.96-3.83c-.3-.39-.97-.39-1.25 0-.31.39-.31 1.02 0 1.41l3.69 4.72c.3.39.9.39 1.25.03l3.71-4.46c.25-.28.26-.73.02-1.01-.23-.28-.77-.29-1.01-.02z"/>
+            </svg>
+            <span>Аналитика</span>
+        </a>
+        <a class="nav-item" onclick="showPage('profile')">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            <span>Профиль</span>
+        </a>
+    </div>
+</div>
 
-        // Система тарифов (freemium)
-        const userPlan = {
-            name: 'STARTER',
-            calculationsPerDay: 5,
-            materialsAllowed: ['plastic'],
-            canSaveProjects: false,
-            canExportKP: false,
-            canUseAnalytics: false,
-            maxTeamMembers: 1,
-            dailyCalculationsUsed: 2
-        };
-
-        // Динамическое состояние приложения
-        const appState = {
-            calculations: 24,
-            activeOrders: 7,
-            inProgress: 3,
-            ready: 2,
-            delivery: 1,
-            avgTime: 12,
-            totalAmount: 2030000,
-            userBalance: 16350,
-            lastSync: '2 часа назад'
-        };
-
-        // Обновление данных в реальном времени (симуляция)
-        function updateDashboardData() {
-            // Симулируем изменение данных
-            appState.calculations = Math.floor(Math.random() * 30) + 15;
-            appState.activeOrders = Math.floor(Math.random() * 10) + 5;
-            appState.inProgress = Math.floor(Math.random() * 5) + 1;
-            appState.avgTime = Math.floor(Math.random() * 20) + 8;
-
-            // Обновляем все элементы
-            const calcElement = document.getElementById('dashboard-calculations');
-            const activeElement = document.getElementById('kpi-active');
-            const progressElement = document.getElementById('kpi-progress');
-            const timeElement = document.getElementById('kpi-time');
-
-            if (calcElement) animateNumber(calcElement, appState.calculations);
-            if (activeElement) animateNumber(activeElement, appState.activeOrders);
-            if (progressElement) animateNumber(progressElement, appState.inProgress);
-            if (timeElement) animateNumber(timeElement, appState.avgTime);
-
-            console.log('<svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Данные обновлены:', appState);
-        }
-
-        // Анимированное изменение чисел
-        function animateNumber(element, newValue) {
-            const startValue = parseInt(element.textContent);
-            const diff = newValue - startValue;
-            const steps = 10;
-            let current = 0;
-
-            const interval = setInterval(() => {
-                current++;
-                const value = startValue + Math.round((diff / steps) * current);
-                element.textContent = value;
-
-                if (current >= steps) {
-                    clearInterval(interval);
-                    element.textContent = newValue;
-                }
-            }, 50);
-        }
-
-        // Обновление каждые 5 секунд
-        setInterval(updateDashboardData, 5000);
-
-        function selectType(type) {
-            // Проверка доступа по тарифу
-            if (!userPlan.materialsAllowed.includes(type)) {
-                showUpgradeModal(`Материал "${type === 'furniture' ? 'UNIFURNITURE' : 'UNIMETALL'}" доступен только в плане PROFESSIONAL`, 'upgrade');
-                return;
-            }
-
-            // Проверка лимита расчетов в день
-            if (userPlan.dailyCalculationsUsed >= userPlan.calculationsPerDay) {
-                showUpgradeModal(`Вы исчерпали лимит ${userPlan.calculationsPerDay} расчетов в день. Обновитесь до PROFESSIONAL для неограниченных расчетов.`, 'upgrade');
-                return;
-            }
-
-            currentType = type;
-
-            // Update active card
-            document.querySelectorAll('.type-card').forEach(card => {
-                card.classList.remove('active');
-            });
-            event.target.closest('.type-card').classList.add('active');
-
-            // Show/hide inputs
-            document.getElementById('plastic-inputs').style.display = type === 'plastic' ? 'block' : 'none';
-            document.getElementById('furniture-inputs').style.display = type === 'furniture' ? 'block' : 'none';
-            document.getElementById('metal-inputs').style.display = type === 'metal' ? 'block' : 'none';
-
-            calculatePrice();
-        }
-
-        function showUpgradeModal(message, action) {
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center;
-                z-index: 9999;
-            `;
-            modal.innerHTML = `
-                <div style="background: white; border-radius: 12px; padding: 24px; max-width: 400px; text-align: center;">
-                    <svg style="width: 60px; height: 60px; margin: 0 auto 16px; color: #FF6B35;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"></path>
-                        <path d="M12 9v4"></path>
-                        <path d="M12 17h.01"></path>
-                    </svg>
-                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">Функция заблокирована</h3>
-                    <p style="color: #666; margin-bottom: 24px; font-size: 14px;">${message}</p>
-                    <button onclick="this.parentElement.parentElement.remove()" style="background: #f0f0f0; border: none; padding: 10px 20px; border-radius: 6px; margin-right: 8px; cursor: pointer; font-weight: 600;">Позже</button>
-                    <button onclick="upgradeNow()" style="background: #FF6B35; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;">Обновить тариф</button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            modal.onclick = (e) => e.target === modal && modal.remove();
-        }
-
-        function upgradeNow() {
-            window.location.href = '#pricing';
-            document.body.querySelector('div[style*="rgba(0,0,0,0.7)"]')?.remove();
-        }
-
-        // Get input values from calculator form
-        function getCalculatorData() {
-            const data = { material_type: currentType };
-
-            if (currentType === 'plastic') {
-                const material = document.querySelector('#plastic-inputs select').value;
-                data.material = material.split('(')[0].trim().toLowerCase();
-                data.height_mm = parseInt(document.querySelectorAll('#plastic-inputs input')[0].value) || 100;
-                data.width_mm = parseInt(document.querySelectorAll('#plastic-inputs input')[1].value) || 100;
-                data.depth_mm = parseInt(document.querySelectorAll('#plastic-inputs input')[2].value) || 100;
-                data.wall_thickness_mm = parseFloat(document.querySelectorAll('#plastic-inputs input')[3].value) || 2;
-                data.quantity = parseInt(document.querySelectorAll('#plastic-inputs input')[4].value) || 1;
-            } else if (currentType === 'furniture') {
-                const furnitureType = document.querySelector('#furniture-inputs select').value;
-                data.furniture_type = furnitureType.split('(')[0].trim().toLowerCase();
-                data.length_cm = parseInt(document.querySelectorAll('#furniture-inputs input')[0].value) || 100;
-                data.width_cm = parseInt(document.querySelectorAll('#furniture-inputs input')[1].value) || 100;
-                data.height_cm = parseInt(document.querySelectorAll('#furniture-inputs input')[2].value) || 100;
-                data.material_quality = document.querySelectorAll('#furniture-inputs select')[1].value.toLowerCase();
-                data.quantity = parseInt(document.querySelectorAll('#furniture-inputs input')[3].value) || 1;
-            } else if (currentType === 'metal') {
-                const structureType = document.querySelector('#metal-inputs select').value;
-                data.structure_type = structureType.split('(')[0].trim().toLowerCase();
-                data.width_mm = parseInt(document.querySelectorAll('#metal-inputs input')[0].value) || 1000;
-                data.height_mm = parseInt(document.querySelectorAll('#metal-inputs input')[1].value) || 1000;
-                data.depth_mm = parseInt(document.querySelectorAll('#metal-inputs input')[2].value) || 1000;
-                data.weight_kg = parseFloat(document.querySelectorAll('#metal-inputs input')[3].value) || 10;
-                data.quantity = parseInt(document.querySelectorAll('#metal-inputs input')[4].value) || 1;
-            }
-
-            return data;
-        }
-
-        function calculatePrice() {
-            const data = getCalculatorData();
-            const endpoint = currentType === 'plastic' ? '/api/v1/calculator/plastic' :
-                            currentType === 'furniture' ? '/api/v1/calculator/furniture' :
-                            '/api/v1/calculator/metal';
-
-            fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(r => r.json())
-            .then(result => {
-                if (result.success) {
-                    const price = result.total;
-                    document.getElementById('total-price').textContent = Math.round(price).toLocaleString('ru-RU') + ' ₽';
-
-                    // Store result for save
-                    window.lastCalculation = result;
-
-                    // Show details
-                    console.log('Calculation:', result);
-                } else {
-                    console.error('Calculation error:', result.error);
-                    document.getElementById('total-price').textContent = 'Ошибка расчета';
-                }
-            })
-            .catch(e => {
-                console.error('API error:', e);
-                document.getElementById('total-price').textContent = 'Ошибка сети';
-            });
-        }
-
-        function saveCalculation() {
-            if (!userPlan.canSaveProjects) {
-                showUpgradeModal('Сохранение проектов доступно только в плане PROFESSIONAL и выше', 'upgrade');
-                return;
-            }
-
-            if (!window.lastCalculation) {
-                alert('Сначала сделайте расчет');
-                return;
-            }
-
-            fetch('/api/v1/calculator/estimate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...window.lastCalculation,
-                    material_type: currentType,
-                    notes: prompt('Добавить заметку к расчету (опционально):') || ''
-                })
-            })
-            .then(r => r.json())
-            .then(result => {
-                if (result.success) {
-                    alert('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Расчет сохранен! ID: ' + result.id);
-                    window.lastCalculation = null;
-                } else {
-                    alert('Ошибка: ' + result.error);
-                }
-            })
-            .catch(e => alert('Ошибка сети: ' + e.message));
-        }
-
-        function loadFromHistory() {
-            alert('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Расчет восстановлен из истории');
-            showPage('calculator');
-        }
-
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
-                page.style.display = 'none';
-            });
-
-            const page = document.getElementById('page-' + pageId);
-            if (page) {
-                page.style.display = 'block';
-            }
-
-            const titles = {
-                'dashboard': 'UNITPLAST AI',
-                'calculator': 'Расчет стоимости',
-                'history': 'История расчетов',
-                'files': 'Файлы и документы',
-                'analytics': 'Аналитика',
-                'profile': 'Профиль компании',
-                'orders': 'Заказы',
-                'team': 'Команда и доступы',
-                '1c': 'Интеграция с 1С',
-                'production': 'Контроль производства',
-                'materials': 'Справочник материалов',
-                'support': 'Справка и поддержка',
-                'settings': 'Настройки'
-            };
-            document.getElementById('page-title').textContent = titles[pageId] || 'UNITPLAST';
-
-            if (event && event.target.closest('.nav-item')) {
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                event.target.closest('.nav-item').classList.add('active');
-            }
-
-            document.querySelector('.app-content').scrollTop = 0;
-        }
-
-        function toggleMenu() {
-            const modal = document.getElementById('menu-modal');
-            modal.classList.toggle('open');
-        }
-
-        // Закрыть меню при клике вне
-        document.addEventListener('click', function(event) {
-            const modal = document.getElementById('menu-modal');
-            const navItem = event.target.closest('.nav-item');
-            if (!modal.contains(event.target) && !navItem) {
-                modal.classList.remove('open');
-            }
+<script>
+    function showPage(pageName) {
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
         });
 
-        function filterOrders(status) {
-            // Update active button
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
+        // Show selected page
+        document.getElementById('page-' + pageName).classList.add('active');
 
-            // Filter logic (would connect to real data)
-            alert(`<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Фильтр применен: ${status === 'all' ? 'Все заказы' : status === 'work' ? 'В работе' : status === 'ready' ? 'Готовые' : 'Доставляются'}`);
-        }
+        // Update nav
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        event.target.closest('.nav-item').classList.add('active');
+    }
 
-        function updateAnalyticsData() {
-            // Симулируем изменение данных
-            appState.calculations = Math.floor(Math.random() * 30) + 15;
-            appState.activeOrders = Math.floor(Math.random() * 10) + 5;
-            appState.inProgress = Math.floor(Math.random() * 5) + 1;
-            appState.ready = Math.floor(Math.random() * 4) + 1;
-            appState.avgTime = Math.floor(Math.random() * 20) + 8;
-            appState.totalAmount = Math.floor(Math.random() * 500000) + 1500000;
+    function selectType(type) {
+        document.querySelectorAll('.material-btn').forEach(btn => {
+            btn.classList.remove('active', 'plastic', 'furniture', 'metal');
+        });
+        document.querySelector('.material-btn.' + type).classList.add('active', type);
 
-            // Обновляем элементы
-            const elements = {
-                'analytics-calculations': appState.calculations,
-                'analytics-active': appState.activeOrders,
-                'analytics-progress': appState.inProgress,
-                'analytics-ready': appState.ready,
-                'analytics-time': appState.avgTime,
-                'analytics-total': appState.totalAmount
-            };
+        document.getElementById('plastic-inputs').style.display = type === 'plastic' ? 'block' : 'none';
+        document.getElementById('furniture-inputs').style.display = type === 'furniture' ? 'block' : 'none';
+        document.getElementById('metal-inputs').style.display = type === 'metal' ? 'block' : 'none';
 
-            Object.entries(elements).forEach(([id, value]) => {
-                const elem = document.getElementById(id);
-                if (elem) animateNumber(elem, value);
-            });
+        calculatePrice();
+    }
 
-            console.log('<svg class="icon icon-md text-primary" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-chart"/></svg> Аналитика обновлена:', appState);
-        }
+    function calculatePrice() {
+        // Simple calculation demo
+        const basePrice = Math.random() * 20000 + 5000;
+        document.getElementById('total-price').textContent = Math.round(basePrice).toLocaleString('ru-RU') + ' ₽';
+    }
 
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // API FUNCTIONS (STEP 4: BACKEND)
-        // ═══════════════════════════════════════════════════════════════════════════════
+    function saveCalculation() {
+        alert('✅ Расчёт сохранён!');
+    }
+</script>
 
-        async function loadCalculations() {
-            try {
-                const response = await fetch('/api/v1/calculations');
-                const data = await response.json();
-                if (data.success) {
-                    console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Расчеты загружены:', data.calculations);
-                    return data.calculations;
-                }
-            } catch (error) {
-                console.error('<svg class="icon icon-md text-error" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-x-circle"/></svg> Ошибка загрузки расчетов:', error);
-            }
-        }
-
-        async function loadOrders() {
-            try {
-                const response = await fetch('/api/v1/orders');
-                const data = await response.json();
-                if (data.success) {
-                    console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Заказы загружены:', data.orders);
-                    return data.orders;
-                }
-            } catch (error) {
-                console.error('<svg class="icon icon-md text-error" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-x-circle"/></svg> Ошибка загрузки заказов:', error);
-            }
-        }
-
-        async function loadAnalytics() {
-            try {
-                const response = await fetch('/api/v1/analytics/dashboard');
-                const data = await response.json();
-                if (data.success) {
-                    console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Аналитика загружена:', data.metrics);
-                    return data.metrics;
-                }
-            } catch (error) {
-                console.error('<svg class="icon icon-md text-error" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-x-circle"/></svg> Ошибка загрузки аналитики:', error);
-            }
-        }
-
-        async function loadMaterials() {
-            try {
-                const response = await fetch('/api/v1/materials');
-                const data = await response.json();
-                if (data.success) {
-                    console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Материалы загружены:', data.materials);
-                    return data.materials;
-                }
-            } catch (error) {
-                console.error('<svg class="icon icon-md text-error" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-x-circle"/></svg> Ошибка загрузки материалов:', error);
-            }
-        }
-
-        async function createOrder(calculationId) {
-            try {
-                const response = await fetch('/api/v1/orders', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ calculation_id: calculationId })
-                });
-                const data = await response.json();
-                if (data.success) {
-                    console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Заказ создан:', data.order_id);
-                    alert(`<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> ${data.message}`);
-                    return data.order_id;
-                }
-            } catch (error) {
-                console.error('<svg class="icon icon-md text-error" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-x-circle"/></svg> Ошибка создания заказа:', error);
-            }
-        }
-
-        async function syncWith1C() {
-            try {
-                const response = await fetch('/api/v1/sync/1c', { method: 'POST' });
-                const data = await response.json();
-                if (data.success) {
-                    console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Синхронизация с 1С:', data.synced);
-                    alert(`<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> ${data.message}\n\nСинхронизировано: ${data.synced.documents} документов`);
-                }
-            } catch (error) {
-                console.error('<svg class="icon icon-md text-error" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-x-circle"/></svg> Ошибка синхронизации:', error);
-            }
-        }
-
-        // Загрузить реальные данные при инициализации
-        async function initializeApp() {
-            console.log('🚀 Инициализация приложения с API данными...');
-            const [calculations, orders, analytics] = await Promise.all([
-                loadCalculations(),
-                loadOrders(),
-                loadAnalytics()
-            ]);
-
-            if (analytics) {
-                appState.calculations = analytics.calculations || 24;
-                appState.activeOrders = analytics.orders || 7;
-                appState.totalAmount = analytics.revenue || 2430000;
-            }
-
-            console.log('<svg class="icon icon-md text-success" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg> Приложение инициализировано с реальными данными');
-        }
-
-        // Первоначальное обновление при загрузке
-        setTimeout(() => {
-            initializeApp();
-            updateAnalyticsData();
-        }, 500);
-    </script>
 </body>
 </html>
