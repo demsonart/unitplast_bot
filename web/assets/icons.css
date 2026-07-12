@@ -1,0 +1,190 @@
+/* UNITGROUP Icon System CSS */
+/* Professional SVG icon implementation */
+
+/* Size Classes */
+.icon-xs {
+  width: 16px;
+  height: 16px;
+}
+
+.icon-sm {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-md {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-lg {
+  width: 32px;
+  height: 32px;
+}
+
+.icon-xl {
+  width: 48px;
+  height: 48px;
+}
+
+/* Base SVG Icon Styles */
+svg.icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+/* Icon Container (for feature cards) */
+.icon-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(0, 102, 204, 0.08);
+  border: 1px solid rgba(0, 102, 204, 0.15);
+  color: #0066CC;
+  transition: all 0.2s ease;
+}
+
+.icon-box:hover {
+  background: rgba(0, 102, 204, 0.12);
+  border-color: rgba(0, 102, 204, 0.25);
+  color: #0052A3;
+}
+
+.icon-box.is-active {
+  background: rgba(0, 102, 204, 0.15);
+  border-color: rgba(0, 102, 204, 0.35);
+  color: #0052A3;
+}
+
+/* Icon Button States */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #666666;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.icon-button:hover {
+  color: #1a1a1a;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.icon-button:active {
+  color: #0066CC;
+  background: rgba(0, 102, 204, 0.1);
+}
+
+.icon-button:focus-visible {
+  outline: 2px solid #0066CC;
+  outline-offset: 2px;
+}
+
+.icon-button:disabled {
+  color: #999999;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Color Variants */
+.icon.text-primary {
+  color: #0066CC;
+}
+
+.icon.text-secondary {
+  color: #666666;
+}
+
+.icon.text-success {
+  color: #10b981;
+}
+
+.icon.text-warning {
+  color: #FF6B35;
+}
+
+.icon.text-error {
+  color: #DC2626;
+}
+
+/* Icon in Text (inline) */
+.text-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Navigation Icons */
+nav .icon {
+  width: 24px;
+  height: 24px;
+  color: #666666;
+  transition: color 0.2s;
+}
+
+nav a:hover .icon,
+nav a.active .icon {
+  color: #0066CC;
+}
+
+/* Loading Animation */
+@keyframes icon-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon.is-loading {
+  animation: icon-spin 1.5s linear infinite;
+}
+
+/* Accessibility */
+.icon[aria-hidden="true"] {
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .icon-xl {
+    width: 40px;
+    height: 40px;
+  }
+
+  .icon-box {
+    width: 40px;
+    height: 40px;
+  }
+
+  nav .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .icon-button,
+  .icon-container {
+    display: none;
+  }
+}
