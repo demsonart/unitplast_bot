@@ -6,10 +6,10 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
 
-from .config import TELEGRAM_BOT_TOKEN, TELEGRAM_GROUP_ID
-from .database import Database
-from .image_export import ImageExporter
-from .unified_inbox import Channel, UnifiedInbox, LeadStatus
+from app.config import TELEGRAM_BOT_TOKEN, TELEGRAM_GROUP_ID
+from app.database import Database
+from app.image_export import ImageExporter
+from app.unified_inbox import Channel, UnifiedInbox, LeadStatus
 
 logger = logging.getLogger(__name__)
 
