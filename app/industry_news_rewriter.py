@@ -108,32 +108,18 @@ class NewsRewriter:
             },
         }
 
-    def _fetch_single_feed(self, feed_info: Dict, limit: int = 50, timeout: int = 5) -> List[NewsItem]:
-        """Fetch from single feed (for parallel execution) with timeout"""
+    def _fetch_single_feed(self, feed_info: Dict, limit: int = 50) -> List[NewsItem]:
+        """Fetch from single feed (for parallel execution) - timeout handled by ThreadPoolExecutor"""
         try:
-            import signal
-
-            def timeout_handler(signum, frame):
-                raise TimeoutError(f"Feed fetch timeout ({timeout}s)")
-
             url = feed_info.get("rss_url") or feed_info.get("url", "")
             if not url:
                 return []
 
             feed_name = feed_info.get("name", "Unknown")
-            logger.info(f"Fetching from {feed_name}: {url}")
+            logger.info(f"⏳ {feed_name}: {url}")
 
-            # Set timeout
-            signal.signal(signal.SIGALRM, timeout_handler)
-            signal.alarm(timeout)
-
-            try:
-                feed = feedparser.parse(url)
-                signal.alarm(0)  # Cancel alarm
-            except (TimeoutError, Exception) as e:
-                signal.alarm(0)
-                logger.warning(f"Timeout/error fetching {feed_name}: {str(e)[:50]}")
-                return []
+            # feedparser.parse handles timeout internally (~30s default)
+            feed = feedparser.parse(url)
 
             items = []
             for entry in feed.entries[:limit]:
@@ -153,13 +139,14 @@ class NewsRewriter:
                     )
                     items.append(item)
                 except Exception as e:
-                    logger.warning(f"Error parsing entry: {e}")
+                    logger.debug(f"Parse error: {e}")
                     continue
 
-            logger.info(f"✅ Fetched {len(items)} items from {feed_name}")
+            if len(items) > 0:
+                logger.info(f"✅ {feed_name}: {len(items)} items")
             return items
         except Exception as e:
-            logger.error(f"Failed to fetch from {feed_info.get('name', 'Unknown')}: {str(e)[:100]}")
+            logger.warning(f"❌ {feed_info.get('name', 'Unknown')}: {str(e)[:60]}")
             return []
 
     def fetch_news(self, limit: int = 50, hours_back: int = 24) -> List[NewsItem]:
@@ -177,29 +164,29 @@ class NewsRewriter:
         else:
             feeds_list = sources if isinstance(sources, list) else []
 
-        logger.info(f"🔄 Starting parallel fetch from {len(feeds_list)} feeds (max 8 workers)...")
+        logger.info(f"🔄 Starting parallel fetch from {len(feeds_list)} feeds...")
         start_time = time.time()
 
-        # Parallel fetch (max 8 concurrent workers, 8s timeout per feed)
+        # Parallel fetch (max 8 concurrent workers, 45s total timeout)
         completed = 0
         failed = 0
         with ThreadPoolExecutor(max_workers=8) as executor:
-            futures = {executor.submit(self._fetch_single_feed, feed_info, limit, timeout=8): feed_info
+            futures = {executor.submit(self._fetch_single_feed, feed_info, limit): feed_info
                       for feed_info in feeds_list}
 
-            for future in as_completed(futures, timeout=60):  # 60s overall timeout
+            for future in as_completed(futures, timeout=45):  # 45s overall timeout
                 try:
-                    items = future.result(timeout=10)
+                    items = future.result(timeout=8)
                     news_items.extend(items)
                     completed += 1
-                    if completed % 5 == 0:
-                        logger.info(f"📰 Parallel fetch progress: {completed}/{len(feeds_list)} feeds")
+                    if completed % 8 == 0:
+                        logger.info(f"📰 Progress: {completed}/{len(feeds_list)} done ({len(news_items)} items so far)")
                 except Exception as e:
                     failed += 1
-                    logger.warning(f"⚠️ Fetch failed: {str(e)[:80]}")
+                    logger.warning(f"⚠️ Feed future failed: {str(e)[:70]}")
 
         elapsed = time.time() - start_time
-        logger.info(f"✅ Parallel fetch complete: {len(news_items)} items from {completed} feeds ({failed} failed) in {elapsed:.1f}s")
+        logger.info(f"✅ Fetch done: {len(news_items)} items | {completed} ok, {failed} failed | {elapsed:.1f}s")
         return news_items[:limit]
 
     def filter_and_score(self, items: List[NewsItem]) -> List[ScoredNews]:
