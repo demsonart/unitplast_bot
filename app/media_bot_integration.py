@@ -37,6 +37,37 @@ class MediaBotIntegration:
         self.rewriter = NewsRewriter()
         self.drafts_dir = DRAFTS_DIR
         self.drafts_dir.mkdir(parents=True, exist_ok=True)
+        self.bot = None  # Инициализируется при запуске бота
+
+    async def _publish_to_channel(self, text: str) -> Optional[int]:
+        """Публикует сообщение в канал @UnitgroupAI.
+
+        Args:
+            text: Текст для публикации (уже обрезан до 4096 символов)
+
+        Returns:
+            Message ID если успешно, None если ошибка
+        """
+        try:
+            from app.config import TELEGRAM_CHANNEL_ID
+
+            if not self.bot:
+                logger.error("Bot not initialized for publishing")
+                return None
+
+            # Отправляем сообщение
+            message = await self.bot.send_message(
+                chat_id=TELEGRAM_CHANNEL_ID,
+                text=text,
+                parse_mode="HTML"
+            )
+
+            logger.info(f"✅ Опубликовано в канал (ID: {message.message_id})")
+            return message.message_id
+
+        except Exception as e:
+            logger.error(f"❌ Ошибка публикации: {e}")
+            return None
 
     def list_drafts(self) -> List[Dict]:
         """Get all drafts."""

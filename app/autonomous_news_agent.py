@@ -11,6 +11,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 from app.industry_news_rewriter import NewsRewriter
 from app.media_bot_integration import MediaBotIntegration
+from app.telegram_rate_limiter import TelegramRateLimiter, truncate_message
 import logging
 
 logger = logging.getLogger(__name__)
@@ -52,6 +53,7 @@ class AutonomousNewsAgent:
         self.media_bot = MediaBotIntegration()
         self.processed_articles = set()  # MD5 hashes of processed articles
         self.log_file = "logs/autonomous_news.jsonl"
+        self.rate_limiter = TelegramRateLimiter(max_per_minute=1)  # 1 пост в минуту макс
         self._ensure_log_file()
 
     def _ensure_log_file(self):
@@ -254,12 +256,18 @@ class AutonomousNewsAgent:
     ) -> bool:
         """Automatically publish to @UnitgroupAI"""
         try:
+            # Rate limit: не более 1 поста в минуту
+            await self.rate_limiter.wait_if_needed()
+
+            # Обрезаем текст до лимита Telegram (4096 символов)
+            safe_text = truncate_message(post_text, max_length=4096)
+
             # Publish to Telegram
-            message_id = await self.media_bot._publish_to_channel(post_text)
+            message_id = await self.media_bot._publish_to_channel(safe_text)
 
             if message_id:
-                self._log_event("auto_published", article, post_text, final_score, f"Message ID: {message_id}")
-                logger.info(f"✅ AUTO-PUBLISHED: Score {final_score:.2f} | {post_text[:50]}...")
+                self._log_event("auto_published", article, safe_text, final_score, f"Message ID: {message_id}")
+                logger.info(f"✅ AUTO-PUBLISHED: Score {final_score:.2f} | {safe_text[:50]}...")
                 return True
             else:
                 logger.error("Failed to publish to Telegram")
