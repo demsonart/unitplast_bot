@@ -110,13 +110,12 @@ class AutonomousNewsAgent:
 
         # Step 4: Map to products
         try:
-            for article in unique_news:
-                # Create a minimal NewsItem-like object for map_to_products
-                class TempItem:
-                    def __init__(self, title, content):
-                        self.title = title
-                        self.content = content
+            class TempItem:
+                def __init__(self, title, content):
+                    self.title = title
+                    self.content = content
 
+            for article in unique_news:
                 temp_item = TempItem(article.get("title", ""), article.get("content", ""))
                 article["products"] = self.news_rewriter.map_to_products(temp_item)
             logger.info(f"✅ Mapped {len(unique_news)} to products ({time.time()-start:.1f}s)")
@@ -152,11 +151,18 @@ class AutonomousNewsAgent:
         # Step 5: Base rewrite (NewsRewriter)
         # Create a minimal NewsItem object from dict
         class TempItem:
-            def __init__(self, title, content):
+            def __init__(self, title, content, source_name="Unknown", published_date=""):
                 self.title = title
                 self.content = content
+                self.source_name = source_name
+                self.published_date = published_date
 
-        temp_item = TempItem(article.get("title", ""), article.get("content", ""))
+        temp_item = TempItem(
+            article.get("title", ""),
+            article.get("content", ""),
+            article.get("source", "Unknown"),
+            article.get("published_date", "")
+        )
         products = article.get("products", ["UNITPLAST"])
 
         rewritten = self.news_rewriter.rewrite_for_telegram(temp_item, products)
