@@ -41,7 +41,7 @@ def run_telegram_bot():
         # aiogram not installed (e.g., on local dev with Python 3.13 Rust issue)
         logger.warning(f"⚠️  Telegram bot dependencies missing: {e}")
         logger.warning("⚠️  Flask server is running, but Telegram bot is disabled")
-        logger.warning("⚠️  On Railway with Docker, all dependencies will be available")
+        logger.warning("⚠️  Install aiogram: pip install -r requirements.txt")
         # Keep Flask running - don't exit
         import time
         while True:
