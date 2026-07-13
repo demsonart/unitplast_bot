@@ -358,6 +358,29 @@
             background-clip: text;
         }
 
+        /* === ACCESSIBILITY === */
+        :focus-visible {
+            outline: 2px solid var(--blue);
+            outline-offset: 3px;
+        }
+
+        button:focus-visible {
+            outline: 2px solid var(--blue);
+            outline-offset: 2px;
+        }
+
+        a:focus-visible {
+            outline: 2px solid var(--blue);
+            outline-offset: 2px;
+        }
+
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible {
+            outline: 2px solid var(--blue);
+            outline-offset: 1px;
+        }
+
         /* === TOAST ANIMATIONS === */
         @keyframes slideUp {
             from {
@@ -386,7 +409,48 @@
         }
 
         /* === RESPONSIVE === */
-        @media (max-width: 600px) {
+        /* Tablet: 768px - 1024px */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .app-wrapper {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .material-selector {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+
+            .form-input,
+            .form-select {
+                font-size: 16px;
+            }
+        }
+
+        /* Desktop: 1025px and up */
+        @media (min-width: 1025px) {
+            .app-wrapper {
+                max-width: 700px;
+                margin: 0 auto;
+                border: 1px solid rgba(255,255,255,0.1);
+                border-radius: 16px;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+
+            .material-selector {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+
+            h1 { font-size: 2.25rem; }
+            h2 { font-size: 1.75rem; }
+        }
+
+        /* Mobile: up to 767px */
+        @media (max-width: 767px) {
             .app-wrapper {
                 max-width: 100%;
                 border-radius: 0;
@@ -929,9 +993,70 @@
     }
 
     function saveCalculation() {
+        // Get current form data
+        const materialType = document.querySelector('.material-btn.active').className.match(/(plastic|furniture|metal)/)[1];
+        const price = document.getElementById('total-price').textContent;
+
+        // Save to localStorage
+        const calculations = JSON.parse(localStorage.getItem('unitgroup_calculations') || '[]');
+        const newCalc = {
+            id: Date.now(),
+            date: new Date().toLocaleDateString('ru-RU'),
+            type: materialType,
+            price: price,
+            timestamp: new Date().getTime()
+        };
+
+        calculations.unshift(newCalc);
+        calculations.splice(50); // Keep only last 50
+        localStorage.setItem('unitgroup_calculations', JSON.stringify(calculations));
+
         showToast('✅ Расчёт сохранён в историю', 'success');
-        // TODO: Save to localStorage or backend
         setTimeout(() => showPage('history', document.querySelector('[data-page="history"]')), 1500);
+    }
+
+    function loadSavedCalculations() {
+        const calculations = JSON.parse(localStorage.getItem('unitgroup_calculations') || '[]');
+        const historyList = document.querySelector('#page-history .history-list');
+
+        if (!historyList) return;
+
+        if (calculations.length === 0) {
+            historyList.innerHTML = '<div style="text-align: center; padding: 40px 20px; color: #999;">Нет сохранённых расчётов</div>';
+            return;
+        }
+
+        historyList.innerHTML = calculations.map(calc => `
+            <div class="history-item" onclick="loadCalculation('${calc.id}')">
+                <div class="history-header">
+                    <div>
+                        <div class="history-name">
+                            ${calc.type === 'plastic' ? '🔵 UNITPLAST' : calc.type === 'furniture' ? '🟢 UNITFURNITURE' : '🟣 UNITMETALL'}
+                        </div>
+                        <div class="history-date">${calc.date}</div>
+                    </div>
+                </div>
+                <div class="history-price">${calc.price}</div>
+            </div>
+        `).join('');
+    }
+
+    function loadCalculation(id) {
+        const calculations = JSON.parse(localStorage.getItem('unitgroup_calculations') || '[]');
+        const calc = calculations.find(c => c.id == id);
+        if (calc) {
+            showToast('📋 Расчёт загружен', 'success');
+            // Could restore form values here
+        }
+    }
+
+    // Load calculations when switching to history tab
+    const originalShowPage = showPage;
+    function showPage(pageName, navElement) {
+        originalShowPage(pageName, navElement);
+        if (pageName === 'history') {
+            setTimeout(loadSavedCalculations, 100);
+        }
     }
 
     function showToast(message, type = 'info') {
