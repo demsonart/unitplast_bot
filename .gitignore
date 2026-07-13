@@ -51,6 +51,11 @@ env/
 *.sqlite3
 data/
 
+# Allow config files in data/
+!data/media_sources.yaml
+!data/post_drafts/
+!data/post_drafts/*.json
+
 # Generated files
 output/
 *.png
