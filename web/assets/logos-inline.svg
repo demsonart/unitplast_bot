@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <!-- UNITPLAST Logo -->
+  <symbol id="logo-unitplast" viewBox="0 0 64 64">
+    <g fill="none" stroke="#3D3D3D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M32 12L48 21V43L32 52L16 43V21Z"/>
+      <path d="M32 28L40 33V45L32 50L24 45V33Z"/>
+    </g>
+  </symbol>
+
+  <!-- UNITFURNITURE Logo -->
+  <symbol id="logo-unitfurniture" viewBox="0 0 64 64">
+    <g fill="none" stroke="#FF6B35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M32 12L48 21V43L32 52L16 43V21Z"/>
+      <path d="M32 28L40 33V45L32 50L24 45V33Z"/>
+    </g>
+  </symbol>
+
+  <!-- UNITMETALL Logo -->
+  <symbol id="logo-unitmetall" viewBox="0 0 64 64">
+    <g fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M32 12L48 21V43L32 52L16 43V21Z"/>
+      <path d="M32 28L40 33V45L32 50L24 45V33Z"/>
+    </g>
+  </symbol>
+</svg>

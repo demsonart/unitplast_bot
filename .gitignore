@@ -2,6 +2,9 @@
 .env
 .env.local
 .env.*.local
+.env.production
+.env.staging
+!.env.example
 
 # Python
 __pycache__/
@@ -75,3 +78,23 @@ archive/
 .cache/
 node_modules/
 package-lock.json
+
+# Docker & Production
+backups/
+docker-compose.override.yml
+.dockerignore
+
+# Nginx & SSL
+certbot/
+nginx/conf.d/*.local.conf
+letsencrypt/
+
+# Monitoring & Logs
+monitoring/logs/
+systemd/logs/
+
+# Secrets
+secrets/
+*.key
+*.pem
+*.crt

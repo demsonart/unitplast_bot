@@ -22,9 +22,13 @@ def create_app():
     from .lead_scorer import LeadScorer
     from .email_reader import EmailReader
     from .config import YANDEX_EMAIL, YANDEX_PASSWORD, YANDEX_IMAP_SERVER, YANDEX_IMAP_PORT
+    from .claude_routes import claude_bp
 
     consultant = AIConsultant()
     scorer = LeadScorer()
+
+    # Register Claude API blueprint
+    app.register_blueprint(claude_bp)
 
     # ============ MATERIALS API ============
 
