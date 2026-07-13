@@ -164,7 +164,10 @@ class NewsRewriter:
         else:
             feeds_list = sources if isinstance(sources, list) else []
 
-        logger.info(f"🔄 Starting parallel fetch from {len(feeds_list)} feeds...")
+        # Limit to top 15 feeds for speed (avoid slowdowns)
+        feeds_list = feeds_list[:15]
+
+        logger.info(f"🔄 Fetching from {len(feeds_list)} feeds (parallel)...")
         start_time = time.time()
 
         # Parallel fetch (max 8 concurrent workers, 45s total timeout)

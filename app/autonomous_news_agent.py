@@ -67,17 +67,27 @@ class AutonomousNewsAgent:
 
     def fetch_and_filter(self) -> List[Dict]:
         """Fetch news and filter candidates"""
-        logger.info("🤖 AUTONOMOUS: Starting news fetch and filter")
+        import time
+        logger.info("🤖 AUTONOMOUS: Starting fetch & filter cycle")
+        start = time.time()
 
-        # Fetch news
-        raw_news = self.news_rewriter.fetch_news()
-        logger.info(f"🤖 AUTONOMOUS: Fetched {len(raw_news)} raw articles")
+        # Step 1: Fetch news
+        try:
+            raw_news = self.news_rewriter.fetch_news()
+            logger.info(f"✅ Fetched {len(raw_news)} items ({time.time()-start:.1f}s)")
+        except Exception as e:
+            logger.error(f"❌ Fetch failed: {e}")
+            return []
 
-        # Filter and score
-        filtered = self.news_rewriter.filter_and_score(raw_news)
-        logger.info(f"🤖 AUTONOMOUS: Filtered to {len(filtered)} candidates")
+        # Step 2: Filter and score
+        try:
+            filtered = self.news_rewriter.filter_and_score(raw_news)
+            logger.info(f"✅ Filtered to {len(filtered)} candidates ({time.time()-start:.1f}s)")
+        except Exception as e:
+            logger.error(f"❌ Filter failed: {e}")
+            return []
 
-        # Remove duplicates
+        # Step 3: Remove duplicates
         unique_news = []
         for article in filtered:
             article_hash = self._hash_article(article)
@@ -85,13 +95,19 @@ class AutonomousNewsAgent:
                 unique_news.append(article)
                 self.processed_articles.add(article_hash)
 
-        logger.info(f"🤖 AUTONOMOUS: {len(unique_news)} new unique articles")
+        logger.info(f"✅ {len(unique_news)} new unique ({time.time()-start:.1f}s)")
 
-        # Map to products
-        for article in unique_news:
-            article["products"] = self.news_rewriter.map_to_products(article)
+        # Step 4: Map to products
+        try:
+            for article in unique_news:
+                article["products"] = self.news_rewriter.map_to_products(article)
+            logger.info(f"✅ Mapped {len(unique_news)} to products ({time.time()-start:.1f}s)")
+        except Exception as e:
+            logger.error(f"❌ Map failed: {e}")
 
-        return unique_news[:MAX_ARTICLES_PER_FETCH]
+        result = unique_news[:MAX_ARTICLES_PER_FETCH]
+        logger.info(f"🎯 READY: {len(result)} articles for processing ({time.time()-start:.1f}s total)")
+        return result
 
     def _hash_article(self, article: Dict) -> str:
         """Create MD5 hash of article for duplicate detection"""
