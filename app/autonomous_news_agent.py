@@ -111,10 +111,21 @@ class AutonomousNewsAgent:
         # Step 4: Map to products
         try:
             for article in unique_news:
-                article["products"] = self.news_rewriter.map_to_products(article)
+                # Create a minimal NewsItem-like object for map_to_products
+                class TempItem:
+                    def __init__(self, title, content):
+                        self.title = title
+                        self.content = content
+
+                temp_item = TempItem(article.get("title", ""), article.get("content", ""))
+                article["products"] = self.news_rewriter.map_to_products(temp_item)
             logger.info(f"✅ Mapped {len(unique_news)} to products ({time.time()-start:.1f}s)")
         except Exception as e:
             logger.error(f"❌ Map failed: {e}")
+            # Add default products if mapping fails
+            for article in unique_news:
+                if "products" not in article:
+                    article["products"] = ["UNITPLAST"]
 
         result = unique_news[:MAX_ARTICLES_PER_FETCH]
         logger.info(f"🎯 READY: {len(result)} articles for processing ({time.time()-start:.1f}s total)")
@@ -139,7 +150,17 @@ class AutonomousNewsAgent:
         """Rewrite article and enhance quality"""
 
         # Step 5: Base rewrite (NewsRewriter)
-        post_text = self.news_rewriter.rewrite_for_telegram(article)
+        # Create a minimal NewsItem object from dict
+        class TempItem:
+            def __init__(self, title, content):
+                self.title = title
+                self.content = content
+
+        temp_item = TempItem(article.get("title", ""), article.get("content", ""))
+        products = article.get("products", ["UNITPLAST"])
+
+        rewritten = self.news_rewriter.rewrite_for_telegram(temp_item, products)
+        post_text = rewritten.get("full_text", rewritten.get("body", ""))
         base_score = article.get("score", 0.5)  # 0.0 - 0.6 from NewsRewriter
 
         # Step 6: AI Enhancement (if enabled)
