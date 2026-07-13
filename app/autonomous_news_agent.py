@@ -9,6 +9,7 @@ import time
 import asyncio
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
+from concurrent.futures import ThreadPoolExecutor
 from app.industry_news_rewriter import NewsRewriter
 from app.media_bot_integration import MediaBotIntegration
 import logging
@@ -273,7 +274,7 @@ class AutonomousNewsAgent:
     async def _send_preview(
         self, article: Dict, post_text: str, final_score: float
     ) -> bool:
-        """Send preview for 1-hour admin window"""
+        """Send preview for 1-hour admin window (non-blocking)"""
         try:
             preview_message = f"""
 ⚠️ NEWS PREVIEW (Score: {final_score:.2f})
@@ -295,9 +296,8 @@ Auto-publishes in: {PREVIEW_WINDOW_MINUTES} min ⏱️
             self._log_event("sent_for_preview", article, post_text, final_score, "Awaiting admin decision")
             logger.info(f"⚠️ PREVIEW SENT: Score {final_score:.2f} (window: {PREVIEW_WINDOW_MINUTES}m)")
 
-            # Auto-publish after window if no response
-            await asyncio.sleep(PREVIEW_WINDOW_MINUTES * 60)
-            await self._auto_publish(article, post_text, final_score)
+            # Schedule auto-publish in background (non-blocking)
+            asyncio.create_task(self._delayed_auto_publish(article, post_text, final_score))
 
             return True
 
@@ -305,6 +305,11 @@ Auto-publishes in: {PREVIEW_WINDOW_MINUTES} min ⏱️
             logger.error(f"Preview send failed: {e}")
             self._log_event("preview_error", article, post_text, final_score, str(e))
             return False
+
+    async def _delayed_auto_publish(self, article: Dict, post_text: str, final_score: float):
+        """Auto-publish after preview window (runs in background)"""
+        await asyncio.sleep(PREVIEW_WINDOW_MINUTES * 60)
+        await self._auto_publish(article, post_text, final_score)
 
     # ─────────────────────────────────────────────────────────────────────────────
     # STEP 11-12: LOGGING & LEARNING
@@ -352,6 +357,22 @@ Auto-publishes in: {PREVIEW_WINDOW_MINUTES} min ⏱️
     # MAIN LOOP
     # ─────────────────────────────────────────────────────────────────────────────
 
+    async def _process_single_article(self, article: Dict) -> bool:
+        """Process single article (async wrapper)"""
+        try:
+            # Rewrite & enhance
+            post_text, base_score = self.rewrite_and_enhance(article)
+
+            # Validate
+            final_score, validation = self.validate_quality(article, post_text, base_score)
+
+            # Publish or preview (non-blocking)
+            await self.publish_or_preview(article, post_text, final_score)
+            return True
+        except Exception as e:
+            logger.error(f"Error processing article: {e}")
+            return False
+
     async def run_autonomous_loop(self):
         """Main autonomous loop"""
         logger.info("🤖 AUTONOMOUS MODE ACTIVATED")
@@ -372,16 +393,12 @@ Auto-publishes in: {PREVIEW_WINDOW_MINUTES} min ⏱️
                 if not articles:
                     logger.info("ℹ️ No new articles to process")
                 else:
-                    # Process each article
-                    for article in articles:
-                        # Rewrite & enhance
-                        post_text, base_score = self.rewrite_and_enhance(article)
-
-                        # Validate
-                        final_score, validation = self.validate_quality(article, post_text, base_score)
-
-                        # Publish or preview
-                        await self.publish_or_preview(article, post_text, final_score)
+                    logger.info(f"📰 Processing {len(articles)} articles in parallel...")
+                    # Process articles in parallel (max 5 concurrent)
+                    tasks = [self._process_single_article(article) for article in articles[:5]]
+                    results = await asyncio.gather(*tasks, return_exceptions=True)
+                    success_count = sum(1 for r in results if r is True)
+                    logger.info(f"✅ Processed: {success_count}/{len(articles)} articles")
 
                 # Analyze engagement
                 if iteration % 12 == 0:  # Every 6 hours (12 × 30 min)

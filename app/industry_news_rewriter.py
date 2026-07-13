@@ -21,6 +21,7 @@ from pathlib import Path
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass, asdict
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from .config import BASE_DIR
 
 logger = logging.getLogger(__name__)
@@ -107,59 +108,68 @@ class NewsRewriter:
             },
         }
 
-    def fetch_news(self, limit: int = 50, hours_back: int = 24) -> List[NewsItem]:
-        """Fetch news from configured RSS feeds."""
-        news_items = []
-        cutoff_time = datetime.utcnow() - timedelta(hours=hours_back)
+    def _fetch_single_feed(self, feed_info: Dict, limit: int = 50) -> List[NewsItem]:
+        """Fetch from single feed (for parallel execution)"""
+        try:
+            url = feed_info.get("rss_url") or feed_info.get("url", "")
+            if not url:
+                return []
 
+            logger.info(f"Fetching from {feed_info.get('name', 'Unknown')}: {url}")
+            feed = feedparser.parse(url)
+
+            items = []
+            for entry in feed.entries[:limit]:
+                try:
+                    pub_date_str = entry.get("published", "")
+                    if not pub_date_str:
+                        continue
+
+                    item = NewsItem(
+                        url=entry.get("link", ""),
+                        title=entry.get("title", ""),
+                        content=entry.get("summary", ""),
+                        source_name=feed_info.get("name", "Unknown"),
+                        published_date=pub_date_str,
+                        category=feed_info.get("category", "general"),
+                        language=feed_info.get("language", "en"),
+                    )
+                    items.append(item)
+                except Exception as e:
+                    logger.warning(f"Error parsing entry: {e}")
+                    continue
+            return items
+        except Exception as e:
+            logger.error(f"Failed to fetch from {feed_info.get('name')}: {e}")
+            return []
+
+    def fetch_news(self, limit: int = 50, hours_back: int = 24) -> List[NewsItem]:
+        """Fetch news from configured RSS feeds (parallel)"""
+        news_items = []
         sources = self.config.get("sources", [])
 
         # Handle both list and dict formats
         if isinstance(sources, dict):
-            # Dictionary format: {category: {feeds: [...]}}
             feeds_list = []
             for category, category_data in sources.items():
                 feeds = category_data.get("feeds", [])
                 feeds_list.extend(feeds)
         else:
-            # List format: [{name: ..., rss_url: ..., ...}, ...]
             feeds_list = sources if isinstance(sources, list) else []
 
-        for feed_info in feeds_list:
+        # Parallel fetch (max 8 concurrent workers)
+        with ThreadPoolExecutor(max_workers=8) as executor:
+            futures = {executor.submit(self._fetch_single_feed, feed_info, limit): feed_info
+                      for feed_info in feeds_list}
+
+            for future in as_completed(futures):
                 try:
-                    # Try rss_url first, then url
-                    url = feed_info.get("rss_url") or feed_info.get("url", "")
-                    if not url:
-                        continue
-
-                    logger.info(f"Fetching from {feed_info.get('name', 'Unknown')}: {url}")
-                    feed = feedparser.parse(url)
-
-                    for entry in feed.entries[:limit]:
-                        try:
-                            pub_date_str = entry.get("published", "")
-                            if not pub_date_str:
-                                continue
-
-                            item = NewsItem(
-                                url=entry.get("link", ""),
-                                title=entry.get("title", ""),
-                                content=entry.get("summary", ""),
-                                source_name=feed_info.get("name", "Unknown"),
-                                published_date=pub_date_str,
-                                category=feed_info.get("category", "general"),
-                                language=feed_info.get("language", "en"),
-                            )
-                            news_items.append(item)
-                        except Exception as e:
-                            logger.warning(f"Error parsing entry: {e}")
-                            continue
-
+                    items = future.result(timeout=10)
+                    news_items.extend(items)
                 except Exception as e:
-                    logger.error(f"Failed to fetch from {feed_info.get('name')}: {e}")
-                    continue
+                    logger.error(f"Fetch future error: {e}")
 
-        logger.info(f"Fetched {len(news_items)} news items")
+        logger.info(f"Fetched {len(news_items)} news items (parallel)")
         return news_items[:limit]
 
     def filter_and_score(self, items: List[NewsItem]) -> List[ScoredNews]:
