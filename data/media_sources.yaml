@@ -1,0 +1,120 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# INDUSTRY NEWS SOURCES FOR TELEGRAM CHANNEL @UnitgroupAI
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# RSS feeds and news sources for manufacturing industry
+sources:
+  manufacturing:
+    name: "Manufacturing & Production News"
+    feeds:
+      - url: "https://www.industryweek.com/feed"
+        name: "IndustryWeek"
+        category: "manufacturing"
+        language: "en"
+      - url: "https://www.manufacturingtomorrow.com/feed"
+        name: "Manufacturing Tomorrow"
+        category: "manufacturing"
+        language: "en"
+
+  plastics:
+    name: "Plastics & Polymers"
+    feeds:
+      - url: "https://www.plasticstoday.com/feed"
+        name: "PlasticsToday"
+        category: "plastics"
+        language: "en"
+      - url: "https://www.ptonline.com/feed"
+        name: "Plastics Technology Online"
+        category: "plastics"
+        language: "en"
+
+  furniture:
+    name: "Furniture & Design"
+    feeds:
+      - url: "https://www.furnituretoday.com/feed"
+        name: "Furniture Today"
+        category: "furniture"
+        language: "en"
+      - url: "https://www.decormagazine.com/feed"
+        name: "Décor Magazine"
+        category: "design"
+        language: "en"
+
+  metalworking:
+    name: "Metal & Fabrication"
+    feeds:
+      - url: "https://www.thefabricator.com/feed"
+        name: "The Fabricator"
+        category: "metal"
+        language: "en"
+      - url: "https://www.sheet-metal.com/feed"
+        name: "Sheet Metal Magazine"
+        category: "metal"
+        language: "en"
+
+  automation:
+    name: "Factory Automation & AI"
+    feeds:
+      - url: "https://www.roboticsbusinessreview.com/feed"
+        name: "Robotics Business Review"
+        category: "automation"
+        language: "en"
+      - url: "https://www.aiweekly.com/feed"
+        name: "AI Weekly"
+        category: "ai"
+        language: "en"
+
+# Filter rules for relevance
+filters:
+  include_keywords:
+    - "automation"
+    - "cost reduction"
+    - "production efficiency"
+    - "order management"
+    - "pricing"
+    - "manufacturing"
+    - "calculation"
+    - "AI"
+    - "delivery time"
+    - "supply chain"
+
+  exclude_keywords:
+    - "politics"
+    - "weather"
+    - "sports"
+    - "entertainment"
+    - "fake"
+    - "test"
+
+  min_words: 50
+  max_words: 5000
+
+# Processing rules
+processing:
+  language: "en"
+  translate_to: "ru"  # Translate to Russian for @UnitgroupAI
+  rewrite_style: "telegram"
+  include_source: true
+  include_date: true
+  max_posts_per_day: 3
+
+# Post timing
+schedule:
+  timezone: "UTC"
+  preferred_hours: [9, 12, 17]  # 9am, 12pm, 5pm UTC
+  min_hours_between_posts: 4
+
+# Moderation
+moderation:
+  require_approval: true
+  require_content_review: true
+  dry_run_mode: true
+  allow_auto_publish: false  # NEVER auto-publish
+
+# Logging
+logging:
+  log_path: "logs/media_sources.log"
+  log_level: "INFO"
+  log_fetches: true
+  log_rewrites: true
+  log_publishes: true

@@ -1,0 +1,104 @@
+{
+  "id": "draft_news_20240713_unitfurniture_001",
+  "channel": "@UnitgroupAI",
+  "status": "draft",
+  "type": "text",
+
+  "source": {
+    "url": "https://www.furnituretoday.com/article-about-smart-manufacturing",
+    "title": "Smart Manufacturing Reduces Furniture Production Time by 35%",
+    "source_name": "Furniture Today",
+    "published_date": "2024-07-13",
+    "fetched_at": "2024-07-13T10:00:00Z"
+  },
+
+  "content": {
+    "emoji_hook": "🪑",
+    "headline": "UNITFURNITURE: мебель быстрее с Smart Manufacturing",
+    "body": "Новое исследование показывает, что автоматизация производства мебели сокращает время на 35%.\n\nUNITFURNITURE автоматически считает:\n✅ Материал (ЛДСП, МДФ, массив)\n✅ Обработку и отделку\n✅ Фурнитуру\n✅ Сборку и доставку\n\nКоммерческое предложение за 30 сек вместо часов!\n\nИсточник: Furniture Today, 13 июля 2024",
+    "full_text": "🪑 UNITFURNITURE: мебель быстрее с Smart Manufacturing\n\nНовое исследование показывает, что автоматизация производства мебели сокращает время на 35%.\n\nUNITFURNITURE автоматически считает:\n✅ Материал (ЛДСП, МДФ, массив)\n✅ Обработку и отделку\n✅ Фурнитуру\n✅ Сборку и доставку\n\nКоммерческое предложение за 30 сек вместо часов!\n\nИсточник: Furniture Today, 13 июля 2024",
+    "cta_text": "👉 Откроить Mini App",
+    "cta_url": "https://unitgroup.tech/app/unitfurniture"
+  },
+
+  "metadata": {
+    "brand_module": "UNITFURNITURE",
+    "category": "automation",
+    "keywords": [
+      "furniture",
+      "automation",
+      "manufacturing",
+      "efficiency",
+      "production",
+      "time-savings"
+    ],
+    "relevance_score": 0.94,
+    "word_count": 92,
+    "language_original": "en",
+    "language_current": "ru",
+    "translated": true
+  },
+
+  "validation": {
+    "timestamp": "2024-07-13T10:00:00Z",
+    "brand_names_check": {
+      "passed": true,
+      "found_names": [
+        "UNITFURNITURE",
+        "UNITGROUP"
+      ],
+      "errors": []
+    },
+    "safety_check": {
+      "passed": true,
+      "fake_clients_detected": false,
+      "fake_metrics_detected": false,
+      "controversial_content": false,
+      "spam_detected": false
+    },
+    "format_check": {
+      "has_hook": true,
+      "has_cta": true,
+      "word_count_valid": true,
+      "emoji_present": true,
+      "source_attributed": true
+    }
+  },
+
+  "approval_workflow": {
+    "dry_run_mode": true,
+    "require_approval": true,
+    "allow_auto_publish": false,
+    "status": "waiting_approval",
+    "created_by": "industry_news_rewriter_agent",
+    "created_at": "2024-07-13T10:00:00Z",
+    "preview_sent_at": "2024-07-13T10:01:00Z",
+    "preview_message_id": null,
+    "approved_by": null,
+    "approved_at": null,
+    "published_at": null
+  },
+
+  "admin_notes": "Review for accuracy: 35% reduction claim sourced from Furniture Today research. No fake metrics. Source clearly attributed. Ready for admin review.",
+
+  "history": [
+    {
+      "timestamp": "2024-07-13T10:00:00Z",
+      "event": "draft_created",
+      "details": "News fetched from Furniture Today, rewritten for UNITFURNITURE context"
+    },
+    {
+      "timestamp": "2024-07-13T10:00:30Z",
+      "event": "validation_passed",
+      "details": "All checks passed: brand names correct, content safe, format valid"
+    },
+    {
+      "timestamp": "2024-07-13T10:01:00Z",
+      "event": "preview_requested",
+      "details": "Preview message prepared for admin review"
+    }
+  ],
+
+  "errors": [],
+  "warnings": []
+}
