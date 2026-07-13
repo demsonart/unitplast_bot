@@ -358,6 +358,33 @@
             background-clip: text;
         }
 
+        /* === TOAST ANIMATIONS === */
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+        }
+
+        .toast {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
         /* === RESPONSIVE === */
         @media (max-width: 600px) {
             .app-wrapper {
@@ -747,10 +774,10 @@
                 </div>
             </div>
 
-            <button class="btn-action btn-secondary" style="margin-top: 24px;">
+            <button class="btn-action btn-secondary" style="margin-top: 24px;" onclick="changePassword()">
                 🔐 Изменить пароль
             </button>
-            <button class="btn-action btn-secondary" style="margin-top: 8px;">
+            <button class="btn-action btn-secondary" style="margin-top: 8px;" onclick="logout()">
                 🚪 Выход
             </button>
         </div>
@@ -758,31 +785,31 @@
 
     <!-- NAVIGATION -->
     <div class="app-nav">
-        <a class="nav-item active" onclick="showPage('dashboard')">
+        <a class="nav-item active" data-page="dashboard" onclick="showPage('dashboard', this); return false;" href="#">
             <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
             </svg>
             <span>Главная</span>
         </a>
-        <a class="nav-item" onclick="showPage('calculator')">
+        <a class="nav-item" data-page="calculator" onclick="showPage('calculator', this); return false;" href="#">
             <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
             </svg>
             <span>Калькулятор</span>
         </a>
-        <a class="nav-item" onclick="showPage('history')">
+        <a class="nav-item" data-page="history" onclick="showPage('history', this); return false;" href="#">
             <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
             </svg>
             <span>История</span>
         </a>
-        <a class="nav-item" onclick="showPage('analytics')">
+        <a class="nav-item" data-page="analytics" onclick="showPage('analytics', this); return false;" href="#">
             <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.96-3.83c-.3-.39-.97-.39-1.25 0-.31.39-.31 1.02 0 1.41l3.69 4.72c.3.39.9.39 1.25.03l3.71-4.46c.25-.28.26-.73.02-1.01-.23-.28-.77-.29-1.01-.02z"/>
             </svg>
             <span>Аналитика</span>
         </a>
-        <a class="nav-item" onclick="showPage('profile')">
+        <a class="nav-item" data-page="profile" onclick="showPage('profile', this); return false;" href="#">
             <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
             </svg>
@@ -792,20 +819,37 @@
 </div>
 
 <script>
-    function showPage(pageName) {
+    function showPage(pageName, navElement) {
         // Hide all pages
         document.querySelectorAll('.page').forEach(page => {
             page.classList.remove('active');
         });
 
         // Show selected page
-        document.getElementById('page-' + pageName).classList.add('active');
+        const pageEl = document.getElementById('page-' + pageName);
+        if (pageEl) {
+            pageEl.classList.add('active');
+        }
 
         // Update nav
         document.querySelectorAll('.nav-item').forEach(item => {
             item.classList.remove('active');
         });
-        event.target.closest('.nav-item').classList.add('active');
+
+        // Mark nav item as active
+        if (navElement) {
+            navElement.closest('.nav-item').classList.add('active');
+        } else {
+            // Fallback: find by pageName
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.getAttribute('data-page') === pageName) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // Scroll to top
+        window.scrollTo(0, 0);
     }
 
     function selectType(type) {
@@ -896,7 +940,53 @@
     }
 
     function saveCalculation() {
-        alert('✅ Расчёт сохранён!');
+        showToast('✅ Расчёт сохранён в историю', 'success');
+        // TODO: Save to localStorage or backend
+        setTimeout(() => showPage('history', document.querySelector('[data-page="history"]')), 1500);
+    }
+
+    function showToast(message, type = 'info') {
+        // Remove existing toast
+        const existingToast = document.querySelector('.toast');
+        if (existingToast) existingToast.remove();
+
+        // Create toast
+        const toast = document.createElement('div');
+        toast.className = 'toast toast-' + type;
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: ${type === 'success' ? 'var(--green)' : 'var(--blue)'};
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        `;
+
+        document.body.appendChild(toast);
+
+        // Auto remove
+        setTimeout(() => {
+            toast.style.animation = 'slideDown 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+
+    function changePassword() {
+        showToast('⚠️ Функция будет доступна скоро', 'info');
+    }
+
+    function logout() {
+        showToast('👋 До встречи!', 'success');
+        setTimeout(() => {
+            // Redirect or clear auth
+            alert('Выход из системы');
+        }, 1500);
     }
 </script>
 

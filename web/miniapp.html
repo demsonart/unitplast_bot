@@ -358,6 +358,33 @@
             background-clip: text;
         }
 
+        /* === TOAST ANIMATIONS === */
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+        }
+
+        .toast {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
         /* === RESPONSIVE === */
         @media (max-width: 600px) {
             .app-wrapper {
@@ -744,11 +771,11 @@
                 </div>
             </div>
 
-            <button class="btn-action btn-secondary" style="margin-top: 24px;">
+            <button class="btn-action btn-secondary" style="margin-top: 24px;" onclick="changePassword()">
                 <svg class="icon icon-sm" style="width: 16px; height: 16px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-shield"/></svg>
                 <span>Изменить пароль</span>
             </button>
-            <button class="btn-action btn-secondary" style="margin-top: 8px;">
+            <button class="btn-action btn-secondary" style="margin-top: 8px;" onclick="logout()">
                 <svg class="icon icon-sm" style="width: 16px; height: 16px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-close"/></svg>
                 <span>Выход</span>
             </button>
@@ -757,23 +784,23 @@
 
     <!-- NAVIGATION -->
     <div class="app-nav">
-        <a class="nav-item active" onclick="showPage('dashboard')">
+        <a class="nav-item active" data-page="dashboard" onclick="showPage('dashboard', this); return false;" href="#">
             <svg class="icon" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-home"/></svg>
             <span>Главная</span>
         </a>
-        <a class="nav-item" onclick="showPage('calculator')">
+        <a class="nav-item" data-page="calculator" onclick="showPage('calculator', this); return false;" href="#">
             <svg class="icon" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-calculator"/></svg>
             <span>Калькулятор</span>
         </a>
-        <a class="nav-item" onclick="showPage('history')">
+        <a class="nav-item" data-page="history" onclick="showPage('history', this); return false;" href="#">
             <svg class="icon" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-calendar"/></svg>
             <span>История</span>
         </a>
-        <a class="nav-item" onclick="showPage('analytics')">
+        <a class="nav-item" data-page="analytics" onclick="showPage('analytics', this); return false;" href="#">
             <svg class="icon" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-analytics"/></svg>
             <span>Аналитика</span>
         </a>
-        <a class="nav-item" onclick="showPage('profile')">
+        <a class="nav-item" data-page="profile" onclick="showPage('profile', this); return false;" href="#">
             <svg class="icon" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-profile"/></svg>
             <span>Профиль</span>
         </a>
@@ -781,20 +808,37 @@
 </div>
 
 <script>
-    function showPage(pageName) {
+    function showPage(pageName, navElement) {
         // Hide all pages
         document.querySelectorAll('.page').forEach(page => {
             page.classList.remove('active');
         });
 
         // Show selected page
-        document.getElementById('page-' + pageName).classList.add('active');
+        const pageEl = document.getElementById('page-' + pageName);
+        if (pageEl) {
+            pageEl.classList.add('active');
+        }
 
         // Update nav
         document.querySelectorAll('.nav-item').forEach(item => {
             item.classList.remove('active');
         });
-        event.target.closest('.nav-item').classList.add('active');
+
+        // Mark nav item as active
+        if (navElement) {
+            navElement.closest('.nav-item').classList.add('active');
+        } else {
+            // Fallback: find by pageName
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.getAttribute('data-page') === pageName) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // Scroll to top
+        window.scrollTo(0, 0);
     }
 
     function selectType(type) {
@@ -885,7 +929,53 @@
     }
 
     function saveCalculation() {
-        alert('Расчёт сохранён!');
+        showToast('✅ Расчёт сохранён в историю', 'success');
+        // TODO: Save to localStorage or backend
+        setTimeout(() => showPage('history', document.querySelector('[data-page="history"]')), 1500);
+    }
+
+    function showToast(message, type = 'info') {
+        // Remove existing toast
+        const existingToast = document.querySelector('.toast');
+        if (existingToast) existingToast.remove();
+
+        // Create toast
+        const toast = document.createElement('div');
+        toast.className = 'toast toast-' + type;
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: ${type === 'success' ? 'var(--green)' : 'var(--blue)'};
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        `;
+
+        document.body.appendChild(toast);
+
+        // Auto remove
+        setTimeout(() => {
+            toast.style.animation = 'slideDown 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+
+    function changePassword() {
+        showToast('⚠️ Функция будет доступна скоро', 'info');
+    }
+
+    function logout() {
+        showToast('👋 До встречи!', 'success');
+        setTimeout(() => {
+            // Redirect or clear auth
+            alert('Выход из системы');
+        }, 1500);
     }
 </script>
 
