@@ -21,10 +21,10 @@ logger = logging.getLogger(__name__)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 AUTONOMOUS_MODE = os.getenv("AUTONOMOUS_MODE", "false").lower() in ("true", "1", "yes")
-AUTO_PUBLISH_ENABLED = os.getenv("AUTO_PUBLISH_ENABLED", "false").lower() in ("true", "1", "yes")
-AUTONOMOUS_QUALITY_THRESHOLD = float(os.getenv("AUTONOMOUS_QUALITY_THRESHOLD", "0.85"))
+AUTO_PUBLISH_ENABLED = os.getenv("AUTO_PUBLISH_ENABLED", "true").lower() in ("true", "1", "yes")
+AUTONOMOUS_QUALITY_THRESHOLD = float(os.getenv("AUTONOMOUS_QUALITY_THRESHOLD", "0.60"))
 PREVIEW_THRESHOLD = float(os.getenv("PREVIEW_THRESHOLD", "0.75"))
-MIN_QUALITY_THRESHOLD = float(os.getenv("MIN_QUALITY_THRESHOLD", "0.65"))
+MIN_QUALITY_THRESHOLD = float(os.getenv("MIN_QUALITY_THRESHOLD", "0.50"))
 PREVIEW_WINDOW_MINUTES = int(os.getenv("PREVIEW_WINDOW_MINUTES", "60"))
 FETCH_INTERVAL_MINUTES = int(os.getenv("FETCH_INTERVAL_MINUTES", "30"))
 MAX_ARTICLES_PER_FETCH = int(os.getenv("MAX_ARTICLES_PER_FETCH", "100"))
