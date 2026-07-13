@@ -274,9 +274,14 @@ class NewsRewriter:
 
         return len(errors) == 0, errors
 
-    def validate_content_safety(self, item: NewsItem) -> Tuple[bool, List[str]]:
-        """Check for fake content, spam, etc."""
-        text = (item.title + " " + item.content).lower()
+    def validate_content_safety(self, item) -> Tuple[bool, List[str]]:
+        """Check for fake content, spam, etc. Accepts string or NewsItem."""
+        # Handle both string (post_text) and NewsItem
+        if isinstance(item, str):
+            text = item.lower()
+        else:
+            text = (item.title + " " + item.content).lower()
+
         errors = []
 
         # Check for fake indicators
@@ -288,10 +293,11 @@ class NewsRewriter:
         # Check for unverified metrics
         if "%" in text or "x" in text.lower():
             # Typically OK if has source attribution
-            if item.source_name and item.url:
-                pass  # Source is provided
-            else:
-                pass  # Will be caught elsewhere
+            if not isinstance(item, str):  # Only check for NewsItem
+                if item.source_name and item.url:
+                    pass  # Source is provided
+                else:
+                    pass  # Will be caught elsewhere
 
         return len(errors) == 0, errors
 
@@ -307,13 +313,11 @@ class NewsRewriter:
             content = str(item.get("content", ""))
             source_name = str(item.get("source", "Unknown"))
             published_date = str(item.get("published_date", ""))
-            logger.info(f"DEBUG rewrite_for_telegram: title type={type(title)}, content type={type(content)}")
         else:
             title = str(item.title)
             content = str(item.content)
             source_name = str(item.source_name)
             published_date = str(item.published_date)
-            logger.info(f"DEBUG rewrite_for_telegram: NewsItem - title type={type(title)}, content type={type(content)}")
 
         # Emoji mapping
         emoji_map = {
