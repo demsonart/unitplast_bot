@@ -2,7 +2,11 @@
 
 ## Purpose
 
-Fetch industry news from RSS feeds, rewrite for B2B manufacturing audience, adapt to UNITGROUP product context, and create Telegram drafts with admin approval workflow.
+Fetch industry news from RSS feeds, rewrite for manufacturing audience, organize by content categories
+(news / ideas / machinery / materials / trends), and create Telegram drafts with admin approval workflow.
+
+**Key:** This is an INFORMATIONAL channel, not a sales channel. All content should educate and inspire,
+not sell. Use only soft CTAs focused on engagement and community building.
 
 ## Capabilities
 
@@ -25,9 +29,10 @@ name: industry-news-rewriter
 type: specialized
 capabilities:
   - news_fetching
+  - content_categorization
   - content_rewriting
   - telegram_formatting
-  - brand_validation
+  - cta_validation
   - draft_creation
 
 required_skills:
@@ -36,11 +41,20 @@ required_skills:
 
 required_data:
   - data/media_sources.yaml
+  - data/content_categories.yaml
   - data/post_drafts/
+
+content_categories:
+  - manufacturing_news (25%)
+  - business_ideas (20%)
+  - machinery_equipment (20%)
+  - materials_technologies (15%)
+  - trends_forecasts (10%)
 
 channels:
   telegram:
     username: "@UnitgroupAI"
+    type: "informational_news_channel"
     require_approval: true
     dry_run_mode: true
     allow_auto_publish: false
@@ -50,6 +64,8 @@ environment:
   TELEGRAM_CHANNEL_USERNAME: "@UnitgroupAI"
   DRY_RUN_MODE: true
   REQUIRE_APPROVAL: true
+  CONTENT_STRATEGY: "informational_only"
+  HARD_CTA_FORBIDDEN: true
 ```
 
 ## Workflow
@@ -99,44 +115,46 @@ filter_and_score(
 ]
 ```
 
-### Step 3: Map to Products
+### Step 3: Map to Content Categories
 
-**Task:** Identify which UNITGROUP product(s) apply
+**Task:** Categorize news into one of 5 content categories
 
 ```python
-map_to_products(
+map_to_category(
   news_item=item,
   keywords=item.keywords
 )
 ```
 
-**Mapping:**
-- "plastic" → UNITPLAST
-- "furniture", "mdf", "ldsp" → UNITFURNITURE
-- "metal", "welding", "fabrication" → UNITMETALL
-- "automation", "ai" → ALL products
+**Categories:**
+- "Новости производства" (25%) — trends, regulations, exhibitions, market changes
+- "Бизнес-идеи" (20%) — niches, startups, business models, examples
+- "Станки и оборудование" (20%) — equipment reviews, comparisons, selection guides
+- "Материалы и технологии" (15%) — new materials, processes, innovations
+- "Тренды и прогнозы" (10%) — forecasts, market predictions, future trends
 
-**Output:** `brand_module: "UNITFURNITURE"`
+**Output:** `content_category: "manufacturing_news"` + relevance score
 
 ### Step 4: Rewrite for Telegram
 
-**Task:** Rewrite news using telegram style
+**Task:** Rewrite news in informational style
 
 ```python
 rewrite(
   original_title=item.title,
   original_content=item.content,
-  product_module=item.brand_module,
-  style="telegram_b2b"
+  category=item.content_category,
+  style="informational_telegram"
 )
 ```
 
 **Rules:**
-1. Add emoji hook (🤖 for AI, 📊 for efficiency, etc.)
-2. Keep 50-200 words
-3. Explain UNITGROUP relevance
-4. Add CTA (Open Mini App, Get quote)
-5. Attribute source
+1. Add emoji hook matching category (🚀 news, 💡 ideas, 🔧 machinery, etc.)
+2. Keep 100-300 words
+3. Explain WHY it matters for manufacturers
+4. Include practical takeaway
+5. Add soft CTA only (no sales pitch!)
+6. Attribute source
 
 ### Step 5: Create Draft JSON
 
@@ -146,10 +164,10 @@ rewrite(
 create_draft(
   title=rewritten_title,
   text=rewritten_content,
-  brand_module=product_module,
+  category=content_category,
   source_url=item.url,
   source_name=item.source,
-  cta="Откроить Mini App"
+  soft_cta=selected_soft_cta
 )
 ```
 
@@ -160,8 +178,9 @@ create_draft(
   "id": "draft_news_20240713_001",
   "channel": "@UnitgroupAI",
   "status": "draft",
-  "text": "🤖 AI снижает стоимость на 40%...",
-  "brand_module": "UNITFURNITURE",
+  "text": "🚀 AI контролирует качество мебели...",
+  "category": "manufacturing_news",
+  "soft_cta": "Какие технологии вас интересуют?",
   "require_approval": true,
   "dry_run_mode": true,
   "approved_by": null
@@ -170,18 +189,20 @@ create_draft(
 
 ### Step 6: Validate
 
-**Task:** Check brand names, content safety
+**Task:** Check brand names, content safety, CTA rules
 
 ```python
 validate_draft(
   draft=new_draft,
   checks=[
     "brand_names_correct",
+    "no_hard_cta",
+    "soft_cta_present",
     "no_fake_clients",
     "no_fake_metrics",
-    "cta_present",
     "source_attributed",
-    "word_count_valid"
+    "word_count_valid",
+    "category_valid"
   ]
 )
 ```
@@ -190,9 +211,11 @@ validate_draft(
 - ✅ UNITFURNITURE (not UNIFURNITURE)
 - ✅ UNITPLAST (not UniPlast)
 - ✅ UNITMETALL (not UNIMETALL)
+- ✅ Soft CTA only (NO "Open Mini App", "Get quote", etc)
 - ✅ No "fake", "test", "demo" without labels
 - ✅ Source URL included
-- ✅ 50-200 words
+- ✅ 100-300 words
+- ✅ Category is one of: news, ideas, machinery, materials, trends
 
 ### Step 7: Send Preview
 
@@ -410,13 +433,16 @@ tail -f logs/media_news.log
 
 ## Status
 
-- ✅ Agent defined
-- ⏳ Awaiting implementation
-- ⏳ Awaiting testing
-- ⏳ Awaiting deployment
+- ✅ Agent redefined for informational strategy
+- ✅ Content categories mapped (25/20/20/15/10%)
+- ✅ Soft CTA rules enforced
+- ✅ Hard CTA forbidden
+- ⏳ Awaiting implementation with new category logic
+- ⏳ Awaiting testing with informational samples
+- ⏳ Awaiting deployment with DRY_RUN=true
 
 ---
 
 **Ready for:** Software engineer implementation  
-**Dependencies:** media_sources.yaml, news_rewrite_for_telegram_skill.md  
-**Next:** Implement industry_news_rewriter.py module
+**Dependencies:** media_sources.yaml (expanded), news_rewrite_for_telegram_skill.md (updated), content_categories.yaml  
+**Next:** Implement informational content pipeline with category routing

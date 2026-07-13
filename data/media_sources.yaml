@@ -388,11 +388,301 @@ sources:
       require_approval: true
       allow_ai_generated_visual: true
 
-# Скоринг новостей
+# КАТЕГОРИЯ 1: Новости производства (25%)
+
+  - name: "Manufacturing.net"
+    category: "manufacturing_news"
+    type: "industry_media"
+    language: "en"
+    priority: 5
+    url: "https://www.manufacturing.net"
+    rss_url: "https://www.manufacturing.net/feed"
+    topics:
+      - "manufacturing trends"
+      - "industry news"
+      - "technology adoption"
+      - "market trends"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "IndustryWeek"
+    category: "manufacturing_news"
+    type: "industry_media"
+    language: "en"
+    priority: 5
+    url: "https://www.industryweek.com"
+    rss_url: "https://www.industryweek.com/feed"
+    topics:
+      - "industrial innovation"
+      - "manufacturing technology"
+      - "market analysis"
+      - "production trends"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "PlasticsToday"
+    category: "manufacturing_news"
+    type: "industry_media"
+    language: "en"
+    priority: 5
+    url: "https://www.plasticstoday.com"
+    rss_url: "https://www.plasticstoday.com/feed"
+    topics:
+      - "plastic manufacturing"
+      - "injection molding"
+      - "plastic technology"
+      - "market news"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "Furniture News Russia"
+    category: "manufacturing_news"
+    type: "russian_industry_media"
+    language: "ru"
+    priority: 4
+    url: "https://www.furnituresnewsru.ru"
+    rss_url: "https://www.furnituresnewsru.ru/feed"
+    topics:
+      - "мебельное производство"
+      - "рынок мебели"
+      - "новые технологии"
+      - "выставки"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+# КАТЕГОРИЯ 2: Бизнес-идеи (20%)
+
+  - name: "Entrepreneur Magazine"
+    category: "business_ideas"
+    type: "industry_media"
+    language: "en"
+    priority: 4
+    url: "https://www.entrepreneur.com"
+    rss_url: "https://www.entrepreneur.com/feed"
+    topics:
+      - "small business"
+      - "startup ideas"
+      - "business strategies"
+      - "entrepreneurship"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "Small Business Trends"
+    category: "business_ideas"
+    type: "industry_media"
+    language: "en"
+    priority: 4
+    url: "https://smallbiztrends.com"
+    rss_url: "https://smallbiztrends.com/feed"
+    topics:
+      - "small business tips"
+      - "business models"
+      - "market opportunities"
+      - "manufacturing niches"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "РБК Бизнес"
+    category: "business_ideas"
+    type: "russian_industry_media"
+    language: "ru"
+    priority: 4
+    url: "https://www.rbc.ru/business"
+    rss_url: "https://www.rbc.ru/business/feed"
+    topics:
+      - "бизнес-идеи"
+      - "предпринимательство"
+      - "стартапы"
+      - "малый бизнес"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+# КАТЕГОРИЯ 3: Станки и оборудование (20%)
+
+  - name: "Machinery Values"
+    category: "machinery_equipment"
+    type: "industry_media"
+    language: "en"
+    priority: 5
+    url: "https://www.machineryvalues.com"
+    rss_url: "https://www.machineryvalues.com/feed"
+    topics:
+      - "machinery reviews"
+      - "equipment selection"
+      - "machine comparison"
+      - "equipment trends"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "Machine Design"
+    category: "machinery_equipment"
+    type: "industry_media"
+    language: "en"
+    priority: 5
+    url: "https://www.machinedesign.com"
+    rss_url: "https://www.machinedesign.com/feed"
+    topics:
+      - "mechanical engineering"
+      - "equipment technology"
+      - "machine innovation"
+      - "industrial design"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "СТАНКИ.РУ Каталог"
+    category: "machinery_equipment"
+    type: "russian_industry_media"
+    language: "ru"
+    priority: 4
+    url: "https://stanki.ru"
+    rss_url: "https://stanki.ru/equipment/feed"
+    topics:
+      - "каталог станков"
+      - "выбор оборудования"
+      - "технические характеристики"
+      - "сравнение станков"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+# КАТЕГОРИЯ 4: Материалы и технологии (15%)
+
+  - name: "Materials Today"
+    category: "materials_technologies"
+    type: "industry_media"
+    language: "en"
+    priority: 4
+    url: "https://www.materialstoday.com"
+    rss_url: "https://www.materialstoday.com/feed"
+    topics:
+      - "new materials"
+      - "material science"
+      - "composite technology"
+      - "material innovation"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "Advanced Materials & Processes"
+    category: "materials_technologies"
+    type: "industry_media"
+    language: "en"
+    priority: 4
+    url: "https://www.asminternational.org"
+    rss_url: "https://www.asminternational.org/feed"
+    topics:
+      - "material processing"
+      - "advanced materials"
+      - "manufacturing processes"
+      - "technology trends"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+# КАТЕГОРИЯ 5: Тренды и прогнозы (10%)
+
+  - name: "McKinsey Manufacturing"
+    category: "trends_forecasts"
+    type: "research"
+    language: "en"
+    priority: 4
+    url: "https://www.mckinsey.com/industries/industrials-and-electronics/our-insights"
+    rss_url: "https://www.mckinsey.com/feed"
+    topics:
+      - "manufacturing trends"
+      - "industry forecast"
+      - "market analysis"
+      - "future of manufacturing"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "Gartner Manufacturing"
+    category: "trends_forecasts"
+    type: "research"
+    language: "en"
+    priority: 4
+    url: "https://www.gartner.com/smarterwithgartner"
+    rss_url: "https://www.gartner.com/feed"
+    topics:
+      - "industry forecast"
+      - "technology trends"
+      - "market prediction"
+      - "future trends"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+# Скоринг новостей (ИНФОРМАЦИОННЫЙ ФОРМАТ)
 scoring:
   rules:
-    has_equipment: 3
-    relates_to_unitmodule: 3
+    relevant_to_manufacturing: 3
+    relates_to_content_category: 3
     explains_value_for_smb: 2
     has_visual_or_generatable: 2
     fresh_news: 1
@@ -401,10 +691,12 @@ scoring:
     unsafe_to_use: -5
     no_manufacturing_connection: -5
     unverifiable_fact: -5
+    contains_hard_cta: -5
+    sales_pitch_tone: -3
   min_score: 6
   reject_score_below: 6
 
-# Политика контента
+# Политика контента (ИНФОРМАЦИОННЫЙ КАНАЛ)
 content_policy:
   max_word_count_from_source: 25
   require_source_attribution: true
@@ -412,11 +704,47 @@ content_policy:
   allow_ai_generated_visual: true
   no_direct_image_copy: true
   rewrite_policy: "не копировать, переписать своими словами"
+
+  # ОБЯЗАТЕЛЬНО использовать МЯГКИЕ CTA только
+  soft_cta_required: true
+  hard_cta_forbidden: true
+  hard_cta_examples_forbidden:
+    - "Открыть Mini App"
+    - "Получить КП"
+    - "Рассчитать заказ"
+    - "Получить демо"
+    - "Попробовать калькулятор"
+    - "Запросить КП"
+    - "Оставить заявку на расчёт"
+    - "Узнать стоимость"
+    - "Зарегистрируйся в app"
+    - "Используй наш сервис"
+
+  soft_cta_examples_allowed:
+    - "Подписаться на @UnitgroupAI"
+    - "Сохранить идею"
+    - "Написать, какую тему разобрать"
+    - "Выбрать тему следующего поста"
+    - "Оставить мнение в комментариях"
+    - "Написать, какой станок разобрать"
+    - "Написать, какая ниша интересна"
+    - "Поделиться советом"
+    - "Дать рекомендацию"
+
+  # Правильные бренды (ДОЛЖНЫ БЫТЬ ПРАВИЛЬНЫЕ)
   brands_required:
     - UNITGROUP
     - UNITPLAST
-    - UNITFURNITURE
-    - UNITMETALL
+    - UNITFURNITURE (NOT UNIFURNITURE)
+    - UNITMETALL (NOT UNIMETALL)
+
+  # Категории контента
+  content_categories:
+    - manufacturing_news (25%)
+    - business_ideas (20%)
+    - machinery_equipment (20%)
+    - materials_technologies (15%)
+    - trends_forecasts (10%)
 
 # Статусы постов
 post_statuses:
