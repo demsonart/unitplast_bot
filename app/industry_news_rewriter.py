@@ -21,7 +21,6 @@ from pathlib import Path
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass, asdict
 import re
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from .config import BASE_DIR
 
 logger = logging.getLogger(__name__)
@@ -108,96 +107,67 @@ class NewsRewriter:
             },
         }
 
-    def _fetch_single_feed(self, feed_info: Dict, limit: int = 50) -> List[NewsItem]:
-        """Fetch from single feed (for parallel execution) - timeout handled by ThreadPoolExecutor"""
-        try:
-            url = feed_info.get("rss_url") or feed_info.get("url", "")
-            if not url:
-                return []
-
-            feed_name = feed_info.get("name", "Unknown")
-            logger.info(f"⏳ {feed_name}: {url}")
-
-            # feedparser.parse handles timeout internally (~30s default)
-            feed = feedparser.parse(url)
-
-            items = []
-            for entry in feed.entries[:limit]:
-                try:
-                    pub_date_str = entry.get("published", "")
-                    if not pub_date_str:
-                        continue
-
-                    item = NewsItem(
-                        url=entry.get("link", ""),
-                        title=entry.get("title", ""),
-                        content=entry.get("summary", ""),
-                        source_name=feed_name,
-                        published_date=pub_date_str,
-                        category=feed_info.get("category", "general"),
-                        language=feed_info.get("language", "en"),
-                    )
-                    items.append(item)
-                except Exception as e:
-                    logger.debug(f"Parse error: {e}")
-                    continue
-
-            if len(items) > 0:
-                logger.info(f"✅ {feed_name}: {len(items)} items")
-            return items
-        except Exception as e:
-            logger.warning(f"❌ {feed_info.get('name', 'Unknown')}: {str(e)[:60]}")
-            return []
-
     def fetch_news(self, limit: int = 50, hours_back: int = 24) -> List[NewsItem]:
-        """Fetch news from configured RSS feeds (parallel with timeout)"""
-        import time
+        """Fetch news from configured RSS feeds."""
         news_items = []
+        cutoff_time = datetime.utcnow() - timedelta(hours=hours_back)
+
         sources = self.config.get("sources", [])
 
         # Handle both list and dict formats
         if isinstance(sources, dict):
+            # Dictionary format: {category: {feeds: [...]}}
             feeds_list = []
             for category, category_data in sources.items():
                 feeds = category_data.get("feeds", [])
                 feeds_list.extend(feeds)
         else:
+            # List format: [{name: ..., rss_url: ..., ...}, ...]
             feeds_list = sources if isinstance(sources, list) else []
 
-        # Limit to top 15 feeds for speed (avoid slowdowns)
-        feeds_list = feeds_list[:15]
-
-        logger.info(f"🔄 Fetching from {len(feeds_list)} feeds (parallel)...")
-        start_time = time.time()
-
-        # Parallel fetch (max 8 concurrent workers, 45s total timeout)
-        completed = 0
-        failed = 0
-        with ThreadPoolExecutor(max_workers=8) as executor:
-            futures = {executor.submit(self._fetch_single_feed, feed_info, limit): feed_info
-                      for feed_info in feeds_list}
-
-            for future in as_completed(futures, timeout=45):  # 45s overall timeout
+        for feed_info in feeds_list:
                 try:
-                    items = future.result(timeout=8)
-                    news_items.extend(items)
-                    completed += 1
-                    if completed % 8 == 0:
-                        logger.info(f"📰 Progress: {completed}/{len(feeds_list)} done ({len(news_items)} items so far)")
-                except Exception as e:
-                    failed += 1
-                    logger.warning(f"⚠️ Feed future failed: {str(e)[:70]}")
+                    # Try rss_url first, then url
+                    url = feed_info.get("rss_url") or feed_info.get("url", "")
+                    if not url:
+                        continue
 
-        elapsed = time.time() - start_time
-        logger.info(f"✅ Fetch done: {len(news_items)} items | {completed} ok, {failed} failed | {elapsed:.1f}s")
+                    logger.info(f"Fetching from {feed_info.get('name', 'Unknown')}: {url}")
+                    feed = feedparser.parse(url)
+
+                    for entry in feed.entries[:limit]:
+                        try:
+                            pub_date_str = entry.get("published", "")
+                            if not pub_date_str:
+                                continue
+
+                            item = NewsItem(
+                                url=entry.get("link", ""),
+                                title=entry.get("title", ""),
+                                content=entry.get("summary", ""),
+                                source_name=feed_info.get("name", "Unknown"),
+                                published_date=pub_date_str,
+                                category=feed_info.get("category", "general"),
+                                language=feed_info.get("language", "en"),
+                            )
+                            news_items.append(item)
+                        except Exception as e:
+                            logger.warning(f"Error parsing entry: {e}")
+                            continue
+
+                except Exception as e:
+                    logger.error(f"Failed to fetch from {feed_info.get('name')}: {e}")
+                    continue
+
+        logger.info(f"Fetched {len(news_items)} news items")
         return news_items[:limit]
 
     def filter_and_score(self, items: List[NewsItem]) -> List[ScoredNews]:
         """Filter by keywords and score by relevance."""
         config = self.config.get("filters", {})
-        include_keywords = config.get("include_keywords", ["automation", "AI", "efficiency", "manufacturing"])
-        exclude_keywords = config.get("exclude_keywords", ["politics", "weather", "sports", "fake"])
-        min_words = config.get("min_words", 20)  # Reduced from 50 to 20 for more items
+        include_keywords = config.get("include_keywords", [])
+        exclude_keywords = config.get("exclude_keywords", [])
+        min_words = config.get("min_words", 50)
         max_words = config.get("max_words", 5000)
 
         scored = []
@@ -208,18 +178,17 @@ class NewsRewriter:
 
             # Check word count
             if word_count < min_words or word_count > max_words:
-                logger.debug(f"Filtered out: word count {word_count} (min:{min_words}, max:{max_words})")
                 continue
 
             # Check exclude keywords
             if any(kw.lower() in text for kw in exclude_keywords):
-                logger.debug(f"Filtered out: contains exclude keyword")
                 continue
 
-            # Score based on include keywords (optional, not required)
+            # Score based on include keywords
             matched = [kw for kw in include_keywords if kw.lower() in text]
+            if not matched:
+                continue
 
-            # Accept items with OR without keywords (all items pass!)
             relevance_score = min(len(matched) * 0.15 + 0.3, 1.0)
 
             scored.append(ScoredNews(
@@ -233,17 +202,9 @@ class NewsRewriter:
         logger.info(f"Scored {len(scored)} relevant items")
         return scored
 
-    def map_to_products(self, item) -> List[str]:
-        """Map news to UNITGROUP products - accepts NewsItem or dict."""
-        # Handle both NewsItem and dict
-        if isinstance(item, dict):
-            title = str(item.get("title", ""))
-            content = str(item.get("content", ""))
-        else:
-            title = str(item.title)
-            content = str(item.content)
-
-        text = (title + " " + content).lower()
+    def map_to_products(self, item: NewsItem) -> List[str]:
+        """Map news to UNITGROUP products."""
+        text = (item.title + " " + item.content).lower()
 
         mapping = {
             "UNITPLAST": ["plastic", "injection", "molding", "polymers"],
@@ -274,14 +235,9 @@ class NewsRewriter:
 
         return len(errors) == 0, errors
 
-    def validate_content_safety(self, item) -> Tuple[bool, List[str]]:
-        """Check for fake content, spam, etc. Accepts string or NewsItem."""
-        # Handle both string (post_text) and NewsItem
-        if isinstance(item, str):
-            text = item.lower()
-        else:
-            text = (item.title + " " + item.content).lower()
-
+    def validate_content_safety(self, item: NewsItem) -> Tuple[bool, List[str]]:
+        """Check for fake content, spam, etc."""
+        text = (item.title + " " + item.content).lower()
         errors = []
 
         # Check for fake indicators
@@ -293,32 +249,19 @@ class NewsRewriter:
         # Check for unverified metrics
         if "%" in text or "x" in text.lower():
             # Typically OK if has source attribution
-            if not isinstance(item, str):  # Only check for NewsItem
-                if item.source_name and item.url:
-                    pass  # Source is provided
-                else:
-                    pass  # Will be caught elsewhere
+            if item.source_name and item.url:
+                pass  # Source is provided
+            else:
+                pass  # Will be caught elsewhere
 
         return len(errors) == 0, errors
 
     def rewrite_for_telegram(
         self,
-        item,  # Can be NewsItem or dict
+        item: NewsItem,
         products: List[str],
     ) -> Dict[str, str]:
-        """Rewrite news for Telegram format - accepts NewsItem or dict."""
-        # Handle both NewsItem objects and dicts
-        if isinstance(item, dict):
-            title = str(item.get("title", ""))
-            content = str(item.get("content", ""))
-            source_name = str(item.get("source", "Unknown"))
-            published_date = str(item.get("published_date", ""))
-        else:
-            title = str(item.title)
-            content = str(item.content)
-            source_name = str(item.source_name)
-            published_date = str(item.published_date)
-
+        """Rewrite news for Telegram format."""
         # Emoji mapping
         emoji_map = {
             "automation": "🤖",
@@ -329,7 +272,7 @@ class NewsRewriter:
             "plastic": "🎯",
         }
 
-        text_lower = (title + " " + content).lower()
+        text_lower = (item.title + " " + item.content).lower()
         emoji = "📰"
         for keyword, emj in emoji_map.items():
             if keyword in text_lower:
@@ -362,14 +305,14 @@ class NewsRewriter:
             ),
         }
 
-        headline = f"{emoji} {title}"
+        headline = f"{emoji} {item.title}"
         context = product_contexts.get(product, product_contexts["UNITPLAST"])
 
         body = (
             f"{context}\n\n"
             f"Коммерческое предложение за 30 сек!\n\n"
             f"👉 Откроить Mini App\n"
-            f"📰 Источник: {source_name} ({published_date[:10] if len(published_date) > 10 else published_date})"
+            f"📰 Источник: {item.source_name} ({item.published_date[:10]})"
         )
 
         return {

@@ -9,7 +9,6 @@ import time
 import asyncio
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
-from concurrent.futures import ThreadPoolExecutor
 from app.industry_news_rewriter import NewsRewriter
 from app.media_bot_integration import MediaBotIntegration
 import logging
@@ -21,10 +20,10 @@ logger = logging.getLogger(__name__)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 AUTONOMOUS_MODE = os.getenv("AUTONOMOUS_MODE", "false").lower() in ("true", "1", "yes")
-AUTO_PUBLISH_ENABLED = os.getenv("AUTO_PUBLISH_ENABLED", "true").lower() in ("true", "1", "yes")
-AUTONOMOUS_QUALITY_THRESHOLD = float(os.getenv("AUTONOMOUS_QUALITY_THRESHOLD", "0.60"))
+AUTO_PUBLISH_ENABLED = os.getenv("AUTO_PUBLISH_ENABLED", "false").lower() in ("true", "1", "yes")
+AUTONOMOUS_QUALITY_THRESHOLD = float(os.getenv("AUTONOMOUS_QUALITY_THRESHOLD", "0.85"))
 PREVIEW_THRESHOLD = float(os.getenv("PREVIEW_THRESHOLD", "0.75"))
-MIN_QUALITY_THRESHOLD = float(os.getenv("MIN_QUALITY_THRESHOLD", "0.50"))
+MIN_QUALITY_THRESHOLD = float(os.getenv("MIN_QUALITY_THRESHOLD", "0.65"))
 PREVIEW_WINDOW_MINUTES = int(os.getenv("PREVIEW_WINDOW_MINUTES", "60"))
 FETCH_INTERVAL_MINUTES = int(os.getenv("FETCH_INTERVAL_MINUTES", "30"))
 MAX_ARTICLES_PER_FETCH = int(os.getenv("MAX_ARTICLES_PER_FETCH", "100"))
@@ -67,73 +66,36 @@ class AutonomousNewsAgent:
 
     def fetch_and_filter(self) -> List[Dict]:
         """Fetch news and filter candidates"""
-        import time
-        logger.info("🤖 AUTONOMOUS: Starting fetch & filter cycle")
-        start = time.time()
+        logger.info("🤖 AUTONOMOUS: Starting news fetch and filter")
 
-        # Step 1: Fetch news
-        try:
-            raw_news = self.news_rewriter.fetch_news()
-            logger.info(f"✅ Fetched {len(raw_news)} items ({time.time()-start:.1f}s)")
-        except Exception as e:
-            logger.error(f"❌ Fetch failed: {e}")
-            return []
+        # Fetch news
+        raw_news = self.news_rewriter.fetch_news()
+        logger.info(f"🤖 AUTONOMOUS: Fetched {len(raw_news)} raw articles")
 
-        # Step 2: Filter and score
-        try:
-            filtered = self.news_rewriter.filter_and_score(raw_news)
-            logger.info(f"✅ Filtered to {len(filtered)} candidates ({time.time()-start:.1f}s)")
-        except Exception as e:
-            logger.error(f"❌ Filter failed: {e}")
-            return []
+        # Filter and score
+        filtered = self.news_rewriter.filter_and_score(raw_news)
+        logger.info(f"🤖 AUTONOMOUS: Filtered to {len(filtered)} candidates")
 
-        # Step 3: Remove duplicates
+        # Remove duplicates
         unique_news = []
-        for scored_item in filtered:
-            article_hash = self._hash_article(scored_item)
+        for article in filtered:
+            article_hash = self._hash_article(article)
             if article_hash not in self.processed_articles:
-                # Extract NewsItem from ScoredNews
-                item = scored_item.item
-                # Convert to dict for downstream processing
-                article_dict = {
-                    "title": item.title,
-                    "link": item.url,
-                    "content": item.content,
-                    "source": item.source_name,
-                    "category": item.category,
-                    "score": scored_item.relevance_score,
-                }
-                unique_news.append(article_dict)
+                unique_news.append(article)
                 self.processed_articles.add(article_hash)
 
-        logger.info(f"✅ {len(unique_news)} new unique ({time.time()-start:.1f}s)")
+        logger.info(f"🤖 AUTONOMOUS: {len(unique_news)} new unique articles")
 
-        # Step 4: Map to products
-        try:
-            for article in unique_news:
-                # map_to_products works with anything that has title/content
-                article["products"] = self.news_rewriter.map_to_products(article)
-            logger.info(f"✅ Mapped {len(unique_news)} to products ({time.time()-start:.1f}s)")
-        except Exception as e:
-            logger.error(f"❌ Map failed: {e}")
-            # Add default products if mapping fails
-            for article in unique_news:
-                if "products" not in article:
-                    article["products"] = ["UNITPLAST"]
+        # Map to products
+        for article in unique_news:
+            article["products"] = self.news_rewriter.map_to_products(article)
 
-        result = unique_news[:MAX_ARTICLES_PER_FETCH]
-        logger.info(f"🎯 READY: {len(result)} articles for processing ({time.time()-start:.1f}s total)")
-        return result
+        return unique_news[:MAX_ARTICLES_PER_FETCH]
 
-    def _hash_article(self, scored_news) -> str:
+    def _hash_article(self, article: Dict) -> str:
         """Create MD5 hash of article for duplicate detection"""
         import hashlib
-        # Handle both ScoredNews objects and dicts
-        if hasattr(scored_news, 'item'):  # ScoredNews object
-            item = scored_news.item
-            content = f"{item.title}{item.url}"
-        else:  # dict
-            content = f"{scored_news.get('title', '')}{scored_news.get('link', '')}"
+        content = f"{article.get('title', '')}{article.get('link', '')}"
         return hashlib.md5(content.encode()).hexdigest()
 
     # ─────────────────────────────────────────────────────────────────────────────
@@ -144,10 +106,7 @@ class AutonomousNewsAgent:
         """Rewrite article and enhance quality"""
 
         # Step 5: Base rewrite (NewsRewriter)
-        # Pass article dict directly - rewrite_for_telegram now handles dicts
-        products = article.get("products", ["UNITPLAST"])
-        rewritten = self.news_rewriter.rewrite_for_telegram(article, products)
-        post_text = rewritten.get("full_text", rewritten.get("body", ""))
+        post_text = self.news_rewriter.rewrite_for_telegram(article)
         base_score = article.get("score", 0.5)  # 0.0 - 0.6 from NewsRewriter
 
         # Step 6: AI Enhancement (if enabled)
@@ -314,7 +273,7 @@ class AutonomousNewsAgent:
     async def _send_preview(
         self, article: Dict, post_text: str, final_score: float
     ) -> bool:
-        """Send preview for 1-hour admin window (non-blocking)"""
+        """Send preview for 1-hour admin window"""
         try:
             preview_message = f"""
 ⚠️ NEWS PREVIEW (Score: {final_score:.2f})
@@ -336,8 +295,9 @@ Auto-publishes in: {PREVIEW_WINDOW_MINUTES} min ⏱️
             self._log_event("sent_for_preview", article, post_text, final_score, "Awaiting admin decision")
             logger.info(f"⚠️ PREVIEW SENT: Score {final_score:.2f} (window: {PREVIEW_WINDOW_MINUTES}m)")
 
-            # Schedule auto-publish in background (non-blocking)
-            asyncio.create_task(self._delayed_auto_publish(article, post_text, final_score))
+            # Auto-publish after window if no response
+            await asyncio.sleep(PREVIEW_WINDOW_MINUTES * 60)
+            await self._auto_publish(article, post_text, final_score)
 
             return True
 
@@ -345,11 +305,6 @@ Auto-publishes in: {PREVIEW_WINDOW_MINUTES} min ⏱️
             logger.error(f"Preview send failed: {e}")
             self._log_event("preview_error", article, post_text, final_score, str(e))
             return False
-
-    async def _delayed_auto_publish(self, article: Dict, post_text: str, final_score: float):
-        """Auto-publish after preview window (runs in background)"""
-        await asyncio.sleep(PREVIEW_WINDOW_MINUTES * 60)
-        await self._auto_publish(article, post_text, final_score)
 
     # ─────────────────────────────────────────────────────────────────────────────
     # STEP 11-12: LOGGING & LEARNING
@@ -397,22 +352,6 @@ Auto-publishes in: {PREVIEW_WINDOW_MINUTES} min ⏱️
     # MAIN LOOP
     # ─────────────────────────────────────────────────────────────────────────────
 
-    async def _process_single_article(self, article: Dict) -> bool:
-        """Process single article (async wrapper)"""
-        try:
-            # Rewrite & enhance
-            post_text, base_score = self.rewrite_and_enhance(article)
-
-            # Validate
-            final_score, validation = self.validate_quality(article, post_text, base_score)
-
-            # Publish or preview (non-blocking)
-            await self.publish_or_preview(article, post_text, final_score)
-            return True
-        except Exception as e:
-            logger.error(f"Error processing article: {e}", exc_info=True)
-            return False
-
     async def run_autonomous_loop(self):
         """Main autonomous loop"""
         logger.info("🤖 AUTONOMOUS MODE ACTIVATED")
@@ -433,12 +372,16 @@ Auto-publishes in: {PREVIEW_WINDOW_MINUTES} min ⏱️
                 if not articles:
                     logger.info("ℹ️ No new articles to process")
                 else:
-                    logger.info(f"📰 Processing {len(articles)} articles in parallel...")
-                    # Process articles in parallel (max 5 concurrent)
-                    tasks = [self._process_single_article(article) for article in articles[:5]]
-                    results = await asyncio.gather(*tasks, return_exceptions=True)
-                    success_count = sum(1 for r in results if r is True)
-                    logger.info(f"✅ Processed: {success_count}/{len(articles)} articles")
+                    # Process each article
+                    for article in articles:
+                        # Rewrite & enhance
+                        post_text, base_score = self.rewrite_and_enhance(article)
+
+                        # Validate
+                        final_score, validation = self.validate_quality(article, post_text, base_score)
+
+                        # Publish or preview
+                        await self.publish_or_preview(article, post_text, final_score)
 
                 # Analyze engagement
                 if iteration % 12 == 0:  # Every 6 hours (12 × 30 min)
