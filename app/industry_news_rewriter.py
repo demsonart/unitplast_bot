@@ -112,12 +112,23 @@ class NewsRewriter:
         news_items = []
         cutoff_time = datetime.utcnow() - timedelta(hours=hours_back)
 
-        sources = self.config.get("sources", {})
-        for category, category_data in sources.items():
-            feeds = category_data.get("feeds", [])
-            for feed_info in feeds:
+        sources = self.config.get("sources", [])
+
+        # Handle both list and dict formats
+        if isinstance(sources, dict):
+            # Dictionary format: {category: {feeds: [...]}}
+            feeds_list = []
+            for category, category_data in sources.items():
+                feeds = category_data.get("feeds", [])
+                feeds_list.extend(feeds)
+        else:
+            # List format: [{name: ..., rss_url: ..., ...}, ...]
+            feeds_list = sources if isinstance(sources, list) else []
+
+        for feed_info in feeds_list:
                 try:
-                    url = feed_info.get("url", "")
+                    # Try rss_url first, then url
+                    url = feed_info.get("rss_url") or feed_info.get("url", "")
                     if not url:
                         continue
 
