@@ -1,8 +1,13 @@
-# Skill: Industry News Rewrite for Telegram @UnitgroupAI
+# Skill: News Rewrite for Telegram / UNITGROUP AI
 
 ## Purpose
 
-Fetch industry news, rewrite for B2B manufacturing audience, adapt to UNITGROUP context, and prepare for Telegram publication (with admin approval).
+Безопасный рерайт отраслевых новостей для Telegram-канала @UnitgroupAI.
+
+Не копировать текст источника. Не переводить дословно. Не брать больше 25 слов прямой цитаты.
+Сохранять ссылку на источник. Писать на русском. Добавлять производственный вывод.
+Связывать новость с UNITGROUP AI. Не выдумывать клиентов или метрики.
+Не копировать картинки без разрешения. Публиковать только после approval.
 
 ## Key Capabilities
 
@@ -316,12 +321,87 @@ moderation:
 ✅ Token never exposed
 ```
 
+## Main Rules (Mandatory)
+
+1. Не копировать текст источника.
+2. Не переводить дословно.
+3. Не брать больше 25 слов прямой цитаты из одного источника.
+4. Сохранять ссылку на источник.
+5. Писать на русском.
+6. Добавлять производственный вывод.
+7. Связывать новость с UNITGROUP AI.
+8. Не выдумывать клиентов.
+9. Не выдумывать цифры.
+10. Не копировать картинки без разрешения.
+11. Публиковать только после approval.
+
+## Post Structure
+
+1. Хук (с emoji).
+2. Что произошло.
+3. Почему это важно производству.
+4. Как это связано с UNITPLAST / UNITFURNITURE / UNITMETALL.
+5. Что можно автоматизировать.
+6. CTA (Call To Action).
+7. Источник.
+
+## Scoring Rules
+
+```
++3 — есть станок / технология / производство
++3 — относится к UNITPLAST / UNITFURNITURE / UNITMETALL
++2 — можно объяснить пользу для малого/среднего производства
++2 — есть визуал или можно сделать свой
++1 — свежая новость
+-5 — просто реклама без пользы
+-5 — нет источника
+-5 — нельзя безопасно использовать
+-5 — нет связи с производством
+-5 — невозможно проверить факт
+```
+
+Публиковать можно только если:
+- score >= 6
+- safety_status = APPROVED
+- approval_required = true
+- user_approved = true
+
+## Visual Rules
+
+**Allowed:**
+- AI-generated image
+- Official press image with permission
+- Own product mockup
+- Own UI screenshot
+
+**Forbidden:**
+- Random article image
+- Pinterest image
+- Instagram image
+- Telegram repost image
+- Watermark removal
+- Fake factory photo
+
+## Post Types
+
+- Новость + вывод
+- Новинка станка
+- Технология недели
+- Ошибка производства
+- Как AI считает КП
+- До / после автоматизации
+- Разбор тренда
+- Видео-сценарий
+- Карусель
+- Дайджест
+
 ## Testing Checklist
 
 - [ ] Fetch from RSS works
 - [ ] Filter by keywords works
 - [ ] Rewrite produces readable text
 - [ ] Brand validation catches errors
+- [ ] Scoring logic correct
 - [ ] Draft JSON valid
 - [ ] Preview in admin chat works
 - [ ] Dry-run prevents publish
@@ -332,5 +412,5 @@ moderation:
 ---
 
 **Status:** Ready for implementation  
-**Dependencies:** media_sources.yaml, telegram_media_bot.py  
-**Next:** Implement industry-news-rewriter agent
+**Dependencies:** data/media_sources.yaml, telegram_final_bot.py  
+**Next:** Verify all sources classified, update agent definition
