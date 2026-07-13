@@ -66,10 +66,10 @@ class TestLandingPage(unittest.TestCase):
         self.assertEqual(len(brand_cards), 3)
 
     def test_brand_names_present(self):
-        """Test UNITPLAST, UNIFURNITURE, UNIMETALL mentioned"""
+        """Test UNITPLAST, UNITFURNITURE, UNITMETALL mentioned"""
         self.assertIn('UNITPLAST', self.html)
-        self.assertIn('UNIFURNITURE', self.html)
-        self.assertIn('UNIMETALL', self.html)
+        self.assertIn('UNITFURNITURE', self.html)
+        self.assertIn('UNITMETALL', self.html)
 
     def test_cta_buttons_exist(self):
         """Test CTA buttons exist"""

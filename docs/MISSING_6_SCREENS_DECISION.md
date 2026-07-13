@@ -24,7 +24,7 @@ Gap: 88 - 4 - 9 = 75 remaining
 
 1. **HERO** — Главная секция, заголовок, CTA
 2. **FEATURES** — 6 возможностей
-3. **THREE BRANDS** — UNITPLAST, UNIFURNITURE, UNIMETALL
+3. **THREE BRANDS** — UNITPLAST, UNITFURNITURE, UNITMETALL
 4. **COMMERCIAL** — Коммерческие предложения
 5. **MINI APP** — Демонстрация
 6. **MANAGEMENT** — Управленческие функции

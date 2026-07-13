@@ -471,7 +471,7 @@ def calculate_plastic():
 
 @api.route('/calculator/furniture', methods=['POST'])
 def calculate_furniture():
-    """Calculate UNIFURNITURE product price"""
+    """Calculate UNITFURNITURE product price"""
     data = request.json
 
     result = KPCalculator.calculate_furniture(
@@ -487,7 +487,7 @@ def calculate_furniture():
 
 @api.route('/calculator/metal', methods=['POST'])
 def calculate_metal():
-    """Calculate UNIMETALL (metal) structure price"""
+    """Calculate UNITMETALL (metal) structure price"""
     data = request.json
 
     result = KPCalculator.calculate_metal(

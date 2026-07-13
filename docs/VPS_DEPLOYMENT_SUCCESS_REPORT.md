@@ -71,7 +71,7 @@ New files deployed:
 ✓ commercial-offers — КП (готовое коммерческое предложение)
 ✓ mini-app         — Telegram Mini App промо
 ✓ management       — Контроль производства в реальном времени
-✓ three-brands     — UNITPLAST, UNIFURNITURE, UNIMETALL
+✓ three-brands     — UNITPLAST, UNITFURNITURE, UNITMETALL
 ✓ contacts         — Контактная форма и инфо
 ✓ cta-block        — "Сделайте следующий шаг"
 [footer]           — Копирайт и ссылки
@@ -87,7 +87,7 @@ Changes:
 - ✅ Enhanced UI components
 - ✅ Improved mobile responsiveness
 - ✅ Better integration with landing
-- ✅ UNIFURNITURE catalog integration
+- ✅ UNITFURNITURE catalog integration
 
 ---
 

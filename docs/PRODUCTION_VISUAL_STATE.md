@@ -30,7 +30,7 @@
 | 3 | **COMMERCIAL OFFERS** | "Коммерческие предложения" — КП автоматически | `<section class="commercial-offers">` |
 | 4 | **MINI APP** | "Скачайте приложение" — промо Telegram Mini App | `<section class="mini-app">` |
 | 5 | **MANAGEMENT DASHBOARD** | "Контролируйте производство в реальном времени" | `<section class="management">` |
-| 6 | **THREE BRANDS** | Три бренда: UNITPLAST (пластик), UNIFURNITURE (мебель), UNIMETALL (металл) | `<section class="three-brands">` |
+| 6 | **THREE BRANDS** | Три бренда: UNITPLAST (пластик), UNITFURNITURE (мебель), UNITMETALL (металл) | `<section class="three-brands">` |
 | 7 | **CONTACTS** | Контактные данные всех отделов (4 карточки) | `<section class="contacts">` |
 | 8 | **CTA BLOCK** | Призыв "Сделайте следующий шаг" + кнопка "Запросить демонстрацию" | `<section class="cta-block">` |
 | 9 | **FOOTER** | Копирайт + ссылки (Политика, Условия, Контакты) | `<footer>` |
@@ -156,7 +156,7 @@ def miniapp():
 | **Кол-во секций** | 9 | 9 (по дизайну) | ✅ Совпадает |
 | **Hero/Главный** | Да (расчёт за 30 сек) | Да | ✅ |
 | **Features** | 6 карточек | На макетах | ✅ |
-| **Three Brands** | UNITPLAST, UNIFURNITURE, UNIMETALL | На макетах | ✅ |
+| **Three Brands** | UNITPLAST, UNITFURNITURE, UNITMETALL | На макетах | ✅ |
 | **Mini App Promo** | Есть отдельная секция | На макетах | ✅ |
 | **Contacts** | 4 отдела + форма | На макетах | ✅ |
 | **Management/Dashboard** | Есть | На макетах | ✅ |

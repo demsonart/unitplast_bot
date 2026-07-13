@@ -70,7 +70,7 @@
 ✅ 6 feature cards present  
 ✅ Three brands section exists  
 ✅ 3 brand cards (UP, UF, UM)  
-✅ UNITPLAST/UNIFURNITURE/UNIMETALL mentioned  
+✅ UNITPLAST/UNITFURNITURE/UNITMETALL mentioned  
 ✅ CTA buttons exist  
 ✅ CSS stylesheet loaded  
 ✅ Google Fonts linked  

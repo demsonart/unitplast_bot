@@ -1,6 +1,6 @@
 """
 UNITGROUP KP Calculator - Real calculation logic
-Supports UNITPLAST, UNIFURNITURE, UNIMETALL
+Supports UNITPLAST, UNITFURNITURE, UNITMETALL
 """
 
 from typing import Dict, List, Tuple
@@ -93,7 +93,7 @@ class KPCalculator:
         }
 
     # ════════════════════════════════════════════════════════════════════════
-    # UNIFURNITURE - Furniture pricing
+    # UNITFURNITURE - Furniture pricing
     # ════════════════════════════════════════════════════════════════════════
 
     FURNITURE_BASE_PRICES = {
@@ -170,7 +170,7 @@ class KPCalculator:
         }
 
     # ════════════════════════════════════════════════════════════════════════
-    # UNIMETALL - Metal structures pricing
+    # UNITMETALL - Metal structures pricing
     # ════════════════════════════════════════════════════════════════════════
 
     METAL_BASE_PRICES = {

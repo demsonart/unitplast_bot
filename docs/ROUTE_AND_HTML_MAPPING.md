@@ -57,8 +57,8 @@ web/
 ├── unitplast_app.html   (2.8 KB) ← Старый (не используется)
 ├── app.html             (21 KB)  ← Разное приложение?
 ├── manager.html         (13 KB)  ← Manager интерфейс?
-├── furniture_factory.html (8.0 KB) ← UNIFURNITURE?
-├── metal_factory.html   (8.1 KB) ← UNIMETALL?
+├── furniture_factory.html (8.0 KB) ← UNITFURNITURE?
+├── metal_factory.html   (8.1 KB) ← UNITMETALL?
 ├── plastics_factory.html (8.1 KB) ← UNITPLAST factory?
 ├── packaging_factory.html (8.1 KB) ← Тестовый?
 ├── unitplast_catalog.html (24 KB) ← Каталог?
