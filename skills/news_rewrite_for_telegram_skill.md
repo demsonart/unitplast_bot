@@ -2,12 +2,21 @@
 
 ## Purpose
 
-Безопасный рерайт отраслевых новостей для Telegram-канала @UnitgroupAI.
+Безопасный рерайт отраслевых новостей для информационного Telegram-канала @UnitgroupAI.
 
-Не копировать текст источника. Не переводить дословно. Не брать больше 25 слов прямой цитаты.
-Сохранять ссылку на источник. Писать на русском. Добавлять производственный вывод.
-Связывать новость с UNITGROUP AI. Не выдумывать клиентов или метрики.
-Не копировать картинки без разрешения. Публиковать только после approval.
+Канал — это источник информации о производстве, машинах, технологиях и бизнес-идеях,
+не продажный питч. 
+
+**Правила:**
+- ✅ Переписывать, не копировать (не дословно)
+- ✅ Мягкие, информационные CTA только
+- ✅ Сохранять ссылку на источник всегда
+- ✅ Писать на русском
+- ✅ Добавлять практический вывод для производителей
+- ✅ Не выдумывать клиентов, цифры или факты
+- ✅ Не копировать картинки без разрешения
+- ❌ НИКОГДА не использовать hard CTA (Mini App, КП, расчеты, демо)
+- ❌ Публиковать ТОЛЬКО после approval в DRY_RUN режиме
 
 ## Key Capabilities
 
@@ -64,8 +73,8 @@ Date: "2024-07-13"
 {
   "type": "text_with_photo",
   "brand_module": "UNITFURNITURE",
-  "text": "🤖 AI снижает стоимость производства на 40%\n\nИсточник: IndustryWeek\n\nНовое исследование...",
-  "cta": "Откроить Mini App",
+  "text": "🪑 AI контролирует качество мебели\n\nНовое исследование показывает...",
+  "cta": "Какие технологии вас интересуют?",
   "draft_id": "draft_news_20240713_001",
   "source_url": "https://...",
   "status": "draft",
@@ -75,44 +84,44 @@ Date: "2024-07-13"
 
 ## Rewrite Rules
 
-### Rule 1: Hook (Emoji + Number/Benefit)
+### Rule 1: Hook (Emoji + Headline)
 
 **Before:**
 "New automation technology reduces costs"
 
 **After:**
-"🤖 Сокращение затрат на производство"
+"🤖 Автоматизация снижает затраты на производство"
 
-### Rule 2: Explain Why (UNITGROUP Context)
+### Rule 2: Explain Context (Why It Matters)
 
 **Before:**
-"AI helps with calculation"
+"AI helps with manufacturing efficiency"
 
 **After:**
-"Как UNITGROUP делает это за 30 секунд:
-- Умное ценообразование
-- Автоматический расчёт сроков
-- Экспорт в PDF"
+"Новые технологии помогают производителям:
+- Ускорить процесс
+- Снизить затраты
+- Улучшить качество"
 
-### Rule 3: Adapt to Product (UNITPLAST/UNITFURNITURE/UNITMETALL)
+### Rule 3: Adapt to Audience (Manufacturing Focus)
 
 **Before:**
 "Manufacturing costs decreased"
 
 **After:**
-"📊 Для UNITFURNITURE это означает:
-- Точный расчёт фурнитуры
-- Минимум отходов
-- Быстрая коммерческое предложение"
+"📊 Для производства это означает:
+- Меньше брака
+- Быстрее сроки
+- Стабильнее качество"
 
-### Rule 4: Add CTA (Clear Action)
+### Rule 4: Add Soft CTA (Engagement)
 
 **Before:**
 "Read more at..."
 
 **After:**
-"👉 Откроить Mini App калькулятора
-Рассчитай свой заказ за 30 сек"
+"→ Какие технологии вас интересуют?
+Напишите в комментариях"
 
 ### Rule 5: Keep Source
 
@@ -139,7 +148,7 @@ If any wrong:
 - 📝 Log error
 - ⚠️ Alert admin
 
-## Content Safety Checks
+## Content Safety & CTA Checks
 
 ```
 ❌ FORBIDDEN:
@@ -148,6 +157,7 @@ If any wrong:
 - Competitor names
 - Political content
 - Spam
+- Hard CTA (sales pitch)
 
 ✅ ALLOWED:
 - Real industry news
@@ -155,6 +165,30 @@ If any wrong:
 - Educational content
 - Honest examples
 - Source attribution
+- Soft CTA (engagement)
+
+❌ FORBIDDEN CTA LIST:
+- Открыть Mini App
+- Получить КП
+- Рассчитать заказ
+- Получить демо
+- Попробовать калькулятор
+- Запросить КП
+- Оставить заявку на расчёт
+- Узнать стоимость
+- Зарегистрируйся в app
+- Используй наш сервис
+
+✅ ALLOWED SOFT CTA:
+- Подписаться на @UnitgroupAI
+- Сохранить идею
+- Написать, какую тему разобрать
+- Выбрать тему следующего поста
+- Оставить мнение в комментариях
+- Написать, какой станок разобрать
+- Написать, какая ниша интересна
+- Поделиться советом
+- Дать рекомендацию
 ```
 
 ## JSON Draft Structure
@@ -177,8 +211,8 @@ If any wrong:
   "content": {
     "text": "Telegram-formatted post text",
     "emoji_hook": "🤖",
-    "cta_button_text": "Откроить Mini App",
-    "cta_link": "https://unitgroup.tech/app/"
+    "soft_cta": "Какие технологии вас интересуют?",
+    "category": "news|ideas|machinery|materials|trends"
   },
   
   "metadata": {
@@ -193,8 +227,10 @@ If any wrong:
     "brand_check_passed": true,
     "safety_check_passed": true,
     "word_count_valid": true,
-    "cta_present": true,
-    "source_attributed": true
+    "soft_cta_present": true,
+    "no_hard_cta": true,
+    "source_attributed": true,
+    "category_valid": true
   },
   
   "approval": {
@@ -215,9 +251,9 @@ If any wrong:
 }
 ```
 
-## Adaptation by Product
+## Adaptation by Category
 
-### UNITPLAST Example
+### Категория 1: Новости производства
 
 **Original news:**
 "Plastic injection molding sees 25% efficiency gain with AI"
@@ -225,51 +261,55 @@ If any wrong:
 **Rewritten:**
 "🎯 Пластиковое литьё: +25% эффективности с AI
 
-UNITPLAST автоматически рассчитывает:
-- Материал и вес
-- Цикл литья
-- Стоимость партии
-- Сроки доставки
+Новое исследование показывает что автоматизация:
+- Ускорила процесс на четверть
+- Снизила брак на 15%
+- Сократила трудозатраты
 
-Результат КП за 30 сек вместо часов.
+Это важно для всех, кто работает с литьём.
 
-👉 Откроить калькулятор"
+→ Какие технологии вы хотите разобрать?
 
-### UNITFURNITURE Example
+📰 Источник: Manufacturing News"
+
+### Категория 2: Бизнес-идеи
 
 **Original news:**
 "Smart manufacturing reduces furniture production time"
 
 **Rewritten:**
-"🪑 Мебель быстрее: Smart Manufacturing
+"💡 Ниша: модульная офисная мебель
 
-UNITFURNITURE считает автоматически:
-- Материал (ЛДСП, МДФ, массив)
-- Обработка и отделка
-- Фурнитура
-- Сборка и доставка
+Компании все больше переходят на удалённую работу,
+и спрос на качественную модульную мебель растёт.
 
-Коммерческое предложение готово за 30 сек!
+Это может быть вашей нишей если:
+- Можете инвестировать 1-2 млн
+- Готовы работать с корпоративными клиентами
+- Владеете ЧПУ или готовы купить
 
-👉 Попробовать прямо сейчас"
+→ Какие ниши вас интересуют?
 
-### UNITMETALL Example
+📰 Источник: Industry Analysis"
+
+### Категория 3: Станки и оборудование
 
 **Original news:**
 "Metal fabrication AI improves quote accuracy"
 
 **Rewritten:**
-"🔧 Металл точнее: AI расчёты
+"🔧 Выбираем фрезерный станок для мебели
 
-UNITMETALL автоматически определяет:
-- Тип и профиль металла
-- Резка, гибка, сварка
-- Покрытие и покраска
-- Итоговая стоимость
+Новые станки 2026 года могут:
+- Обрабатывать сложные формы
+- Работать 24/7 без перерывов
+- Снижать отходы на 20%
 
-Точная коммерческое предложение за 30 сек.
+Цена вопроса: 2-5 млн за качественный станок.
 
-👉 Рассчитать заказ"
+→ Какой станок вы хотите разобрать?
+
+📰 Источник: Equipment Review"
 
 ## Integration Points
 
@@ -335,15 +375,15 @@ moderation:
 10. Не копировать картинки без разрешения.
 11. Публиковать только после approval.
 
-## Post Structure
+## Post Structure (Информационный формат)
 
-1. Хук (с emoji).
-2. Что произошло.
-3. Почему это важно производству.
-4. Как это связано с UNITPLAST / UNITFURNITURE / UNITMETALL.
-5. Что можно автоматизировать.
-6. CTA (Call To Action).
-7. Источник.
+1. 🔥 Хук с emoji + заголовок (5-10 слов)
+2. 📝 Суть (2-3 предложения что произошло)
+3. 💡 Практический вывод (почему это важно для производства)
+4. ⭐ Действие (что можно сделать на основе этого)
+5. → Мягкий CTA (вопрос к аудитории)
+6. 📰 Источник (название + URL)
+7. 🏭 Категория (новости / идеи / станки / технологии / тренды)
 
 ## Scoring Rules
 
