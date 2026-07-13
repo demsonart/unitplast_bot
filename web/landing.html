@@ -484,28 +484,36 @@
                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
                     <!-- NEW -->
                     <div style="text-align: center;">
-                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #FF6B35 0%, #FF8A5B 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white; font-weight: 700; font-size: 20px;">📋</div>
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #FF6B35 0%, #FF8A5B 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white;">
+                            <svg class="icon icon-md" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-clipboard"/></svg>
+                        </div>
                         <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px;">Новый заказ</div>
                         <div style="font-size: 11px; color: #999;">Расчет и КП</div>
                     </div>
 
                     <!-- IN PROGRESS -->
                     <div style="text-align: center;">
-                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #5A5A5A 0%, #7A7A7A 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white; font-weight: 700; font-size: 20px;">⚙️</div>
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #5A5A5A 0%, #7A7A7A 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white;">
+                            <svg class="icon icon-md" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>
+                        </div>
                         <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px;">В работе</div>
                         <div style="font-size: 11px; color: #999;">Производство</div>
                     </div>
 
                     <!-- READY -->
                     <div style="text-align: center;">
-                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #0066CC 0%, #0088FF 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white; font-weight: 700; font-size: 20px;">✓</div>
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #0066CC 0%, #0088FF 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white;">
+                            <svg class="icon icon-md" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-checkmark-circle"/></svg>
+                        </div>
                         <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px;">Готово</div>
                         <div style="font-size: 11px; color: #999;">К отправке</div>
                     </div>
 
                     <!-- DELIVERED -->
                     <div style="text-align: center;">
-                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981 0%, #26d07c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white; font-weight: 700; font-size: 20px;">📦</div>
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981 0%, #26d07c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; color: white;">
+                            <svg class="icon icon-md" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-package"/></svg>
+                        </div>
                         <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px;">Доставлено</div>
                         <div style="font-size: 11px; color: #999;">Завершено</div>
                     </div>
@@ -607,18 +615,22 @@
         <div class="row g-4" style="margin-top: 48px;">
             <!-- UNITPLAST -->
             <div class="col-lg-4">
-                <div class="material-card" style="border-color: var(--orange); color: var(--orange);">
-                    <div class="material-header" style="background: linear-gradient(135deg, var(--orange) 0%, #FF8A5B 100%);">
-                        <svg style="width: 64px; height: 64px;" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M6 3h12v18H6z"/><path d="M9 6h6M9 10h6M9 14h6"/><circle cx="12" cy="19" r="1.5" fill="white"/>
+                <div class="material-card" style="border-color: var(--gray); color: var(--gray);">
+                    <div class="material-header" style="background: linear-gradient(135deg, #3D3D3D 0%, #5A5A5A 100%); color: white; display: flex; align-items: center; justify-content: center; gap: 12px;">
+                        <svg style="width: 40px; height: 40px;" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M32 12L48 21V43L32 52L16 43V21Z"/>
+                                <path d="M32 28L40 33V45L32 50L24 45V33Z"/>
+                            </g>
                         </svg>
+                        <span style="font-size: 18px; font-weight: 700; font-family: 'IBM Plex Serif', serif; letter-spacing: -0.5px;">UNITPLAST</span>
                     </div>
                     <div class="material-content">
-                        <div class="material-name">UNITPLAST</div>
-                        <div class="material-desc">Системы для производства пластика</div>
+                        <div class="material-name">Максимальная скорость расчётов</div>
+                        <div class="material-desc">От параметров к цене за 10 секунд. Точные расчёты для каждого типа пластика и метода производства</div>
                         <div class="material-stats">
                             <div class="stat">
-                                <div class="stat-val">500+</div>
+                                <div class="stat-val">800+</div>
                                 <div class="stat-key">Клиентов</div>
                             </div>
                             <div class="stat">
@@ -631,25 +643,29 @@
                 </div>
             </div>
 
-            <!-- UNIFURNITURE -->
+            <!-- UNITFURNITURE -->
             <div class="col-lg-4">
-                <div class="material-card" style="border-color: var(--green); color: var(--green);">
-                    <div class="material-header" style="background: linear-gradient(135deg, var(--green) 0%, #26d07c 100%);">
-                        <svg style="width: 64px; height: 64px;" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5M3 5h18M8 8v7M12 8v7M16 8v7"/>
+                <div class="material-card" style="border-color: var(--orange); color: var(--orange);">
+                    <div class="material-header" style="background: linear-gradient(135deg, var(--orange) 0%, #FF8A5B 100%); color: white; display: flex; align-items: center; justify-content: center; gap: 12px;">
+                        <svg style="width: 40px; height: 40px;" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M32 12L48 21V43L32 52L16 43V21Z"/>
+                                <path d="M32 28L40 33V45L32 50L24 45V33Z"/>
+                            </g>
                         </svg>
+                        <span style="font-size: 18px; font-weight: 700; font-family: 'IBM Plex Serif', serif; letter-spacing: -0.5px;">UNITFURNITURE</span>
                     </div>
                     <div class="material-content">
-                        <div class="material-name">UNIFURNITURE</div>
-                        <div class="material-desc">Решения для мебельного производства</div>
+                        <div class="material-name">От эскиза до доставки контролируемо</div>
+                        <div class="material-desc">Каждый проект отслеживается в реальном времени. Управляйте качеством, сроками и прибылью одной системой</div>
                         <div class="material-stats">
                             <div class="stat">
-                                <div class="stat-val">1000+</div>
+                                <div class="stat-val">1200+</div>
                                 <div class="stat-key">Проектов</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-val">50+</div>
-                                <div class="stat-key">Стран</div>
+                                <div class="stat-val">18+</div>
+                                <div class="stat-key">Лет опыта</div>
                             </div>
                         </div>
                         <a href="miniapp.html" class="btn btn-primary w-100">Калькулятор</a>
@@ -657,25 +673,29 @@
                 </div>
             </div>
 
-            <!-- UNIMETALL -->
+            <!-- UNITMETALL -->
             <div class="col-lg-4">
-                <div class="material-card" style="border-color: var(--gray); color: var(--gray);">
-                    <div class="material-header" style="background: linear-gradient(135deg, var(--gray) 0%, #7A7A7A 100%);">
-                        <svg style="width: 64px; height: 64px;" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 12h18M5 5l2 14h10l2-14M9 5v14M15 5v14M8 9h8"/>
+                <div class="material-card" style="border-color: var(--green); color: var(--green);">
+                    <div class="material-header" style="background: linear-gradient(135deg, var(--green) 0%, #26d07c 100%); color: white; display: flex; align-items: center; justify-content: center; gap: 12px;">
+                        <svg style="width: 40px; height: 40px;" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M32 12L48 21V43L32 52L16 43V21Z"/>
+                                <path d="M32 28L40 33V45L32 50L24 45V33Z"/>
+                            </g>
                         </svg>
+                        <span style="font-size: 18px; font-weight: 700; font-family: 'IBM Plex Serif', serif; letter-spacing: -0.5px;">UNITMETALL</span>
                     </div>
                     <div class="material-content">
-                        <div class="material-name">UNIMETALL</div>
-                        <div class="material-desc">Системы для металлоконструкций</div>
+                        <div class="material-name">Точность инженера, скорость алгоритма</div>
+                        <div class="material-desc">Расчёты по ГОСТам, стандартам безопасности и реальным нагрузкам. Каждая конструкция рассчитана идеально</div>
                         <div class="material-stats">
                             <div class="stat">
-                                <div class="stat-val">100+</div>
-                                <div class="stat-key">Партнёров</div>
+                                <div class="stat-val">950+</div>
+                                <div class="stat-key">Объектов</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-val">24/7</div>
-                                <div class="stat-key">Поддержка</div>
+                                <div class="stat-val">22+</div>
+                                <div class="stat-key">Лет опыта</div>
                             </div>
                         </div>
                         <a href="miniapp.html" class="btn btn-primary w-100">Калькулятор</a>
@@ -739,7 +759,7 @@
                             <div style="background: rgba(255, 107, 53, 0.2); border: 1px solid var(--orange); border-radius: 8px; padding: 12px; text-align: center; font-size: 11px; font-weight: 600; color: var(--orange);">Пластик</div>
                             <div style="background: rgba(16, 185, 129, 0.2); border: 1px solid var(--green); border-radius: 8px; padding: 12px; text-align: center; font-size: 11px; font-weight: 600; color: var(--green);">Мебель</div>
                         </div>
-                        <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-bottom: 8px;">📦 Параметры</div>
+                        <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-bottom: 8px;"><svg class="icon icon-sm" style="width: 14px; height: 14px; display: inline-block; margin-right: 4px; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-package"/></svg>Параметры</div>
                         <div style="font-size: 11px; line-height: 1.6; color: rgba(255,255,255,0.8); margin-bottom: 16px;">
                             Высота: 200мм<br>Ширина: 150мм<br>Толщина: 2мм
                         </div>
@@ -771,13 +791,13 @@
 
                 <features-list style="list-style: none; margin: 0; padding: 0;">
                     <ul class="features-list">
-                        <li>✅ Профессиональный калькулятор</li>
-                        <li>✅ Все 3 материала (UNITPLAST)</li>
-                        <li>✅ Управление заказами</li>
-                        <li>✅ История расчётов</li>
-                        <li>❌ Интеграция 1С</li>
-                        <li>❌ Аналитика премиум</li>
-                        <li>✅ Email поддержка</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Профессиональный калькулятор</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Все 3 материала (UNITPLAST)</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Управление заказами</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>История расчётов</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #999; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-close"/></svg>Интеграция 1С</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #999; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-close"/></svg>Аналитика премиум</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Email поддержка</li>
                     </ul>
                 </features-list>
 
@@ -795,13 +815,13 @@
 
                 <features-list style="list-style: none; margin: 0; padding: 0;">
                     <ul class="features-list">
-                        <li>✅ Все из STARTER</li>
-                        <li>✅ Все 3 материала (включая мебель)</li>
-                        <li>✅ Коммерческие предложения</li>
-                        <li>✅ Аналитика и отчеты</li>
-                        <li>✅ Управление командой (до 5 чел)</li>
-                        <li>✅ Интеграция 1С (базовая)</li>
-                        <li>✅ Приоритетная поддержка</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Все из STARTER</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Все 3 материала (включая мебель)</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Коммерческие предложения</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Аналитика и отчеты</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Управление командой (до 5 чел)</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Интеграция 1С (базовая)</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Приоритетная поддержка</li>
                     </ul>
                 </features-list>
 
@@ -818,13 +838,13 @@
 
                 <features-list style="list-style: none; margin: 0; padding: 0;">
                     <ul class="features-list">
-                        <li>✅ Всё из PROFESSIONAL</li>
-                        <li>✅ Неограниченная команда</li>
-                        <li>✅ Полная интеграция 1С</li>
-                        <li>✅ Белый лейбл</li>
-                        <li>✅ Выделенный аккаунт-менеджер</li>
-                        <li>✅ SLA гарантия 99.9%</li>
-                        <li>✅ 24/7 премиум поддержка</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Всё из PROFESSIONAL</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Неограниченная команда</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Полная интеграция 1С</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Белый лейбл</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>Выделенный аккаунт-менеджер</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>SLA гарантия 99.9%</li>
+                        <li><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; color: #10b981; vertical-align: text-bottom;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-check"/></svg>24/7 премиум поддержка</li>
                     </ul>
                 </features-list>
 
@@ -933,7 +953,7 @@
         </div>
 
         <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; text-align: center; color: #666;">
-            <p style="margin: 0; font-size: 14px;">© 2026 UNITGROUP. Все права защищены. | Разработано с <span style="color: var(--orange);">❤</span> для производства</p>
+            <p style="margin: 0; font-size: 14px;">© 2026 UNITGROUP. Все права защищены. | Разработано для производства</p>
         </div>
     </div>
 </footer>

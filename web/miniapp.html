@@ -383,8 +383,8 @@
             </svg>
             <h1>UNITGROUP</h1>
         </a>
-        <button onclick="alert('⚙️ Настройки')" style="background: rgba(255,107,53,0.1); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--orange);">
-            ⚙️
+        <button onclick="alert('Настройки')" style="background: rgba(255,107,53,0.1); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--orange);">
+            <svg class="icon icon-sm" style="width: 20px; height: 20px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-settings"/></svg>
         </button>
     </div>
 
@@ -404,7 +404,7 @@
             <div class="history-item">
                 <div class="history-header">
                     <div>
-                        <div class="history-name">📦 Пластиковый контейнер</div>
+                        <div class="history-name"><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 6px; vertical-align: text-bottom; color: var(--orange);" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-package"/></svg>Пластиковый контейнер</div>
                         <div class="history-date">Сегодня, 14:32</div>
                     </div>
                     <div class="history-price">12 490 ₽</div>
@@ -415,7 +415,7 @@
             <div class="history-item">
                 <div class="history-header">
                     <div>
-                        <div class="history-name">🪑 Офисный стул</div>
+                        <div class="history-name"><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 6px; vertical-align: text-bottom; color: var(--green);" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-furniture"/></svg>Офисный стул</div>
                         <div class="history-date">Вчера, 10:15</div>
                     </div>
                     <div class="history-price">8 500 ₽</div>
@@ -426,7 +426,7 @@
             <div class="history-item">
                 <div class="history-header">
                     <div>
-                        <div class="history-name">🔧 Металлический каркас</div>
+                        <div class="history-name"><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 6px; vertical-align: text-bottom; color: var(--gray);" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-metall"/></svg>Металлический каркас</div>
                         <div class="history-date">2 дня назад</div>
                     </div>
                     <div class="history-price">25 000 ₽</div>
@@ -435,7 +435,8 @@
             </div>
 
             <button onclick="showPage('calculator')" class="btn-action btn-primary" style="margin-top: 24px;">
-                <span>➕ Новый расчёт</span>
+                <svg class="icon icon-sm" style="width: 16px; height: 16px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-plus"/></svg>
+                <span>Новый расчёт</span>
             </button>
         </div>
 
@@ -452,23 +453,17 @@
                 <div class="input-label">Выберите материал</div>
                 <div class="material-selector">
                     <button class="material-btn plastic active" onclick="selectType('plastic')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M6 3h12v18H6z" stroke-linecap="round"/><path d="M9 6h6M9 10h6M9 14h6"/><circle cx="12" cy="19" r="1" fill="currentColor"/>
-                        </svg>
+                        <svg class="icon" style="width: 32px; height: 32px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-plastic"/></svg>
                         <div class="material-name">Пластик</div>
                         <div class="material-type">UNITPLAST</div>
                     </button>
                     <button class="material-btn furniture" onclick="selectType('furniture')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5M3 5h18M8 8v7M12 8v7M16 8v7" stroke-linecap="round"/>
-                        </svg>
+                        <svg class="icon" style="width: 32px; height: 32px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-furniture"/></svg>
                         <div class="material-name">Мебель</div>
                         <div class="material-type">UNIFURNITURE</div>
                     </button>
                     <button class="material-btn metal" onclick="selectType('metal')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M3 12h18M5 5l2 14h10l2-14M9 5v14M15 5v14M8 9h8" stroke-linecap="round"/>
-                        </svg>
+                        <svg class="icon" style="width: 32px; height: 32px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-metall"/></svg>
                         <div class="material-name">Металл</div>
                         <div class="material-type">UNIMETALL</div>
                     </button>
@@ -634,10 +629,12 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 24px;">
                 <button onclick="showPage('dashboard')" class="btn-action btn-secondary">
-                    ← Назад
+                    <svg class="icon icon-sm" style="width: 16px; height: 16px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-back"/></svg>
+                    <span>Назад</span>
                 </button>
                 <button onclick="saveCalculation()" class="btn-action btn-primary">
-                    💾 Сохранить
+                    <svg class="icon icon-sm" style="width: 16px; height: 16px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-download"/></svg>
+                    <span>Сохранить</span>
                 </button>
             </div>
         </div>
@@ -649,7 +646,7 @@
             <div class="history-item">
                 <div class="history-header">
                     <div>
-                        <div class="history-name">📦 Пластиковый контейнер</div>
+                        <div class="history-name"><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 6px; vertical-align: text-bottom; color: var(--orange);" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-package"/></svg>Пластиковый контейнер</div>
                         <div class="history-date">07.07.2026 15:32</div>
                     </div>
                     <div class="history-price">12 450 ₽</div>
@@ -661,7 +658,7 @@
             <div class="history-item">
                 <div class="history-header">
                     <div>
-                        <div class="history-name">🪑 Офисный стул</div>
+                        <div class="history-name"><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 6px; vertical-align: text-bottom; color: var(--green);" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-furniture"/></svg>Офисный стул</div>
                         <div class="history-date">06.07.2026 10:15</div>
                     </div>
                     <div class="history-price">8 500 ₽</div>
@@ -673,7 +670,7 @@
             <div class="history-item">
                 <div class="history-header">
                     <div>
-                        <div class="history-name">🔧 Стальной каркас</div>
+                        <div class="history-name"><svg class="icon icon-sm" style="width: 16px; height: 16px; display: inline-block; margin-right: 6px; vertical-align: text-bottom; color: var(--gray);" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-metall"/></svg>Стальной каркас</div>
                         <div class="history-date">05.07.2026 14:20</div>
                     </div>
                     <div class="history-price">25 000 ₽</div>
@@ -748,10 +745,12 @@
             </div>
 
             <button class="btn-action btn-secondary" style="margin-top: 24px;">
-                🔐 Изменить пароль
+                <svg class="icon icon-sm" style="width: 16px; height: 16px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-shield"/></svg>
+                <span>Изменить пароль</span>
             </button>
             <button class="btn-action btn-secondary" style="margin-top: 8px;">
-                🚪 Выход
+                <svg class="icon icon-sm" style="width: 16px; height: 16px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-close"/></svg>
+                <span>Выход</span>
             </button>
         </div>
     </div>
@@ -759,33 +758,23 @@
     <!-- NAVIGATION -->
     <div class="app-nav">
         <a class="nav-item active" onclick="showPage('dashboard')">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
-            </svg>
+            <svg class="icon" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-home"/></svg>
             <span>Главная</span>
         </a>
         <a class="nav-item" onclick="showPage('calculator')">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-            </svg>
+            <svg class="icon" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-calculator"/></svg>
             <span>Калькулятор</span>
         </a>
         <a class="nav-item" onclick="showPage('history')">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
-            </svg>
+            <svg class="icon" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-calendar"/></svg>
             <span>История</span>
         </a>
         <a class="nav-item" onclick="showPage('analytics')">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-2.96-3.83c-.3-.39-.97-.39-1.25 0-.31.39-.31 1.02 0 1.41l3.69 4.72c.3.39.9.39 1.25.03l3.71-4.46c.25-.28.26-.73.02-1.01-.23-.28-.77-.29-1.01-.02z"/>
-            </svg>
+            <svg class="icon" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-analytics"/></svg>
             <span>Аналитика</span>
         </a>
         <a class="nav-item" onclick="showPage('profile')">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>
+            <svg class="icon" style="width: 24px; height: 24px;" aria-hidden="true"><use href="/assets/icons-sprite.svg#icon-profile"/></svg>
             <span>Профиль</span>
         </a>
     </div>
@@ -828,7 +817,7 @@
     }
 
     function saveCalculation() {
-        alert('✅ Расчёт сохранён!');
+        alert('Расчёт сохранён!');
     }
 </script>
 
