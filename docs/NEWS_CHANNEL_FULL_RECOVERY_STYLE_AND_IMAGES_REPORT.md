@@ -65,7 +65,7 @@ Channel status: Silent
 Old token: 8801271587:AAGrZLpKdoSyJIlCF4g60BuNsiQoFqCcMu4
 Status: COMPROMISED (was in git history)
 
-New token: [REDACTED]  
+New token: [SECURE - See .env]
 Status: INSTALLED in .env (not tracked by git)
 ```
 
