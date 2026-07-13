@@ -12,10 +12,19 @@ DATABASE_PATH = os.getenv("DATABASE_PATH", str(DATA_DIR / "unitplast.db"))
 # Create data directory if it doesn't exist
 DATA_DIR.mkdir(exist_ok=True)
 
-# Telegram
+# Telegram (Main Bot)
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_GROUP_ID = int(os.getenv("TELEGRAM_GROUP_ID", 0))
 TELEGRAM_ADMIN_ID = int(os.getenv("TELEGRAM_ADMIN_ID", 0))
+
+# Telegram Media Bot (Industry News)
+TELEGRAM_MEDIA_BOT_TOKEN = os.getenv("TELEGRAM_MEDIA_BOT_TOKEN") or os.getenv("MEDIA_BOT_TOKEN")
+TELEGRAM_CHANNEL_USERNAME = os.getenv("TELEGRAM_CHANNEL_USERNAME", "@UnitgroupAI")
+TELEGRAM_CHANNEL_ID = os.getenv("TELEGRAM_CHANNEL_ID", "")
+TELEGRAM_DRY_RUN = os.getenv("TELEGRAM_DRY_RUN", "true").lower() in ("true", "1", "yes")
+TELEGRAM_REQUIRE_APPROVAL = os.getenv("TELEGRAM_REQUIRE_APPROVAL", "true").lower() in ("true", "1", "yes")
+TELEGRAM_POST_LOG_PATH = os.getenv("TELEGRAM_POST_LOG_PATH", str(BASE_DIR / "logs" / "telegram_posts.jsonl"))
+TELEGRAM_DRAFT_STORAGE_PATH = os.getenv("TELEGRAM_DRAFT_STORAGE_PATH", str(DATA_DIR / "post_drafts"))
 
 # Yandex Mail
 YANDEX_EMAIL = os.getenv("YANDEX_EMAIL")
