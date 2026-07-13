@@ -307,11 +307,13 @@ class NewsRewriter:
             content = str(item.get("content", ""))
             source_name = str(item.get("source", "Unknown"))
             published_date = str(item.get("published_date", ""))
+            logger.info(f"DEBUG rewrite_for_telegram: title type={type(title)}, content type={type(content)}")
         else:
             title = str(item.title)
             content = str(item.content)
             source_name = str(item.source_name)
             published_date = str(item.published_date)
+            logger.info(f"DEBUG rewrite_for_telegram: NewsItem - title type={type(title)}, content type={type(content)}")
 
         # Emoji mapping
         emoji_map = {
