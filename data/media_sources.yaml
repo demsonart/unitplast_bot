@@ -1,120 +1,429 @@
 # ═══════════════════════════════════════════════════════════════════════════════
 # INDUSTRY NEWS SOURCES FOR TELEGRAM CHANNEL @UnitgroupAI
 # ═══════════════════════════════════════════════════════════════════════════════
+# Источники отраслевых новостей для мебельного производства, металлообработки,
+# станков и промышленного AI
 
-# RSS feeds and news sources for manufacturing industry
+# UNITFURNITURE / мебель / деревообработка
 sources:
-  manufacturing:
-    name: "Manufacturing & Production News"
-    feeds:
-      - url: "https://www.industryweek.com/feed"
-        name: "IndustryWeek"
-        category: "manufacturing"
-        language: "en"
-      - url: "https://www.manufacturingtomorrow.com/feed"
-        name: "Manufacturing Tomorrow"
-        category: "manufacturing"
-        language: "en"
 
-  plastics:
-    name: "Plastics & Polymers"
-    feeds:
-      - url: "https://www.plasticstoday.com/feed"
-        name: "PlasticsToday"
-        category: "plastics"
-        language: "en"
-      - url: "https://www.ptonline.com/feed"
-        name: "Plastics Technology Online"
-        category: "plastics"
-        language: "en"
+  - name: "Woodworking Network"
+    category: "furniture"
+    module: "UNITFURNITURE"
+    type: "industry_media"
+    language: "en"
+    priority: 5
+    url: "https://www.woodworkingnetwork.com"
+    rss_url: "https://www.woodworkingnetwork.com/feed"
+    topics:
+      - "cnc"
+      - "furniture manufacturing"
+      - "woodworking automation"
+      - "machinery market"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
 
-  furniture:
-    name: "Furniture & Design"
-    feeds:
-      - url: "https://www.furnituretoday.com/feed"
-        name: "Furniture Today"
-        category: "furniture"
-        language: "en"
-      - url: "https://www.decormagazine.com/feed"
-        name: "Décor Magazine"
-        category: "design"
-        language: "en"
+  - name: "Furniture Production Magazine"
+    category: "furniture_production"
+    module: "UNITFURNITURE"
+    type: "industry_media"
+    language: "en"
+    priority: 5
+    url: "https://www.furnproduction.com"
+    rss_url: "https://www.furnproduction.com/feed"
+    topics:
+      - "furniture production"
+      - "woodworking machinery"
+      - "fittings"
+      - "exhibitions"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
 
-  metalworking:
-    name: "Metal & Fabrication"
-    feeds:
-      - url: "https://www.thefabricator.com/feed"
-        name: "The Fabricator"
-        category: "metal"
-        language: "en"
-      - url: "https://www.sheet-metal.com/feed"
-        name: "Sheet Metal Magazine"
-        category: "metal"
-        language: "en"
+  - name: "ЛесПромИнформ"
+    category: "деревообработка"
+    module: "UNITFURNITURE"
+    type: "russian_industry_media"
+    language: "ru"
+    priority: 4
+    url: "https://lesprominform.ru"
+    rss_url: "https://lesprominform.ru/feed"
+    topics:
+      - "деревообработка"
+      - "мебельное производство"
+      - "оборудование РФ"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
 
-  automation:
-    name: "Factory Automation & AI"
-    feeds:
-      - url: "https://www.roboticsbusinessreview.com/feed"
-        name: "Robotics Business Review"
-        category: "automation"
-        language: "en"
-      - url: "https://www.aiweekly.com/feed"
-        name: "AI Weekly"
-        category: "ai"
-        language: "en"
+  - name: "STANKI.RU Woodworking"
+    category: "деревообработка"
+    module: "UNITFURNITURE"
+    type: "russian_industry_media"
+    language: "ru"
+    priority: 4
+    url: "https://stanki.ru/woodworking"
+    rss_url: "https://stanki.ru/woodworking/feed"
+    topics:
+      - "станки"
+      - "деревообработка"
+      - "ЧПУ"
+      - "поставщики"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: only_if_press_or_allowed
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
 
-# Filter rules for relevance
-filters:
-  include_keywords:
-    - "automation"
-    - "cost reduction"
-    - "production efficiency"
-    - "order management"
-    - "pricing"
-    - "manufacturing"
-    - "calculation"
-    - "AI"
-    - "delivery time"
-    - "supply chain"
+  - name: "HOMAG News"
+    category: "woodworking_machinery"
+    module: "UNITFURNITURE"
+    type: "manufacturer_official"
+    language: "en"
+    priority: 5
+    url: "https://www.homag.com"
+    rss_url: "https://www.homag.com/news/feed"
+    topics:
+      - "cnc"
+      - "edgebanding"
+      - "cutting"
+      - "automation"
+      - "woodworking software"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: only_if_press_or_allowed
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
 
-  exclude_keywords:
-    - "politics"
-    - "weather"
-    - "sports"
-    - "entertainment"
-    - "fake"
-    - "test"
+  - name: "SCM Group News"
+    category: "woodworking_technology"
+    module: "UNITFURNITURE"
+    type: "manufacturer_official"
+    language: "en"
+    priority: 4
+    url: "https://www.scmgroup.com"
+    rss_url: "https://www.scmgroup.com/news/feed"
+    topics:
+      - "woodworking technology"
+      - "automation"
+      - "furniture manufacturing"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: only_if_press_or_allowed
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
 
-  min_words: 50
-  max_words: 5000
+# UNITMETALL / металл / станки / лазеры / гибка / сварка
 
-# Processing rules
-processing:
-  language: "en"
-  translate_to: "ru"  # Translate to Russian for @UnitgroupAI
-  rewrite_style: "telegram"
-  include_source: true
-  include_date: true
-  max_posts_per_day: 3
+  - name: "STANKI.RU Metalworking"
+    category: "металлообработка"
+    module: "UNITMETALL"
+    type: "russian_industry_media"
+    language: "ru"
+    priority: 4
+    url: "https://stanki.ru/metalworking"
+    rss_url: "https://stanki.ru/metalworking/feed"
+    topics:
+      - "металлообработка"
+      - "ЧПУ"
+      - "станки"
+      - "российский рынок"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
 
-# Post timing
-schedule:
-  timezone: "UTC"
-  preferred_hours: [9, 12, 17]  # 9am, 12pm, 5pm UTC
-  min_hours_between_posts: 4
+  - name: "1RMC Metalworking News"
+    category: "металлообработка"
+    module: "UNITMETALL"
+    type: "russian_industry_media"
+    language: "ru"
+    priority: 4
+    url: "https://1rmc.ru"
+    rss_url: "https://1rmc.ru/feed"
+    topics:
+      - "металлообработка"
+      - "ЧПУ"
+      - "роботизация"
+      - "выставки"
+      - "господдержка"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
 
-# Moderation
-moderation:
-  require_approval: true
-  require_content_review: true
-  dry_run_mode: true
-  allow_auto_publish: false  # NEVER auto-publish
+  - name: "Cutting Tool Engineering"
+    category: "metalworking"
+    module: "UNITMETALL"
+    type: "industry_media"
+    language: "en"
+    priority: 5
+    url: "https://www.ctemag.com"
+    rss_url: "https://www.ctemag.com/feed"
+    topics:
+      - "machining"
+      - "tooling"
+      - "cnc"
+      - "ai tooling"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
 
-# Logging
-logging:
-  log_path: "logs/media_sources.log"
-  log_level: "INFO"
-  log_fetches: true
-  log_rewrites: true
-  log_publishes: true
+  - name: "Manufacturing News"
+    category: "manufacturing"
+    module: "UNITMETALL"
+    type: "industry_media"
+    language: "en"
+    priority: 4
+    url: "https://www.manufacturingnews.com"
+    rss_url: "https://www.manufacturingnews.com/feed"
+    topics:
+      - "machining"
+      - "fabrication"
+      - "manufacturing technology"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "MetalForming Magazine"
+    category: "sheet_metal"
+    module: "UNITMETALL"
+    type: "industry_media"
+    language: "en"
+    priority: 5
+    url: "https://www.metalformingmagazine.com"
+    rss_url: "https://www.metalformingmagazine.com/feed"
+    topics:
+      - "sheet metal"
+      - "press brake"
+      - "bending"
+      - "robotic bending"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "TRUMPF Newsroom"
+    category: "laser_cutting"
+    module: "UNITMETALL"
+    type: "manufacturer_official"
+    language: "en"
+    priority: 5
+    url: "https://www.trumpf.com"
+    rss_url: "https://www.trumpf.com/newsroom/feed"
+    topics:
+      - "laser cutting"
+      - "punching"
+      - "press brake"
+      - "smart factory"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: only_if_press_or_allowed
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "Bystronic"
+    category: "laser_cutting"
+    module: "UNITMETALL"
+    type: "manufacturer_official"
+    language: "en"
+    priority: 5
+    url: "https://www.bystronic.com"
+    rss_url: "https://www.bystronic.com/news/feed"
+    topics:
+      - "laser cutting"
+      - "bending automation"
+      - "tube laser"
+      - "software"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: only_if_press_or_allowed
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+# UNITGROUP / промышленный AI / автоматизация
+
+  - name: "Siemens Industrial AI / Digital Twin News"
+    category: "industrial_ai"
+    module: "UNITGROUP"
+    type: "manufacturer_official"
+    language: "en"
+    priority: 4
+    url: "https://www.siemens.com"
+    rss_url: "https://www.siemens.com/industrial-ai/feed"
+    topics:
+      - "industrial ai"
+      - "digital twin"
+      - "automation"
+      - "manufacturing software"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: only_if_press_or_allowed
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "arXiv Manufacturing Search"
+    category: "research"
+    module: "UNITGROUP"
+    type: "scientific"
+    language: "en"
+    priority: 3
+    url: "https://arxiv.org"
+    rss_url: "https://arxiv.org/feed/cs.CY"
+    topics:
+      - "research"
+      - "industrial ai"
+      - "manufacturing"
+      - "machining"
+      - "scheduling"
+      - "computer vision"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: false
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "LIGNA"
+    category: "exhibition"
+    module: "UNITFURNITURE"
+    type: "exhibition"
+    language: "en"
+    priority: 4
+    url: "https://www.ligna.de"
+    rss_url: "https://www.ligna.de/news/feed"
+    topics:
+      - "woodworking exhibition"
+      - "machinery"
+      - "furniture production"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: only_if_press_or_allowed
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "FABTECH"
+    category: "exhibition"
+    module: "UNITMETALL"
+    type: "exhibition"
+    language: "en"
+    priority: 4
+    url: "https://www.fabtechexpo.com"
+    rss_url: "https://www.fabtechexpo.com/news/feed"
+    topics:
+      - "metal fabrication"
+      - "welding"
+      - "forming"
+      - "finishing"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: only_if_press_or_allowed
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+  - name: "Металлообработка / выставка"
+    category: "exhibition"
+    module: "UNITMETALL"
+    type: "russian_industry_media"
+    language: "ru"
+    priority: 4
+    url: "https://www.metalloobrabotka-expo.ru"
+    rss_url: "https://www.metalloobrabotka-expo.ru/feed"
+    topics:
+      - "российская выставка"
+      - "металлообработка"
+      - "станки"
+    content_policy:
+      rewrite: true
+      cite_source: true
+      copy_images: only_if_press_or_allowed
+      max_quote_words: 25
+      require_approval: true
+      allow_ai_generated_visual: true
+
+# Скоринг новостей
+scoring:
+  rules:
+    has_equipment: 3
+    relates_to_unitmodule: 3
+    explains_value_for_smb: 2
+    has_visual_or_generatable: 2
+    fresh_news: 1
+    is_pure_ad: -5
+    no_source: -5
+    unsafe_to_use: -5
+    no_manufacturing_connection: -5
+    unverifiable_fact: -5
+  min_score: 6
+  reject_score_below: 6
+
+# Политика контента
+content_policy:
+  max_word_count_from_source: 25
+  require_source_attribution: true
+  require_approval_before_publish: true
+  allow_ai_generated_visual: true
+  no_direct_image_copy: true
+  rewrite_policy: "не копировать, переписать своими словами"
+  brands_required:
+    - UNITGROUP
+    - UNITPLAST
+    - UNITFURNITURE
+    - UNITMETALL
+
+# Статусы постов
+post_statuses:
+  - draft
+  - needs_review
+  - approved
+  - published
+  - failed
+  - blocked
+  - rejected_low_score
