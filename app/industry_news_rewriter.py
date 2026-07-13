@@ -233,9 +233,17 @@ class NewsRewriter:
         logger.info(f"Scored {len(scored)} relevant items")
         return scored
 
-    def map_to_products(self, item: NewsItem) -> List[str]:
-        """Map news to UNITGROUP products."""
-        text = (item.title + " " + item.content).lower()
+    def map_to_products(self, item) -> List[str]:
+        """Map news to UNITGROUP products - accepts NewsItem or dict."""
+        # Handle both NewsItem and dict
+        if isinstance(item, dict):
+            title = str(item.get("title", ""))
+            content = str(item.get("content", ""))
+        else:
+            title = str(item.title)
+            content = str(item.content)
+
+        text = (title + " " + content).lower()
 
         mapping = {
             "UNITPLAST": ["plastic", "injection", "molding", "polymers"],
@@ -289,10 +297,22 @@ class NewsRewriter:
 
     def rewrite_for_telegram(
         self,
-        item: NewsItem,
+        item,  # Can be NewsItem or dict
         products: List[str],
     ) -> Dict[str, str]:
-        """Rewrite news for Telegram format."""
+        """Rewrite news for Telegram format - accepts NewsItem or dict."""
+        # Handle both NewsItem objects and dicts
+        if isinstance(item, dict):
+            title = str(item.get("title", ""))
+            content = str(item.get("content", ""))
+            source_name = str(item.get("source", "Unknown"))
+            published_date = str(item.get("published_date", ""))
+        else:
+            title = str(item.title)
+            content = str(item.content)
+            source_name = str(item.source_name)
+            published_date = str(item.published_date)
+
         # Emoji mapping
         emoji_map = {
             "automation": "🤖",
@@ -303,7 +323,7 @@ class NewsRewriter:
             "plastic": "🎯",
         }
 
-        text_lower = (item.title + " " + item.content).lower()
+        text_lower = (title + " " + content).lower()
         emoji = "📰"
         for keyword, emj in emoji_map.items():
             if keyword in text_lower:
@@ -336,14 +356,14 @@ class NewsRewriter:
             ),
         }
 
-        headline = f"{emoji} {item.title}"
+        headline = f"{emoji} {title}"
         context = product_contexts.get(product, product_contexts["UNITPLAST"])
 
         body = (
             f"{context}\n\n"
             f"Коммерческое предложение за 30 сек!\n\n"
             f"👉 Откроить Mini App\n"
-            f"📰 Источник: {item.source_name} ({item.published_date[:10]})"
+            f"📰 Источник: {source_name} ({published_date[:10] if len(published_date) > 10 else published_date})"
         )
 
         return {

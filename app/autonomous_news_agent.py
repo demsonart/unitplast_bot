@@ -110,14 +110,9 @@ class AutonomousNewsAgent:
 
         # Step 4: Map to products
         try:
-            class TempItem:
-                def __init__(self, title, content):
-                    self.title = title
-                    self.content = content
-
             for article in unique_news:
-                temp_item = TempItem(article.get("title", ""), article.get("content", ""))
-                article["products"] = self.news_rewriter.map_to_products(temp_item)
+                # map_to_products works with anything that has title/content
+                article["products"] = self.news_rewriter.map_to_products(article)
             logger.info(f"✅ Mapped {len(unique_news)} to products ({time.time()-start:.1f}s)")
         except Exception as e:
             logger.error(f"❌ Map failed: {e}")
@@ -149,23 +144,9 @@ class AutonomousNewsAgent:
         """Rewrite article and enhance quality"""
 
         # Step 5: Base rewrite (NewsRewriter)
-        # Create a minimal NewsItem object from dict
-        class TempItem:
-            def __init__(self, title, content, source_name="Unknown", published_date=""):
-                self.title = title
-                self.content = content
-                self.source_name = source_name
-                self.published_date = published_date
-
-        temp_item = TempItem(
-            str(article.get("title", "")),
-            str(article.get("content", "")),
-            str(article.get("source", "Unknown")),
-            str(article.get("published_date", ""))
-        )
+        # Pass article dict directly - rewrite_for_telegram now handles dicts
         products = article.get("products", ["UNITPLAST"])
-
-        rewritten = self.news_rewriter.rewrite_for_telegram(temp_item, products)
+        rewritten = self.news_rewriter.rewrite_for_telegram(article, products)
         post_text = rewritten.get("full_text", rewritten.get("body", ""))
         base_score = article.get("score", 0.5)  # 0.0 - 0.6 from NewsRewriter
 
