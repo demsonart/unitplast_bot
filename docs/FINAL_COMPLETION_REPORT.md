@@ -48,7 +48,7 @@ Sections:
   ✓ commercial-offers — КП автоматически
   ✓ mini-app — Telegram Mini App
   ✓ management — Аналитика в реальном времени
-  ✓ three-brands — UNITPLAST, UNIFURNITURE, UNIMETALL
+  ✓ three-brands — UNITPLAST, UNITFURNITURE, UNITMETALL
   ✓ contacts — Форма и контакты
   ✓ cta-block — "Сделайте следующий шаг"
   [+ footer]

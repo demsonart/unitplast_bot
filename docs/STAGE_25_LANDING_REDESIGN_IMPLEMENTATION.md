@@ -78,7 +78,7 @@ Add:
 ✅ Section 3 - КП (commercial offers)
 ✅ Section 4 - Mini App (showcase)
 ✅ Section 5 - Management (dashboard)
-✅ Section 6 - Three Brands (UNITPLAST, UNIFURNITURE, UNIMETALL)
+✅ Section 6 - Three Brands (UNITPLAST, UNITFURNITURE, UNITMETALL)
 ✅ Section 7 - Contacts
 ✅ Section 8 - CTA Block
 ✅ Section 9 - Footer

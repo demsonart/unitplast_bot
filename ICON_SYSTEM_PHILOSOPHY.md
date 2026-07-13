@@ -22,7 +22,7 @@ These icons inherit their color from context. `currentColor` means they are not 
 
 **Feature Icons** (6): Document, Clock, Database, Chart, Settings, Help—conceptual tools that explain what the platform does. Each is a miniature lesson in visual metaphor.
 
-**Brand Icons** (3): UNITPLAST (droplet/polymer), UNIFURNITURE (wood grain), UNIMETALL (grid/metal)—proprietary marks that signal material identity. These are company heraldry in modern form.
+**Brand Icons** (3): UNITPLAST (droplet/polymer), UNITFURNITURE (wood grain), UNITMETALL (grid/metal)—proprietary marks that signal material identity. These are company heraldry in modern form.
 
 **Action Icons** (6): Plus, Edit, Delete, Download, Upload, Share—commands rendered as forms. They invite interaction through visual suggestion, not explanation.
 

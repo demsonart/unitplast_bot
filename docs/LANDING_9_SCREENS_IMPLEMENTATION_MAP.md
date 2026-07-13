@@ -30,7 +30,7 @@
 
 ### Section 3: THREE BRANDS (804E3783.PNG)
 - "Одна система для трёх производств"
-- 3 brand cards: UNITPLAST, UNIFURNITURE, UNIMETALL
+- 3 brand cards: UNITPLAST, UNITFURNITURE, UNITMETALL
 - Feature icons: Расчёты, КП, Склад, CRM, 1С, Аналитика, Telegram
 
 ### Section 4: COMMERCIAL OFFERS (E45C4DEB.PNG)

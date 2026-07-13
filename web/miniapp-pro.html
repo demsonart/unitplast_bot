@@ -463,14 +463,14 @@
                             <path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5M3 5h18M8 8v7M12 8v7M16 8v7" stroke-linecap="round"/>
                         </svg>
                         <div class="material-name">Мебель</div>
-                        <div class="material-type">UNIFURNITURE</div>
+                        <div class="material-type">UNITFURNITURE</div>
                     </button>
                     <button class="material-btn metal" onclick="selectType('metal')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M3 12h18M5 5l2 14h10l2-14M9 5v14M15 5v14M8 9h8" stroke-linecap="round"/>
                         </svg>
                         <div class="material-name">Металл</div>
-                        <div class="material-type">UNIMETALL</div>
+                        <div class="material-type">UNITMETALL</div>
                     </button>
                 </div>
             </div>
@@ -822,9 +822,77 @@
     }
 
     function calculatePrice() {
-        // Simple calculation demo
-        const basePrice = Math.random() * 20000 + 5000;
-        document.getElementById('total-price').textContent = Math.round(basePrice).toLocaleString('ru-RU') + ' ₽';
+        const materialType = document.querySelector('.material-btn.active').classList.contains('furniture') ? 'furniture' :
+                            document.querySelector('.material-btn.active').classList.contains('metal') ? 'metal' : 'plastic';
+
+        let price = 0;
+        if (materialType === 'furniture') {
+            price = calculateFurniturePrice();
+        } else if (materialType === 'metal') {
+            price = calculateMetalPrice();
+        } else {
+            price = calculatePlasticPrice();
+        }
+
+        document.getElementById('total-price').textContent = Math.round(price).toLocaleString('ru-RU') + ' ₽';
+    }
+
+    function calculateFurniturePrice() {
+        // UNITFURNITURE pricing
+        const materialSelect = document.querySelector('#furniture-inputs select:nth-of-type(2)');
+        const heightInput = document.querySelector('#furniture-inputs input:nth-of-type(1)');
+        const widthInput = document.querySelector('#furniture-inputs input:nth-of-type(2)');
+        const materialTypeSelect = document.querySelector('#furniture-inputs select:nth-of-type(3)');
+        const quantityInput = document.querySelector('#furniture-inputs input:nth-of-type(3)');
+
+        const height = parseFloat(heightInput?.value) || 180;
+        const width = parseFloat(widthInput?.value) || 80;
+        const quantity = parseFloat(quantityInput?.value) || 10;
+        const materialType = materialTypeSelect?.value || 'ДСП (бюджет)';
+
+        // Material costs (per m²)
+        const materialPrices = {
+            'ДСП (бюджет)': 900,
+            'МДФ (стандарт)': 1400,
+            'Массив дерева (премиум)': 4500
+        };
+
+        // Finish multipliers
+        const finishMultipliers = {
+            'ДСП (бюджет)': 1,
+            'МДФ (стандарт)': 1.15,
+            'Массив дерева (премиум)': 1.4
+        };
+
+        const basePrice = materialPrices[materialType] || 900;
+        const finishMultiplier = finishMultipliers[materialType] || 1;
+
+        // Surface area in m²
+        const areaM2 = ((height / 100) * (width / 100)) * 2; // Front and back
+
+        // Calculate costs
+        const materialCost = areaM2 * basePrice * quantity;
+        const finishCost = materialCost * (finishMultiplier - 1);
+        const hardwareCost = (materialType === 'Массив дерева (премиум)' ? 3000 : 1000) * quantity;
+        const assemblyCost = (materialCost + finishCost) * 0.12;
+
+        const subtotal = materialCost + finishCost + hardwareCost + assemblyCost;
+        const margin = subtotal * 0.25; // 25% markup
+        const vat = (subtotal + margin) * 0.20; // 20% VAT
+
+        return subtotal + margin + vat;
+    }
+
+    function calculatePlasticPrice() {
+        // UNITPLAST pricing placeholder
+        const quantity = parseFloat(document.querySelector('#plastic-inputs input:nth-of-type(4)').value) || 100;
+        return 2000 + (quantity * 150);
+    }
+
+    function calculateMetalPrice() {
+        // UNITMETALL pricing placeholder
+        const quantity = parseFloat(document.querySelector('#metal-inputs input:nth-of-type(3)').value) || 1;
+        return 5000 + (quantity * 3500);
     }
 
     function saveCalculation() {
