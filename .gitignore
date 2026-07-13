@@ -58,6 +58,10 @@ output/
 *.jpeg
 *.pdf
 
+# EXCEPTIONS: Important brand assets
+!web/assets/logo-*.png
+!web/assets/images/hero-logo-area.png
+
 # Logs
 *.log
 logs/
