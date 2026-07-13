@@ -158,10 +158,10 @@ class AutonomousNewsAgent:
                 self.published_date = published_date
 
         temp_item = TempItem(
-            article.get("title", ""),
-            article.get("content", ""),
-            article.get("source", "Unknown"),
-            article.get("published_date", "")
+            str(article.get("title", "")),
+            str(article.get("content", "")),
+            str(article.get("source", "Unknown")),
+            str(article.get("published_date", ""))
         )
         products = article.get("products", ["UNITPLAST"])
 
