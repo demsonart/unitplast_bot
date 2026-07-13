@@ -400,7 +400,7 @@ Auto-publishes in: {PREVIEW_WINDOW_MINUTES} min ⏱️
     async def _process_single_article(self, article: Dict) -> bool:
         """Process single article (async wrapper)"""
         try:
-            logger.info(f"DEBUG: article type={type(article)}, keys={list(article.keys()) if isinstance(article, dict) else 'NOT_DICT'}")
+            logger.info(f"DEBUG: article['title'] type={type(article.get('title'))}, value={article.get('title')}")
             # Rewrite & enhance
             post_text, base_score = self.rewrite_and_enhance(article)
 
