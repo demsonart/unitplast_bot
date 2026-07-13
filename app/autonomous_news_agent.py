@@ -89,10 +89,21 @@ class AutonomousNewsAgent:
 
         # Step 3: Remove duplicates
         unique_news = []
-        for article in filtered:
-            article_hash = self._hash_article(article)
+        for scored_item in filtered:
+            article_hash = self._hash_article(scored_item)
             if article_hash not in self.processed_articles:
-                unique_news.append(article)
+                # Extract NewsItem from ScoredNews
+                item = scored_item.item
+                # Convert to dict for downstream processing
+                article_dict = {
+                    "title": item.title,
+                    "link": item.url,
+                    "content": item.content,
+                    "source": item.source_name,
+                    "category": item.category,
+                    "score": scored_item.relevance_score,
+                }
+                unique_news.append(article_dict)
                 self.processed_articles.add(article_hash)
 
         logger.info(f"✅ {len(unique_news)} new unique ({time.time()-start:.1f}s)")
@@ -109,10 +120,15 @@ class AutonomousNewsAgent:
         logger.info(f"🎯 READY: {len(result)} articles for processing ({time.time()-start:.1f}s total)")
         return result
 
-    def _hash_article(self, article: Dict) -> str:
+    def _hash_article(self, scored_news) -> str:
         """Create MD5 hash of article for duplicate detection"""
         import hashlib
-        content = f"{article.get('title', '')}{article.get('link', '')}"
+        # Handle both ScoredNews objects and dicts
+        if hasattr(scored_news, 'item'):  # ScoredNews object
+            item = scored_news.item
+            content = f"{item.title}{item.url}"
+        else:  # dict
+            content = f"{scored_news.get('title', '')}{scored_news.get('link', '')}"
         return hashlib.md5(content.encode()).hexdigest()
 
     # ─────────────────────────────────────────────────────────────────────────────
