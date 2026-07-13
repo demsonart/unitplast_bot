@@ -195,9 +195,9 @@ class NewsRewriter:
     def filter_and_score(self, items: List[NewsItem]) -> List[ScoredNews]:
         """Filter by keywords and score by relevance."""
         config = self.config.get("filters", {})
-        include_keywords = config.get("include_keywords", [])
-        exclude_keywords = config.get("exclude_keywords", [])
-        min_words = config.get("min_words", 50)
+        include_keywords = config.get("include_keywords", ["automation", "AI", "efficiency", "manufacturing"])
+        exclude_keywords = config.get("exclude_keywords", ["politics", "weather", "sports", "fake"])
+        min_words = config.get("min_words", 20)  # Reduced from 50 to 20 for more items
         max_words = config.get("max_words", 5000)
 
         scored = []
@@ -208,17 +208,18 @@ class NewsRewriter:
 
             # Check word count
             if word_count < min_words or word_count > max_words:
+                logger.debug(f"Filtered out: word count {word_count} (min:{min_words}, max:{max_words})")
                 continue
 
             # Check exclude keywords
             if any(kw.lower() in text for kw in exclude_keywords):
+                logger.debug(f"Filtered out: contains exclude keyword")
                 continue
 
-            # Score based on include keywords
+            # Score based on include keywords (optional, not required)
             matched = [kw for kw in include_keywords if kw.lower() in text]
-            if not matched:
-                continue
 
+            # Accept items with OR without keywords (all items pass!)
             relevance_score = min(len(matched) * 0.15 + 0.3, 1.0)
 
             scored.append(ScoredNews(
