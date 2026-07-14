@@ -34,10 +34,13 @@ class MediaBotIntegration:
     """Integration layer between NewsRewriter and Telegram bot."""
 
     def __init__(self):
+        from app.config import TELEGRAM_MEDIA_BOT_TOKEN
+        from aiogram import Bot
+
         self.rewriter = NewsRewriter()
         self.drafts_dir = DRAFTS_DIR
         self.drafts_dir.mkdir(parents=True, exist_ok=True)
-        self.bot = None  # Инициализируется при запуске бота
+        self.bot = Bot(token=TELEGRAM_MEDIA_BOT_TOKEN)
 
     async def _publish_to_channel(self, text: str) -> Optional[int]:
         """Публикует сообщение в канал @UnitgroupAI.

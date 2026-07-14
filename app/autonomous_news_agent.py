@@ -31,6 +31,12 @@ MAX_ARTICLES_PER_FETCH = int(os.getenv("MAX_ARTICLES_PER_FETCH", "100"))
 ENABLE_CLAUDE_ENHANCEMENT = os.getenv("ENABLE_CLAUDE_ENHANCEMENT", "true").lower() in ("true", "1", "yes")
 TRACK_ENGAGEMENT = os.getenv("TRACK_ENGAGEMENT", "true").lower() in ("true", "1", "yes")
 
+# Publishing schedule
+PUBLISH_START_WEEKDAY = int(os.getenv("PUBLISH_START_WEEKDAY", "7"))
+PUBLISH_END_WEEKDAY = int(os.getenv("PUBLISH_END_WEEKDAY", "23"))
+PUBLISH_START_WEEKEND = int(os.getenv("PUBLISH_START_WEEKEND", "8"))
+PUBLISH_END_WEEKEND = int(os.getenv("PUBLISH_END_WEEKEND", "2"))
+
 # Quality score weights
 SCORE_WEIGHTS = {
     "base_rewrite": 0.25,
@@ -228,6 +234,25 @@ class AutonomousNewsAgent:
 
         return engagement
 
+    def _is_publishing_time(self) -> bool:
+        """Проверить находимся ли мы в рабочее время для публикации"""
+        now = datetime.now()
+        hour = now.hour
+        weekday = now.weekday()  # 0=Monday, 6=Sunday
+
+        # Определяем выходные (5=Saturday, 6=Sunday)
+        is_weekend = weekday >= 5
+
+        if is_weekend:
+            # Выходные: с 8:00 до 2:00 (утро до 2:00)
+            if PUBLISH_END_WEEKEND < PUBLISH_START_WEEKEND:  # Если конец на следующий день
+                return hour >= PUBLISH_START_WEEKEND or hour < PUBLISH_END_WEEKEND
+            else:
+                return PUBLISH_START_WEEKEND <= hour < PUBLISH_END_WEEKEND
+        else:
+            # Рабочие дни: с 7:00 до 23:00
+            return PUBLISH_START_WEEKDAY <= hour < PUBLISH_END_WEEKDAY
+
     # ─────────────────────────────────────────────────────────────────────────────
     # STEP 9-10: DECISION & PUBLISH
     # ─────────────────────────────────────────────────────────────────────────────
@@ -236,6 +261,13 @@ class AutonomousNewsAgent:
         self, article: Dict, post_text: str, final_score: float
     ) -> bool:
         """Decide to publish, preview, or reject"""
+
+        # Проверяем рабочее время
+        if not self._is_publishing_time():
+            now = datetime.now()
+            self._log_event("rejected", article, post_text, final_score, f"Outside publishing hours ({now.strftime('%H:%M')})")
+            logger.info(f"⏰ NOT PUBLISHING: Outside working hours ({now.strftime('%H:%M')})")
+            return False
 
         if final_score >= AUTONOMOUS_QUALITY_THRESHOLD and AUTO_PUBLISH_ENABLED:
             # AUTO-PUBLISH
