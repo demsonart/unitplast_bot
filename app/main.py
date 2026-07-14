@@ -6,6 +6,7 @@ from .config import (
     TELEGRAM_BOT_TOKEN, TELEGRAM_GROUP_ID,
     YANDEX_EMAIL, YANDEX_PASSWORD, YANDEX_IMAP_SERVER, YANDEX_IMAP_PORT,
     COMPANY_NAME, COMPANY_EMAIL, COMPANY_PHONE, EMAIL_CHECK_INTERVAL, PROCESS_ONLY_UNSEEN,
+    AVITO_CLIENT_ID, AVITO_CLIENT_SECRET, AVITO_POLL_INTERVAL, AVITO_ENABLED,
     validate_config
 )
 from .email_reader import EmailReader
@@ -15,6 +16,8 @@ from .database import Database
 from .telegram_final_bot import TelegramFinalBot
 from .lead_scorer import LeadScorer
 from .notification_router import NotificationRouter
+from .avito_lead_poller import AvitoLeadPoller
+from .unified_inbox import Channel, LeadStatus
 from pathlib import Path
 
 logging.basicConfig(
@@ -38,6 +41,20 @@ class OrderBot:
         self.telegram_bot = TelegramFinalBot()
         self.lead_scorer = LeadScorer()
         self.notification_router = NotificationRouter()
+
+        # Initialize Avito Lead Poller if enabled
+        self.avito_poller = None
+        if AVITO_ENABLED and AVITO_CLIENT_ID and AVITO_CLIENT_SECRET:
+            self.avito_poller = AvitoLeadPoller(
+                client_id=AVITO_CLIENT_ID,
+                client_secret=AVITO_CLIENT_SECRET,
+                poll_interval=AVITO_POLL_INTERVAL,
+                unified_inbox=self.telegram_bot.inbox
+            )
+            logger.info("Avito Lead Poller initialized")
+        else:
+            logger.warning("Avito integration disabled or credentials missing")
+
         self.running = True
 
     def connect_email(self):
@@ -200,12 +217,113 @@ class OrderBot:
             # Wait before next check
             await asyncio.sleep(EMAIL_CHECK_INTERVAL)
 
+    async def avito_inbox_monitor(self):
+        """Monitor unified inbox for new Avito leads and send notifications"""
+        if not self.avito_poller:
+            return
+
+        last_lead_count = 0
+
+        while self.running:
+            try:
+                # Get current Avito leads
+                avito_leads = self.telegram_bot.inbox.get_leads_by_channel(Channel.AVITO)
+
+                # Check for new leads
+                if len(avito_leads) > last_lead_count:
+                    new_leads_count = len(avito_leads) - last_lead_count
+                    new_leads = avito_leads[-new_leads_count:]
+
+                    for lead in new_leads:
+                        await self._notify_avito_lead(lead)
+
+                    last_lead_count = len(avito_leads)
+
+            except Exception as e:
+                logger.error(f"Error monitoring Avito inbox: {e}")
+
+            # Check every 10 seconds
+            await asyncio.sleep(10)
+
+    async def _notify_avito_lead(self, lead: dict):
+        """Send notification about new Avito lead"""
+        try:
+            data = lead.get("data", {})
+            lead_id = lead.get("id", "")
+
+            # Format notification
+            notification = (
+                f"📱 <b>AVITO ЛИД</b>\n\n"
+                f"━━━━━━━━━━━━━━━━━━\n\n"
+                f"👤 <b>Имя:</b> {data.get('buyer_name', '?')}\n"
+                f"📞 <b>Телефон:</b> {data.get('buyer_phone', '?')}\n"
+                f"📍 <b>Локация:</b> {data.get('buyer_location', '?')}\n\n"
+                f"🏷️ <b>Товар:</b> {data.get('item_title', '?')}\n"
+                f"💰 <b>Цена:</b> {data.get('item_price', '?')}\n\n"
+                f"💬 <b>Сообщение:</b>\n{data.get('message', '—')}\n\n"
+                f"━━━━━━━━━━━━━━━━━━\n\n"
+                f"<code>Лид ID: {lead_id}</code>"
+            )
+
+            # Get targets for Avito notifications
+            routes = self.notification_router.route_order({
+                "order_type": "AVITO_LEAD",
+                "priority": {"level": "NORMAL"},
+                "score": 50
+            })
+
+            # Send to all configured targets
+            sent_count = 0
+            for route in routes:
+                try:
+                    group_id = route.get("group_id")
+                    if group_id:
+                        await self.telegram_bot.bot.send_message(
+                            chat_id=group_id,
+                            text=notification,
+                            parse_mode="HTML"
+                        )
+                        sent_count += 1
+                        logger.info(f"Sent Avito lead notification to {route['target']}")
+                except Exception as e:
+                    logger.error(f"Failed to send to {route['target']}: {e}")
+
+            # Also send to main group if no targets configured
+            if sent_count == 0 and TELEGRAM_GROUP_ID:
+                try:
+                    await self.telegram_bot.bot.send_message(
+                        chat_id=TELEGRAM_GROUP_ID,
+                        text=notification,
+                        parse_mode="HTML"
+                    )
+                    logger.info(f"Sent Avito lead to main group")
+                except Exception as e:
+                    logger.error(f"Failed to send to main group: {e}")
+
+            logger.info(f"Avito lead {lead_id} notification sent to {sent_count} targets")
+
+        except Exception as e:
+            logger.error(f"Error notifying Avito lead: {e}")
+
     async def run(self):
-        """Start bot and email polling"""
+        """Start bot, email polling, and Avito lead poller"""
         logger.info("Starting OrderBot...")
 
         # Start email polling in background
         email_task = asyncio.create_task(self.email_polling_loop())
+
+        # Start Avito Lead Poller if initialized
+        avito_task = None
+        inbox_task = None
+        if self.avito_poller:
+            try:
+                self.avito_poller.start()
+                logger.info("✅ Avito Lead Poller started")
+                # Monitor inbox for new Avito leads
+                inbox_task = asyncio.create_task(self.avito_inbox_monitor())
+                logger.info("✅ Avito inbox monitor started")
+            except Exception as e:
+                logger.error(f"Failed to start Avito poller: {e}")
 
         # Start Telegram bot
         try:
@@ -214,7 +332,20 @@ class OrderBot:
             logger.info("Bot interrupted")
         finally:
             self.running = False
+
+            # Stop Avito poller
+            if self.avito_poller:
+                try:
+                    self.avito_poller.stop()
+                    logger.info("Avito Lead Poller stopped")
+                except Exception as e:
+                    logger.error(f"Error stopping Avito poller: {e}")
+
+            # Cancel tasks
             email_task.cancel()
+            if inbox_task:
+                inbox_task.cancel()
+
             await self.telegram_bot.stop()
 
 async def main():

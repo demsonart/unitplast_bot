@@ -17,6 +17,7 @@ class NotificationType(Enum):
     DOCUMENTS = ("🟣", "Документы")
     SYSTEM_ERROR = ("🔴", "Ошибка системы")
     PRODUCTION = ("⚫", "Производство")
+    AVITO_LEAD = ("📱", "Лид с Avito")
 
 
 class NotificationTarget:
@@ -82,13 +83,13 @@ class NotificationRouter:
             "TEST": NotificationTarget(
                 name="TEST",
                 group_id=None,  # Will be set via UI
-                notification_types=["NEW_ORDER", "PRICE_REQUEST", "SYSTEM_ERROR"],
+                notification_types=["NEW_ORDER", "PRICE_REQUEST", "SYSTEM_ERROR", "AVITO_LEAD"],
                 is_active=True,
             ),
             "SALES": NotificationTarget(
                 name="SALES",
                 group_id=None,
-                notification_types=["NEW_ORDER", "PRICE_REQUEST"],
+                notification_types=["NEW_ORDER", "PRICE_REQUEST", "AVITO_LEAD"],
                 is_active=True,
             ),
             "PRODUCTION": NotificationTarget(
@@ -104,6 +105,7 @@ class NotificationRouter:
                     "NEW_ORDER",
                     "SYSTEM_ERROR",
                     "PRICE_REQUEST",
+                    "AVITO_LEAD",
                 ],
                 is_active=True,
             ),
@@ -179,7 +181,9 @@ class NotificationRouter:
         score = lead_data.get("score", 0)
 
         # Convert order type to notification type
-        if "PRODUCTION" in order_type:
+        if "AVITO" in order_type:
+            event_type = "AVITO_LEAD"
+        elif "PRODUCTION" in order_type:
             event_type = "PRODUCTION"
         elif "PRICE" in order_type:
             event_type = "PRICE_REQUEST"
