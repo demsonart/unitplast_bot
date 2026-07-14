@@ -2,11 +2,14 @@ import asyncio
 import logging
 import sys
 from datetime import datetime
+from aiogram.filters import Command
 from .config import (
-    TELEGRAM_BOT_TOKEN, TELEGRAM_GROUP_ID,
+    TELEGRAM_BOT_TOKEN, TELEGRAM_GROUP_ID, TELEGRAM_ADMIN_ID,
     YANDEX_EMAIL, YANDEX_PASSWORD, YANDEX_IMAP_SERVER, YANDEX_IMAP_PORT,
     COMPANY_NAME, COMPANY_EMAIL, COMPANY_PHONE, EMAIL_CHECK_INTERVAL, PROCESS_ONLY_UNSEEN,
     AVITO_CLIENT_ID, AVITO_CLIENT_SECRET, AVITO_POLL_INTERVAL, AVITO_ENABLED,
+    AVITO_ANALYZER_ENABLED, AVITO_SEARCH_KEYWORDS, AVITO_ANALYSIS_ADMIN_ID, AVITO_ANALYSIS_SCHEDULE,
+    ANTHROPIC_API_KEY, ENABLE_AI,
     validate_config
 )
 from .email_reader import EmailReader
@@ -18,6 +21,9 @@ from .lead_scorer import LeadScorer
 from .notification_router import NotificationRouter
 from .avito_lead_poller import AvitoLeadPoller
 from .unified_inbox import Channel, LeadStatus
+from .avito_api_client import AvitoAPIClient
+from .avito_analyzer import CompetitorAnalyzer, ClaudeAnalyzer, RKStrategist, ReportGenerator
+from .avito_analyzer.scheduler import AnalysisScheduler
 from pathlib import Path
 
 logging.basicConfig(
@@ -42,6 +48,12 @@ class OrderBot:
         self.lead_scorer = LeadScorer()
         self.notification_router = NotificationRouter()
 
+        # Register analyzer command handler
+        self.telegram_bot.dp.message.register(
+            self._handle_analyze_market,
+            Command("analyze_market")
+        )
+
         # Initialize Avito Lead Poller if enabled
         self.avito_poller = None
         if AVITO_ENABLED and AVITO_CLIENT_ID and AVITO_CLIENT_SECRET:
@@ -54,6 +66,43 @@ class OrderBot:
             logger.info("Avito Lead Poller initialized")
         else:
             logger.warning("Avito integration disabled or credentials missing")
+
+        # Initialize Avito Analyzer if enabled
+        self.avito_analyzer = None
+        self.analysis_scheduler = None
+        if AVITO_ANALYZER_ENABLED and AVITO_CLIENT_ID and AVITO_CLIENT_SECRET and ANTHROPIC_API_KEY:
+            try:
+                avito_client = AvitoAPIClient(
+                    client_id=AVITO_CLIENT_ID,
+                    client_secret=AVITO_CLIENT_SECRET
+                )
+                self.avito_analyzer = {
+                    "competitor": CompetitorAnalyzer(avito_client),
+                    "claude": ClaudeAnalyzer(ANTHROPIC_API_KEY),
+                    "strategist": RKStrategist(),
+                    "reporter": ReportGenerator(),
+                }
+                logger.info("Avito Analyzer initialized")
+
+                # Initialize scheduler for automatic analysis
+                admin_id = AVITO_ANALYSIS_ADMIN_ID or TELEGRAM_ADMIN_ID
+                if admin_id:
+                    self.analysis_scheduler = AnalysisScheduler(
+                        admin_id=admin_id,
+                        schedule_hours=AVITO_ANALYSIS_SCHEDULE,
+                        callback=self._send_analyzer_report
+                    )
+                    logger.info(f"Analysis scheduler initialized for admin {admin_id}")
+                else:
+                    logger.warning("No admin ID for analyzer reports")
+
+            except Exception as e:
+                logger.error(f"Failed to initialize Avito Analyzer: {e}")
+        else:
+            if not AVITO_ANALYZER_ENABLED:
+                logger.info("Avito Analyzer disabled")
+            else:
+                logger.warning("Avito Analyzer requires credentials and API key")
 
         self.running = True
 
@@ -305,8 +354,114 @@ class OrderBot:
         except Exception as e:
             logger.error(f"Error notifying Avito lead: {e}")
 
+    async def _run_avito_market_analysis(self) -> str:
+        """Run complete Avito market analysis"""
+        if not self.avito_analyzer:
+            return "❌ Avito Analyzer не инициализирован"
+
+        try:
+            logger.info("Starting Avito market analysis...")
+
+            competitor = self.avito_analyzer["competitor"]
+            claude = self.avito_analyzer["claude"]
+            strategist = self.avito_analyzer["strategist"]
+            reporter = self.avito_analyzer["reporter"]
+
+            # 1. Analyze market and competitors
+            logger.info(f"Searching for competitors in market...")
+            comp_analysis = competitor.search_competitors(AVITO_SEARCH_KEYWORDS, limit=100)
+
+            if not comp_analysis.get("successful_adverts"):
+                logger.warning("No successful adverts found")
+                return reporter.format_error_report("Не найдены успешные объявления на Avito")
+
+            # 2. Extract patterns
+            patterns = competitor.extract_patterns(comp_analysis["successful_adverts"])
+            logger.info(f"Extracted patterns from {len(comp_analysis['successful_adverts'])} adverts")
+
+            # 3. Analyze with Claude
+            logger.info("Running Claude analysis...")
+            advert_analysis = claude.analyze_adverts(
+                comp_analysis["successful_adverts"],
+                patterns
+            )
+
+            # 4. Generate RK strategy
+            logger.info("Generating RK strategy...")
+            campaign_strategy = strategist.generate_campaign_strategy(
+                comp_analysis,
+                advert_analysis,
+                budget_rubles=5000.0
+            )
+
+            # 5. Generate report
+            report_text = reporter.generate_telegram_report(
+                comp_analysis,
+                advert_analysis,
+                campaign_strategy
+            )
+
+            logger.info("Market analysis completed successfully")
+            return report_text
+
+        except Exception as e:
+            logger.error(f"Error in market analysis: {e}")
+            if self.avito_analyzer:
+                return self.avito_analyzer["reporter"].format_error_report(str(e))
+            return f"❌ Ошибка анализа: {str(e)}"
+
+    async def _send_analyzer_report(self, admin_id: int, report_text: str):
+        """Send analyzer report to admin via Telegram"""
+        try:
+            await self.telegram_bot.bot.send_message(
+                chat_id=admin_id,
+                text=report_text,
+                parse_mode="HTML"
+            )
+            logger.info(f"Analyzer report sent to admin {admin_id}")
+        except Exception as e:
+            logger.error(f"Failed to send analyzer report: {e}")
+
+    async def _handle_analyze_market(self, message):
+        """Handle /analyze_market command"""
+        admin_id = message.from_user.id
+        allowed_admin = AVITO_ANALYSIS_ADMIN_ID or TELEGRAM_ADMIN_ID
+
+        # Check if user is admin
+        if admin_id != allowed_admin:
+            await message.reply("❌ Команда доступна только администратору")
+            return
+
+        # Send "analyzing..." message
+        status_msg = await message.reply("⏳ Анализирую рынок Avito...")
+
+        try:
+            # Run analysis
+            report = await self._run_avito_market_analysis()
+
+            # Delete status message and send report
+            try:
+                await status_msg.delete()
+            except:
+                pass
+
+            # Send report (split if too long)
+            if len(report) > 4096:
+                # Split long report into chunks
+                chunks = [report[i:i+4096] for i in range(0, len(report), 4096)]
+                for chunk in chunks:
+                    await message.reply(chunk, parse_mode="HTML")
+            else:
+                await message.reply(report, parse_mode="HTML")
+
+            logger.info(f"Analysis report sent to admin {admin_id}")
+
+        except Exception as e:
+            await status_msg.edit_text(f"❌ Ошибка при анализе:\n<code>{str(e)}</code>", parse_mode="HTML")
+            logger.error(f"Error in analyze_market handler: {e}")
+
     async def run(self):
-        """Start bot, email polling, and Avito lead poller"""
+        """Start bot, email polling, Avito lead poller, and analyzer scheduler"""
         logger.info("Starting OrderBot...")
 
         # Start email polling in background
@@ -325,6 +480,14 @@ class OrderBot:
             except Exception as e:
                 logger.error(f"Failed to start Avito poller: {e}")
 
+        # Start Avito Analyzer Scheduler if initialized
+        if self.analysis_scheduler:
+            try:
+                self.analysis_scheduler.start(self._run_avito_market_analysis)
+                logger.info("✅ Avito Analyzer Scheduler started")
+            except Exception as e:
+                logger.error(f"Failed to start analyzer scheduler: {e}")
+
         # Start Telegram bot
         try:
             await self.telegram_bot.start()
@@ -340,6 +503,14 @@ class OrderBot:
                     logger.info("Avito Lead Poller stopped")
                 except Exception as e:
                     logger.error(f"Error stopping Avito poller: {e}")
+
+            # Stop analyzer scheduler
+            if self.analysis_scheduler:
+                try:
+                    self.analysis_scheduler.stop()
+                    logger.info("Avito Analyzer Scheduler stopped")
+                except Exception as e:
+                    logger.error(f"Error stopping analyzer scheduler: {e}")
 
             # Cancel tasks
             email_task.cancel()

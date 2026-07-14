@@ -32,6 +32,18 @@ YANDEX_PASSWORD = os.getenv("YANDEX_PASSWORD")
 YANDEX_IMAP_SERVER = os.getenv("YANDEX_IMAP_SERVER", "imap.yandex.ru")
 YANDEX_IMAP_PORT = int(os.getenv("YANDEX_IMAP_PORT", 993))
 
+# Avito (Lead aggregation)
+AVITO_CLIENT_ID = os.getenv("AVITO_CLIENT_ID")
+AVITO_CLIENT_SECRET = os.getenv("AVITO_CLIENT_SECRET")
+AVITO_POLL_INTERVAL = int(os.getenv("AVITO_POLL_INTERVAL", "300"))
+AVITO_ENABLED = os.getenv("AVITO_ENABLED", "true").lower() in ("true", "1", "yes")
+
+# Avito Analyzer (Market analysis & recommendations)
+AVITO_ANALYZER_ENABLED = os.getenv("AVITO_ANALYZER_ENABLED", "true").lower() in ("true", "1", "yes")
+AVITO_SEARCH_KEYWORDS = os.getenv("AVITO_SEARCH_KEYWORDS", "пластмасса,пресс-формы,литье").split(",")
+AVITO_ANALYSIS_ADMIN_ID = int(os.getenv("AVITO_ANALYSIS_ADMIN_ID", TELEGRAM_ADMIN_ID or 0))
+AVITO_ANALYSIS_SCHEDULE = os.getenv("AVITO_ANALYSIS_SCHEDULE", "9,17")  # 09:00 и 17:00
+
 # AI Mode
 ENABLE_AI = os.getenv("ENABLE_AI", "false").lower() in ("true", "1", "yes")
 
